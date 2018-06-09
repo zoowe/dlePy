@@ -91,6 +91,9 @@ Create a surface from primitive one `atoms` using matrix notation
 
 maxtrix = ( m1, n1, m2, n2 )
 ```
+
+Refer to [Unification of the matrix notation in molecular surface science](https://doi.org/10.1016/j.susc.2010.03.023) by Leo Merz and Karl-Heinz Ernst for more informations about the notation.
+
 ##### [Example](examples/matrix_surface.py)
 ( 2, 1, -1, 4) CO overlayer on Cu(111)
 ```python
