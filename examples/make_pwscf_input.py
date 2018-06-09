@@ -5,11 +5,11 @@ from ase.constraints import FixAtoms
 from dlePy.qe.pwscf import PWscfInput, write_pwscf_input
 
 # Generate 5 layer of (1x1) Cu(111) in a 20 angstrom vacuum
-system = fcc111('Cu',size=(1,1,5),a=3.16,vacuum=20./2.)
+system = fcc111( 'Cu', size = (1,1,5), a = 3.16, vacuum = 10.)
 
 # Fix bottom 3 layer
 indices = [ a.index for a in system \
-            if a.position[2] < 0.51 * system.cell[2,2] ]
+            if a.position[ 2 ] < 0.51 * system.cell[ 2, 2 ] ]
 system.set_constraint ( FixAtoms ( indices = indices ) )
 pwscf = PWscfInput ( system )
 
