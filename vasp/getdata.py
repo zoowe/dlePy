@@ -1,6 +1,6 @@
 import gzip as gz
 
-def get_enegry( outcar ):
+def get_energy( outcar ):
     if '.gz' in outcar:
         with gz.open( outcar, 'r' ) as f:
             lines = f.readlines( )
