@@ -15,7 +15,7 @@ def get_lines_outcar( outcar ):
             job_done = True
             break
     if not job_done:
-        print "WARNING: perhaps OUTCAR is for an imcompleted calculations"
+        print "WARNING: perhaps OUTCAR is for an imcompleted calculation"
         print "Please check: ", outcar
 
     return lines
@@ -45,6 +45,14 @@ def get_calculation_details( outcar ):
             ISMEAR = int( lines[ iline ].split( )[ 2 ].replace( ';', '' ) ) 
             SIGMA  = float( lines[ iline ].split( )[ 5 ] )
 
+        if "NBANDS=" in lines[ iline ]:
+            NKPTS = int( lines[ iline ].split( )[ 3 ].replace( ';', '' ) )
+            NBANDS = int( lines[ iline ].split( )[ 14 ] )
+
+        if "NELECT =" in lines[ iline ]:
+            NELECT = float( lines[ iline ].split( )[ 2 ].replace( ';', '' ) )
+
+
     details = { 
                 "PREC"       : PREC,
                 "LREAL"      : LREAL,
@@ -52,8 +60,13 @@ def get_calculation_details( outcar ):
                 "EDIFF"      : EDIFF,
                 "EDIFFG"     : EDIFFG,
                 "ISMEAR"     : ISMEAR,
-                "SIGMA"      : SIGMA
+                "SIGMA"      : SIGMA,
+                "NKPTS"      : NKPTS,
+                "NBANDS"     : NBANDS,
+                "NELECT"     : NELECT
               }
+
+    del lines
 
     return details
     
@@ -67,6 +80,8 @@ def get_energy( outcar ):
             ener = float( lines[ iline ].split( )[ 6 ] )
             break
 
+    del lines
+
     return ener
 
 def get_efermi( outcar ):
@@ -78,6 +93,7 @@ def get_efermi( outcar ):
             efermi = float( lines[ iline ].split( )[ 2 ] )
             break
 
-    return efermi
+    del lines
 
+    return efermi
 
