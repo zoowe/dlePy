@@ -1,4 +1,5 @@
 import gzip as gz
+from dlePy.math import str2bool
 
 def get_lines_outcar( outcar ):
     if '.gz' in outcar:
@@ -18,6 +19,44 @@ def get_lines_outcar( outcar ):
         print "Please check: ", outcar
 
     return lines
+
+def get_calculation_details( outcar ):
+    
+    lines = get_lines_outcar( outcar )
+
+    for iline in range( len( lines ) - 1, -1, -1 ):
+  
+        if "PREC " in lines[ iline ]:
+            PREC = lines[ iline ].split( )[ 2 ] 
+
+        if "ENCUT " in lines[ iline ]:
+            ENCUT = float( lines[ iline ].split( )[ 2 ] )
+      
+        if "LREAL " in lines[ iline ]:
+            LREAL = str2bool( lines[ iline ].split( )[ 2 ] )
+
+        if "EDIFF  =" in lines[ iline ]:
+            EDIFF = float( lines[ iline ].split( )[ 2 ] )
+
+        if "EDIFFG " in lines[ iline ]:
+            EDIFFG = float( lines[ iline ].split( )[ 2 ] )
+
+        if "ISMEAR =" in lines[ iline ]:
+            ISMEAR = int( lines[ iline ].split( )[ 2 ].replace( ';', '' ) ) 
+            SIGMA  = float( lines[ iline ].split( )[ 5 ] )
+
+    details = { 
+                "PREC"       : PREC,
+                "LREAL"      : LREAL,
+                "ENCUT"      : ENCUT,
+                "EDIFF"      : EDIFF,
+                "EDIFFG"     : EDIFFG,
+                "ISMEAR"     : ISMEAR,
+                "SIGMA"      : SIGMA
+              }
+
+    return details
+    
 
 def get_energy( outcar ):
 
@@ -40,4 +79,5 @@ def get_efermi( outcar ):
             break
 
     return efermi
+
 
