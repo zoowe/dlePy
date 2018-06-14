@@ -1,3 +1,4 @@
+import numpy as np
 import gzip as gz
 from dlePy.math import str2bool
 
@@ -52,6 +53,12 @@ def get_calculation_details( outcar ):
         if "NELECT =" in lines[ iline ]:
             NELECT = float( lines[ iline ].split( )[ 2 ].replace( ';', '' ) )
 
+    k = np.zeros( [ NKPTS, 4] )  # coordinates + weight
+    for iline in range( len( lines ) - 1, -1, -1 ):
+        if 'Following reciprocal coordinates:' in lines[ iline ]:
+            break
+    for ik in range( NKPTS ):
+        k[ ik ] = np.array( lines[ iline + 2 + ik ].split( ), dtype = float )
 
     details = { 
                 "PREC"       : PREC,
@@ -63,12 +70,12 @@ def get_calculation_details( outcar ):
                 "SIGMA"      : SIGMA,
                 "NKPTS"      : NKPTS,
                 "NBANDS"     : NBANDS,
-                "NELECT"     : NELECT
+                "NELECT"     : NELECT,
               }
 
     del lines
 
-    return details
+    return details, k
     
 
 def get_energy( outcar ):
