@@ -23,7 +23,7 @@
 2. How to visualize a structure
 ```
 
-Note: Many versions of ASE has been installed in challenger. To use the default version:
+Note: Many versions of ASE has been installed in `challenger`. To use the default version:
 ```
 module load ase
 ```
