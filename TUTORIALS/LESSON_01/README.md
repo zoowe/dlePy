@@ -29,7 +29,7 @@ module load ase
 ```
 
 ## Final products
-The following items must be delivered to `LESSION_01` folder before moving to `LESSION_02`
+The following items must be delivered to `LESSON_01` folder before moving to `LESSON_02`
 - A python code, name `bulkGe.py`, to make a primitive Ge bulk with experimental lattice parameter.
 - A figure (*.png, *.jpg, or any other picture file) showing bulk Ge.
 - A python code, name `supercellGe.py`, to make a 3x3x3 Ge bulk with lattice parameter that is 5% lager than experimental one.
