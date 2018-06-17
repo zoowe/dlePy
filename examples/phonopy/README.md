@@ -21,6 +21,17 @@ module load dlePy/alpha
 
 Create a 5 layer (1x1) Cu slab with one H atom adsorbed.
 
+**Important Note:** The code will work only if atoms are sorted as following:
+
+```
+All first layer atoms
+All second layer atoms
+...
+All top layer atoms
+All adsorbate atoms (can be devided to many layers)
+```
+
+
 ## first_run.py
 
 Create displacemnt for top 2 Cu layer and H atoms. Follow instruction printed after running this script for how and where to run vasp.
