@@ -11,17 +11,17 @@ Using python for the following:
 ### Saving numerical data into a text file 
 - Google `write data to file python` to find good information/tutorials for learning.
 - Below is an simple example:
--- To open a file, name `square.dat`, for writing:
+- To open a file, name `square.dat`, for writing:
 ```python
 f = open( 'square.dat', 'w' )
 ```
--- To write two write data, x (from 0 to 100) and y ( y = x^2 ),  to that file:
+...- To write two write data, x (from 0 to 100) and y ( y = x^2 ),  to that file:
 ```python
-for x in range( 101 ):
+for x in range( 10 ):
     y = x**2
     print >>f, "%5i %7i" %( x, y )
 ```
--- To close the file (always close file after finshing):
+...- To close the file (always close file after finshing):
 ```python
 f.close( )
 ```
@@ -50,6 +50,7 @@ y = x**2
 ```python
 import matplotlib.pyplot as plt
 plt.plot( u, v )
+plt.scatter( u, v )
 plt.savefig( 'plot.png', dpi = 300, bbox_inches = 'tight' )
 ```
 
