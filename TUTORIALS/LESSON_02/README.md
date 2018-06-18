@@ -17,7 +17,7 @@ To open a file, name `square.dat`, for writing:
 f = open( 'square.dat', 'w' )
 ```
 
-To write two-colum data, x (from 0 to 100) and y ( y = x^2 ),  to that file:
+To write two-column data, x (from 0 to 100) and y ( y = x^2 ),  to that file:
 ```python
 for x in range( 10 ):
     y = x**2
