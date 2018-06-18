@@ -1,10 +1,10 @@
 # Basic Python and Atomic Simulation Environment
 
-## Purposes
+## :one: Purposes
 - Know basic knowledge about python and atomic simulation environment (ASE)
 - Make Ge bulk structure.
 
-## Hows
+## :two: Hows
 ### Basic about Python 
 - Tutorial can be found here: https://www.tutorialspoint.com/python/index.htm
 - Start from: Python-Basic Syntax:  https://www.tutorialspoint.com/python/python_basic_syntax.htm
@@ -28,7 +28,7 @@
 module load ase
 ```
 
-## Final products
+## :three: Final products
 The following items must be delivered to `LESSON_01` folder before moving to `LESSON_02`
 - A python code, name `bulkGe.py`, to make a primitive Ge bulk with experimental lattice parameter.
 - A figure (*.png, *.jpg, or any other picture file) showing bulk Ge. Hint: Ge has face-centered diamond-cubic, use `from ase.build import bulk` https://wiki.fysik.dtu.dk/ase/ase/build/build.html#ase.build.bulk 
