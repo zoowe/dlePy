@@ -77,7 +77,7 @@ class ControlIO:
     def __init__(self):
         self.outdir         = './tmp/'
         self.verbosity      = 'low'
-        self.disk_io        = 'default'
+        self.disk_io        = 'none'
         self.wf_collect     = False 
 
 class ControlIonRelax:
@@ -288,12 +288,13 @@ def write_pwscf_input ( object , filename):
     dict = object.control.io 
     for item in vars( dict ):
         print >>f, write_key ( item , dict )
-
-    print >>f, ''
-    print >>f, '! .control.ion_relax.'
-    dict = object.control.ion_relax
-    for item in vars( dict ):
-        print >>f, write_key ( item , dict )
+ 
+    if vars( object.control.settings )[ "calculation" ] in [ "relax", "vc-relax" ]:
+        print >>f, ''
+        print >>f, '! .control.ion_relax.'
+        dict = object.control.ion_relax
+        for item in vars( dict ):
+            print >>f, write_key ( item , dict )
 
     print >>f, '/'
 
@@ -344,24 +345,26 @@ def write_pwscf_input ( object , filename):
     print >>f, ''
 
     """ &IONS section """
-    print >>f, '&IONS'
-    print >>f, '! .ions.'
-    dict = object.ions
-    for item in vars( dict ):
-        print >>f, write_key ( item , dict )
+    if vars( object.control.settings )[ "calculation" ] in [ "relax", "vc-relax", "md", "vc-md" ]:
+        print >>f, '&IONS'
+        print >>f, '! .ions.'
+        dict = object.ions
+        for item in vars( dict ):
+            print >>f, write_key ( item , dict )
 
-    print >>f, '/'
-    print >>f, ''
+        print >>f, '/'
+        print >>f, ''
 
     """ &CELL section """
-    print >>f, '&CELL'
-    print >>f, '! .cell.'
-    dict = object.cell
-    for item in vars( dict ):
-        print >>f, write_key ( item , dict )
+    if vars( object.control.settings )[ "calculation" ] in [ "vc-relax", "vc-md" ]:
+        print >>f, '&CELL'
+        print >>f, '! .cell.'
+        dict = object.cell
+        for item in vars( dict ):
+            print >>f, write_key ( item , dict )
 
-    print >>f, '/'
-    print >>f, ''
+        print >>f, '/'
+        print >>f, ''
 
     """ ATOMIC_SPECIES section """
     print >>f, 'ATOMIC_SPECIES'
