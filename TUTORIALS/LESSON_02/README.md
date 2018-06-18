@@ -12,17 +12,19 @@ Using python for the following:
 - Google `write data to file python` to find good information/tutorials for learning.
 - Below is an simple example:
 
-...To open a file, name `square.dat`, for writing:
+To open a file, name `square.dat`, for writing:
 ```python
 f = open( 'square.dat', 'w' )
 ```
-...To write two write data, x (from 0 to 100) and y ( y = x^2 ),  to that file:
+
+To write two write data, x (from 0 to 100) and y ( y = x^2 ),  to that file:
 ```python
 for x in range( 10 ):
     y = x**2
     print >>f, "%5i %7i" %( x, y )
 ```
-...To close the file (always close file after finshing):
+
+To close the file (always close file after finshing):
 ```python
 f.close( )
 ```
@@ -71,12 +73,12 @@ Besides its obvious scientific uses, NumPy can also be used as an efficient mult
 
 ## Final products
 The following items must be delivered to `LESSON_02` folder before moving to `LESSON_03`
-- A code, named `plot.py`, that does the following:
--- Create an `x1` array whose elements are intergers from -100 to 100. Hint: Using `np.array` and `range(m, n)`
--- Calculate `y1 = sin(x1/10)`. Hint: use `np.sin()` 
--- Write `x1` and `y1` to a two colums datafile named `data.dat`. 
--- Read data from `data.dat` to `x2` and `y2` arrays.
--- Calculate `y3 = cos(x2/10) + 0.5`. Hint: use `np.cos()` 
--- Plot `y1` vs `x1`, `y2 + 0.25` vs `x2`, and `y3` vs `x2` in the same plot.
--- Save the plot as a figure named `plot.png`.
-- The figure named `plot.png` obtained from the `plot.py` code.
+1. A code, named `plot.py`, that does the following:
+- Create an `x1` array whose elements are intergers from -100 to 100. Hint: Using `np.array` and `range(m, n)`
+- Calculate `y1 = sin(x1/10)`. Hint: use `np.sin()` 
+- Write `x1` and `y1` to a two colums datafile named `data.dat`. 
+- Read data from `data.dat` to `x2` and `y2` arrays.
+- Calculate `y3 = cos(x2/10) + 0.5`. Hint: use `np.cos()` 
+- Plot `y1` vs `x1`, `y2 + 0.25` vs `x2`, and `y3` vs `x2` in the same plot.
+- Save the plot as a figure named `plot.png`.
+2. The figure named `plot.png` obtained from the `plot.py` code.
