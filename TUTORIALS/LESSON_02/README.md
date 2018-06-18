@@ -1,4 +1,9 @@
 # Basic Graph with matplotlib
+Graph is very important. It is the most effective way to show idea and data. Knowing how to graph efficently will help imrpoving research performance. 
+
+Why matplotlib? Because it will make graphing very easy. 
+
+More infor: https://matplotlib.org/
 
 ## :one: Purposes
 Using python for the following:
