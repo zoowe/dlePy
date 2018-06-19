@@ -13,7 +13,7 @@
 1. How to write a python code
 2. How to run a python code
 3. How to do a simple math with python code
-4. How to import a module
+4. How to import a module/function
 ```
 ### Basic about Atomic Simulation Environment
 - Document and tutorial can be found here: https://wiki.fysik.dtu.dk/ase/
@@ -24,7 +24,7 @@
 ```
 **Hint**:
 * Start with section **`Modules/The Atoms object`**.
-* Check out section **`Modules/Building things`**, `bulk` module on `ase` website.
+* Check out section **`Modules/Building things`**, `bulk` function on `ase` website.
 * Ge has `face-centered diamond-cubic` structure.
 * For visualization, Check out section **`Modules/visualize`**.
 
