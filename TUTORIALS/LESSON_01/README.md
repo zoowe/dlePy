@@ -23,8 +23,8 @@
 2. How to visualize a structure
 ```
 **Hint**:
-* Start with section **`The Atoms object`**.
-* Check out section **`Building things`**, `bulk` module on `ase` website.
+* Start with section **`Module/The Atoms object`**.
+* Check out section **`Module/Building things`**, `bulk` module on `ase` website.
 * Ge has `face-centered diamond-cubic` structure.
 * For visualization, Check out section **`visualize`**.
 
