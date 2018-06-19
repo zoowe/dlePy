@@ -36,8 +36,11 @@ module load ase
 ## :three: Final products
 The following items must be delivered to `LESSON_01` folder before moving to `LESSON_02`
 - A python code, name `bulkGe.py`, to make a primitive Ge bulk with experimental lattice parameter.
+
 **Hint:** See **hints* in section :two:
 - A figure (*.png, *.jpg, or any other picture file) showing bulk Ge. 
+
 **Hint:** Remeber to check with Ge bulk figure found online.
 - A python code, name `supercellGe.py`, to make a 3x3x3 Ge bulk with lattice parameter that is 5% lager than experimental one.
+
 **Hint:** Must do a simple math to calculate new lattice parameter. For making 3x3x3 of Ge bulk, use `Atoms * ( 3, 3, 3 )`, where `Atoms` is the `1x1x1` Ge bulk.
