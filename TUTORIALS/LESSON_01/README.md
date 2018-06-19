@@ -24,7 +24,7 @@
 ```
 **Hint**:
 * Start with section **`The Atoms object`**.
-* Check out section **`Building things`** on `ase website`.
+* Check out section **`Building things`**, `bulk` module on `ase` website.
 * Ge has `face-centered diamond-cubic` structure.
 * For visualization, Check out section **`visualize`**.
 
