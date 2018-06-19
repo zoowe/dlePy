@@ -15,14 +15,14 @@ Using python for the following:
 ## :two: Hows
 ### :large_blue_diamond: Saving numerical data into a text file 
 - Google `write data to file python` to find good information/tutorials for learning.
-- Below is an simple example:
+- Below is a simple example:
 
 To open a file, name `square.dat`, for writing:
 ```python
 f = open( 'square.dat', 'w' )
 ```
 
-To write two-column data, x (from 0 to 100) and y ( y = x^2 ),  to that file:
+To write two-column data, `x` (from 0 to 100) and `y` ( `y = x^2` ),  to that file:
 ```python
 for x in range( 10 ):
     y = x**2
@@ -35,7 +35,7 @@ f.close( )
 ```
 ### :large_blue_diamond: Reading numerical data from a text file
 - Learn about `numpy.loadtxt` at https://docs.scipy.org/doc/numpy-1.13.0/reference/generated/numpy.loadtxt.html and other pages (use Google search)
-- Below is an simple example of reading data from the `square.dat` to two array `u` and `v`:
+- Below is a simple example of reading data from the `square.dat` to two array `u` and `v`:
 ```python
 import numpy as np
 data = np.loadtxt( 'square.dat' )
@@ -84,7 +84,7 @@ The following items must be delivered to `LESSON_02` folder before moving to `LE
 1. A code, named `plot.py`, that does the following:
 - Create an `x1` array whose elements are intergers from -100 to 100. Hint: Using `np.array` and `range(m, n)`
 - Calculate `y1 = sin(x1/10)`. Hint: use `np.sin()` 
-- Write `x1` and `y1` to a two colums datafile named `data.dat`. 
+- Write `x1` and `y1` to a two-colum datafile named `data.dat`. 
 - Read data from `data.dat` to `x2` and `y2` arrays.
 - Calculate `y3 = cos(x2/10) + 0.5`. Hint: use `np.cos()` 
 - Plot `y1` vs `x1`, `y2 + 0.25` vs `x2`, and `y3` vs `x2` in the same plot.
