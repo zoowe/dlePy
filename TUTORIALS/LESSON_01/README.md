@@ -37,10 +37,11 @@ module load ase
 The following items must be delivered to `LESSON_01` folder before moving to `LESSON_02`
 - A python code, name `bulkGe.py`, to make a primitive Ge bulk with experimental lattice parameter.
 
-**Hint:** See **hints** in section :two:
+**Hint:** See **hints** in section :two:. We are looking for a 2 lines code: the first one is for loading `bulk` function from `ase.build`; the second one is for using `bulk` function to make `diamond` structure for `Ge`.
+
 - A figure (*.png, *.jpg, or any other picture file) showing bulk Ge. 
 
 **Hint:** Remeber to check with Ge bulk figure found online.
 - A python code, name `supercellGe.py`, to make a 3x3x3 Ge bulk with lattice parameter that is 5% lager than experimental one.
 
-**Hint:** Must do a simple math to calculate new lattice parameter. For making 3x3x3 of Ge bulk, use `atoms * ( 3, 3, 3 )`, where `atoms` is the `1x1x1` Ge bulk.
+**Hint:** Must do a simple math to calculate new lattice parameter. For making 3x3x3 of Ge bulk, use `atoms * ( 3, 3, 3 )`, where `atoms` is the `1x1x1` Ge bulk. This code should have 4 lines, two of which are the same as those in `bulkGe.py`, the other two are for calculating new lattice parameter and for making 3x3x3 supercell.
