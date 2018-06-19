@@ -20,17 +20,14 @@
 - Don't have to learn much. For now, just need to learn:
 ```
 1. How to make Ge bulk structure
-
-**Hint**: 
-- Start with section **`The Atoms object`**. 
-- Check out section **`Building things`** on `ase website`. 
-- Ge has `face-centered diamond-cubic` structure. 
-
 2. How to visualize a structure
-
-**Hint**: Check out section **`visualize`**.
-
 ```
+**Hint**:
+* Start with section **`The Atoms object`**.
+* Check out section **`Building things`** on `ase website`.
+* Ge has `face-centered diamond-cubic` structure.
+* For visualization, Check out section **`visualize`**.
+
 **Note**: Many versions of ASE has been installed in `challenger`. To use the default version:
 ```
 module load ase
