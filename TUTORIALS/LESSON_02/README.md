@@ -81,6 +81,7 @@ This allows NumPy to seamlessly and speedily integrate with a wide variety of da
 
 ## :three: Final products
 The following items must be delivered to `LESSON_02` folder before moving to `LESSON_03`
+
 :heavy_check_mark: A code, named `plot.py`, that does the following:
 - Create an `x1` array whose elements are intergers from -100 to 100. Hint: Using `np.array` and `range(m, n)`
 - Calculate `y1 = sin(x1/10)`. Hint: use `np.sin()` 
@@ -89,4 +90,5 @@ The following items must be delivered to `LESSON_02` folder before moving to `LE
 - Calculate `y3 = cos(x2/10) + 0.5`. Hint: use `np.cos()` 
 - Plot `y1` vs `x1`, `y2 + 0.25` vs `x2`, and `y3` vs `x2` in the same plot.
 - Save the plot as a figure named `plot.png`.
+
 :heavy_check_mark: The figure named `plot.png` obtained from the `plot.py` code.
