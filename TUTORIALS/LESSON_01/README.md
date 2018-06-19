@@ -37,7 +37,7 @@ module load ase
 The following items must be delivered to `LESSON_01` folder before moving to `LESSON_02`
 - A python code, name `bulkGe.py`, to make a primitive Ge bulk with experimental lattice parameter.
 
-**Hint:** See **hints* in section :two:
+**Hint:** See **hints** in section :two:
 - A figure (*.png, *.jpg, or any other picture file) showing bulk Ge. 
 
 **Hint:** Remeber to check with Ge bulk figure found online.
