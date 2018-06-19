@@ -20,9 +20,17 @@
 - Don't have to learn much. For now, just need to learn:
 ```
 1. How to make Ge bulk structure
-2. How to visualize a structure
-```
 
+**Hint**: 
+- Start with section **`The Atoms object`**. 
+- Check out section **`Building things`** on `ase website`. 
+- Ge has `face-centered diamond-cubic` structure. 
+
+2. How to visualize a structure
+
+**Hint**: Check out section **`visualize`**.
+
+```
 **Note**: Many versions of ASE has been installed in `challenger`. To use the default version:
 ```
 module load ase
@@ -31,5 +39,5 @@ module load ase
 ## :three: Final products
 The following items must be delivered to `LESSON_01` folder before moving to `LESSON_02`
 - A python code, name `bulkGe.py`, to make a primitive Ge bulk with experimental lattice parameter.
-- A figure (*.png, *.jpg, or any other picture file) showing bulk Ge. Hint: Ge has face-centered diamond-cubic, use `from ase.build import bulk` https://wiki.fysik.dtu.dk/ase/ase/build/build.html#ase.build.bulk 
+- A figure (*.png, *.jpg, or any other picture file) showing bulk Ge. 
 - A python code, name `supercellGe.py`, to make a 3x3x3 Ge bulk with lattice parameter that is 5% lager than experimental one.
