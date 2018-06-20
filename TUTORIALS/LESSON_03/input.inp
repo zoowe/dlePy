@@ -8,7 +8,7 @@ restart_mode              = 'from_scratch',
 prefix                    = 'scf',
 pseudo_dir                = '/shared/ESPRESSO/PSLIBRARY/1.0.0/pbe/PSEUDOPOTENTIALS/',
 verbosity                 = 'low',
-disk_io                   = 'default',
+disk_io                   = 'none',
 wf_collect                = .false.,
 outdir                    = './tmp/',
 /
