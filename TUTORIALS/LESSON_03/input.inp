@@ -5,7 +5,7 @@ calculation               = 'scf',
 # Type of calculation is scf. It can also be nscf, relax...
 
 restart_mode              = 'from_scratch',
-prefix                    = 'pwscf',
+prefix                    = 'scf',
 pseudo_dir                = '/shared/ESPRESSO/PSLIBRARY/1.0.0/pbe/PSEUDOPOTENTIALS/',
 verbosity                 = 'low',
 disk_io                   = 'default',
