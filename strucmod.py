@@ -12,6 +12,7 @@ Website: http://www.physics.ufc.edu/~dle
 from ase    import Atoms
 from ase.io import read, write
 import os
+import numpy as np
 
 def rotate_group( atoms, group, axis, angle, center ):
     """ Rotate a group of atoms
@@ -147,4 +148,44 @@ def sort_group( atoms, indices = [], symbols = [] ):
     atoms_ = fixatoms + sortatoms
 
     return atoms_ 
+
+def sort_layers( system, layer=[] ):
+    """
+    This routine will create a proper POSCAR for doing partial phonopy run. 
+    It will group atoms in different group, from bottom to top, so it will
+    be convenient for seprate them later.
+
+    system: ase.Atoms object
+    layer: List of all list of atom.index in all layers.
+    example: 
+    layer = [ 
+              [ 0, 1, 2 ],
+              [ 3, 4, 5, 6, 7, 8],
+              [ 9, 10, 11, 12]
+            ]
+    This will put [ 9, 10, 11, 12 ] atoms to the top of list, 
+                  [ 3, 4, 5, 6, 7, 8] to the middle,
+              and [ 0, 1, 2 ] to the top of the atoms list.
+
+    """
+    if system.get_number_of_atoms() != np.sum( len( x ) for x in layer ):
+        print """
+        Number of atoms are different.
+        system.get_number_of_atoms( ) != np.sum( len( x ) for x in layer )
+        %s VS %s
+        """ %( system.get_number_of_atoms( ), np.sum( len( x ) for x in layer ) )
+        exit( 'EXITTING' )
+
+    if len( layer ) < 2:
+        print """
+        len( layer ) much be larger than 1
+        """
+        exit( 'EXITTING' )
+
+    atoms = system[ layer[ -1 ] ]
+    for ilayer in range( len( layer ) - 2, -1, -1):
+        atoms += system[ layer[ ilayer ] ]
+
+    return atoms
+
 
