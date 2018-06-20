@@ -1,0 +1,51 @@
+&CONTROL
+# This &CONTROL section is for defining general setting for calculation, including type of calculation, control read/write temperary files, wave function, output...
+
+calculation               = 'scf',
+# Type of calculation is scf. It can also be nscf, relax...
+
+restart_mode              = 'from_scratch',
+prefix                    = 'pwscf',
+pseudo_dir                = '/shared/ESPRESSO/PSLIBRARY/1.0.0/pbe/PSEUDOPOTENTIALS/',
+verbosity                 = 'low',
+disk_io                   = 'default',
+wf_collect                = .false.,
+outdir                    = './tmp/',
+/
+# End of &CONTROL section
+
+&SYSTEM
+a                         = 1.0,
+ibrav                     = 0,
+nat                       = 2,
+ntyp                      = 1,
+ecutwfc                   = 50,
+# Cutoff energy for planewave expansion (in Ry)
+
+ecutrho                   = 200,
+degauss                   = 0.007,
+smearing                  = 'fd',
+occupations               = 'smearing',
+/
+
+&ELECTRONS
+diagonalization           = 'david',
+mixing_mode               = 'plain',
+electron_maxstep          = 100,
+mixing_beta               = 0.7,
+conv_thr                  = 1e-06,
+/
+
+ATOMIC_SPECIES
+   Ge  72.6300 Ge.pbe-n-kjpaw_psl.1.0.0.UPF
+
+ATOMIC_POSITIONS  crystal 
+ Ge     0.00000000000000     0.00000000000000     0.00000000000000   1   1   1
+ Ge     0.25000000000000     0.25000000000000     0.25000000000000   1   1   1
+CELL_PARAMETERS
+    0.00000000000000     2.82500000000000     2.82500000000000
+    2.82500000000000     0.00000000000000     2.82500000000000
+    2.82500000000000     2.82500000000000     0.00000000000000
+
+K_POINTS automatic
+  15   15   15   0   0   0
