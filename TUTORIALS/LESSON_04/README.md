@@ -26,6 +26,7 @@ The following items must be delivered to `LESSON_04` folder before moving to `LE
 - Name of the program used.
 - Version of the program used.
 - Date and time when program started.
+- Number of processors used. 
 - unit-cell volume         
 - number of atoms   
 - number of atomic types   
@@ -38,4 +39,6 @@ The following items must be delivered to `LESSON_04` folder before moving to `LE
 - Potential file   
 - Number of valence electron per atom
 - Number of iterations
-- Total energy 
+- Total energy
+- Date and time when program stoped.
+- Total running time (Walltime).
