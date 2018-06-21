@@ -46,5 +46,5 @@ The following items must be delivered to `LESSON_05` folder before moving to `LE
 
 :heavy_check_mark: A file name `RESULTS.dat` with the following information:
 - The smallest value of Kinetic energy cut-off that gives total energy converged with less than 1 meV accuracy.
-- Explanation why finding the optimal Kinetic energy cut-off is needed.
+- Explanation of why finding optimal Kinetic energy cut-off is needed.
 
