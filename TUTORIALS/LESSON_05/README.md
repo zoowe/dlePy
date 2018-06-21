@@ -42,7 +42,7 @@ The following items must be delivered to `LESSON_05` folder before moving to `LE
 
 :heavy_check_mark: 12 folders, named `EN-XX`, where `XX=20, 25, 30,..., 70`. In each folder, there are 3 files: `input.inp`, `output,dat`, and `job`.
 
-:heavy_check_mark: `DATA.dat`, one or two python codes for plotting, and two plots for total energy and for total running time as function of  Kinetic energy cut-off.
+:heavy_check_mark: `DATA.dat`, one or two python codes for plotting, and two plots for total energy and for total running time as function of  Kinetic energy cut-off. **Use meaningful name for your files**
 
 :heavy_check_mark: A file name `RESULTS.dat` with the following information:
 - The smallest value of Kinetic energy cut-off that gives total energy converged with less than 1 meV accuracy.
