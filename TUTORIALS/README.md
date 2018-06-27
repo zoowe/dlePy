@@ -9,4 +9,4 @@ These tutorials will guide begnners, who are assumed not to have prior knowledge
 ### :large_blue_diamond: [LESSON_03](LESSON_03) PWSCF: input file
 ### :large_blue_diamond: [LESSON_04](LESSON_04) PWSCF: First run
 ### :large_blue_diamond: [LESSON_05](LESSON_05) PWSCF: Kinetic Energy Cut-off
-** More to come **
+**More to come**
