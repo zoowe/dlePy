@@ -1,12 +1,12 @@
 # PWSCF: input file 
 
 ## :one: Purposes
-Understand all information/keywords in an pwscf input file.
+Understand all information/keywords in a pwscf input file.
 
 ## :two: Hows
 ### :large_blue_diamond: Explain keywords lised in `input.inp`
 
-Edit the `input.inp` file. Under each keyword, start a sentence with `#` to explain what this keyword does and what is its unit (if any).
+Edit the `input.inp` file. Under each keyword, start a sentence with `#` to explain what this keyword does and what its unit is (if any).
 
 Once everything is done, save the file as `input_explained.inp`.
 

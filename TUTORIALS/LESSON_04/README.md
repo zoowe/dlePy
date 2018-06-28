@@ -15,6 +15,7 @@ job
 ```
 qsub job
 ```
+**Note that, this tutorial was designed for `challenger`. If you are using other machine, you do need to modify `input.inp` and `job` files, accordingly**
 
 After calculation is done, remove `tmp` directory.
 

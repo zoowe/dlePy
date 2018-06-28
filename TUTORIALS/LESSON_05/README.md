@@ -35,7 +35,7 @@ Two plots are needed:
 - Total energy vs Kinetic energy cut-off
 - Total running time vs Kinetic energy cut-off
 
-You need to write one or two short codes, using `python` and `matplotlib` (refer to `LESSON_02`). The code needs to read data from `DATA.dat`. Use appropriate `label` each axis (check out `matplotlib` manual for instruction)).
+You need to write one or two short codes, using `python` and `matplotlib` (refer to `LESSON_02`). The code needs to read data from `DATA.dat`. Use appropriate `label` each axis (check out `matplotlib` manual for instruction).
 
 ## :three: Final products
 The following items must be delivered to `LESSON_05` folder before moving to `LESSON_06`

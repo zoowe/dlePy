@@ -1,7 +1,7 @@
 # PWSCF: K-point sampling  
 
 ## :one: Purposes
-Performing convergence test for k-point sampling.
+Performing convergence test for k-point sampling. Generally, the denser k-point sampling is the more accurate calculation is but computational cost will increase as well. Similar to kinetic energy cutoff determination (`LESSON_05`), we want to find the best possible k-point sampling mesh for accurate results but without extensive computational time.
 
 
 ## :two: Hows
@@ -47,5 +47,6 @@ The following items must be delivered to `LESSON_06` folder before moving to `LE
 
 :heavy_check_mark: A file name `RESULTS.dat` with the following information:
 - The smallest value of number of grid point used in k-point sampling that gives total energy converged with less than 1 meV accuracy.
-- Explanation of why we need to find the mallest value of number of grid point used in k-point sampling.
+- Explanation of why we need to find the mallest value of number of grid point used in k-point sampling (Hints: Computational time depends on k-point sampling).
 
+**Important note** k-point sampling depends also on the `smearing` method and its parameters. These tutorials do not cover this aspect. Refer elsewhere for details.
