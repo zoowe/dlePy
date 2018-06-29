@@ -10,6 +10,8 @@ In most cases, the larger Kinetic Energy Cut-off is the more accurate, reliable 
 
 - In this step, a series of scf calculations will be performed with Kinetic Energy Cut-off for wavefunctions ranging from 20 Ry to 70 Ry with a step of 5 Ry (12 calucations).
 
+- Do make sure that number of bands is large enough to include some empty states. 
+
 - Each calculation must be done inside a folder named `EN-XX`, where `XX` is the `value` of Kinetic Energy Cut-off for wavefunctions.
 
 - You must copy `input.inp` and `job` files from `LESSON_04` to each `EN-XX` folder, then edit `input.inp` file with new value of Kinetic Energy Cut-off for wavefunctions. **You must also use new value Kinetic Energy Cut-off for charge density that is 4 times of value of Kinetic Energy Cut-off for wavefunctions**  
