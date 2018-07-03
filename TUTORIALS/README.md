@@ -10,4 +10,5 @@ These tutorials will guide begnners, who are assumed not to have prior knowledge
 ### :large_blue_diamond: [LESSON_04](LESSON_04) PWSCF: First run
 ### :large_blue_diamond: [LESSON_05](LESSON_05) PWSCF: Kinetic Energy Cut-off
 ### :large_blue_diamond: [LESSON_06](LESSON_06) PWSCF: K-point sampling
+### :large_blue_diamond: [LESSON_07](LESSON_07) PWSCF: Generating input file
 **More to come**
