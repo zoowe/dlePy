@@ -8,7 +8,7 @@ Gebulk = bulk( 'Ge', 'diamond', a = latt )
 # Create `pwscf` object for `Gebulk`
 pwscf = PWscfInput ( Gebulk )
 
-# The following are changing default values, keyword
+# The following are for changing default values, keyword
 
 # Change calculation to scf
 update_keyword( pwscf.control.settings, 'calculation', 'scf' )
@@ -29,5 +29,6 @@ update_keyword( pwscf.kpoints, 'smesh', [ 0 , 0 , 0]  )
 # add keyword nbnd = 16 to block .system.structure
 update_keyword( pwscf.system.structure, 'nbnd', 16 )
 
+# Write input file
 write_pwscf_input ( pwscf , 'input_02.inp' )
 

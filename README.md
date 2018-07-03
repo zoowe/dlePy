@@ -177,7 +177,7 @@ Gebulk = bulk( 'Ge', 'diamond', a = latt )
 # Create `pwscf` object for `Gebulk`
 pwscf = PWscfInput ( Gebulk )
 
-# The following are changing default values, keyword
+# The following are for changing default values, keyword
 
 # Change calculation to scf
 update_keyword( pwscf.control.settings, 'calculation', 'scf' )
