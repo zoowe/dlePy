@@ -28,9 +28,9 @@ In this folder, there are three `write_input_XX.py` scripts:
 
 The structure of the script is very simple, usually consisting of 3 components: `making structure`, `update or add keywords`, `write input file`.
 
-Run this script, `python write_input_default.py`, an `PWSCF` input file named `input_default.inp` will be generated.
+Run this script, `python write_input_default.py`, a `PWSCF` input file named `input_default.inp` will be generated.
 
-Inside of `input_default.inp`, keywords are grouped to several blocks. Pay attention to those lines stated with `!`. They are corresponding "name of block". They will be used to update value of keywords belong to these blocks or to add new keywords (see `write_input_01.py` and `write_input_02.py`
+Inside `input_default.inp`, keywords are grouped to several blocks. Pay attention to the lines stated with `!`. They are corresponding to "name of blocks". They will be used to update value of keywords belong to these blocks or to add new keywords (see `write_input_01.py` and `write_input_02.py`
 
 - `write_input_01.py`: Similar to `write_input_default.py` but with some example of how to change keywords' value. Run this, `input_01.inp` will be generated.
 
