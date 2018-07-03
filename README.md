@@ -162,56 +162,39 @@ Coming soon
 ### :large_blue_diamond: [Quantum ESPRESSO input](qe/pwscf.py)
 Generate input for Quantum ESPRESSO run
 #### [Example](examples/make_pwscf_input.py)
-This example shows how to generate input, add/remove keyworks...
+This example shows how to generate input, add/update keyworks...
+
+More information can be found at [Tutorial](TUTORIALS/LESSON_07)  and [EXAMPLES](examples/pwscf/input)  
+
 ```python
-import numpy as np
-from ase import Atoms
-from ase.build.surface import fcc111
-from ase.constraints import FixAtoms
-from dlePy.qe.pwscf import PWscfInput, write_pwscf_input
+from ase.build import bulk
+from dlePy.qe.pwscf import PWscfInput, write_pwscf_input, update_keyword
 
-# Generate 5 layer of (1x1) Cu(111) in a 20 angstrom vacuum
-system = fcc111( 'Cu', size = (1,1,5), a = 3.16, vacuum = 10.)
+# Create your structure
+latt = 5.65
+Gebulk = bulk( 'Ge', 'diamond', a = latt )
 
-# Fix bottom 3 layer
-indices = [ a.index for a in system \
-            if a.position[ 2 ] < 0.51 * system.cell[ 2, 2 ] ]
-system.set_constraint ( FixAtoms ( indices = indices ) )
-pwscf = PWscfInput ( system )
+# Create `pwscf` object for `Gebulk`
+pwscf = PWscfInput ( Gebulk )
 
-# Set pseudo_dir
-pwscf.control.settings.pseudo_dir = '/home/PS_LIBRARY'
+# The following are changing default values, keyword
+# Note that some keyword 
+# Change calculation to scf
+update_keyword( pwscf.control.settings, 'calculation', 'scf' )
 
-# Set high disk_io
-pwscf.control.io.disk_io = 'high'
-
-# set non spinpolarize
-pwscf.system.spin_pol.nspin = 1
-
-# Do not need it if nspin = 1. This is how to set starting_magnetization
-pwscf.starting_magnetization.starting_magnetization[0] = 1.
+# Update pseudo_dir
+update_keyword( pwscf.control.settings, 'pseudo_dir', '/shared/ESPRESSO/PSLIBRARY/1.0.0/pbe/PSEUDOPOTENTIALS/' )
 
 # Set mass and pseudo potential file for each type
-pwscf.atomic_species.mass[0] = 63.546
-pwscf.atomic_species.pseudo_potential[0] = 'Cu.pbe-n-nc.UPF'
+mass = [ 72.6300 ]
+pseudo_potential = [ 'Ge.pbe-n-kjpaw_psl.1.0.0.UPF' ]
+update_keyword( pwscf.atomic_species, 'mass' , mass )
+update_keyword( pwscf.atomic_species, 'pseudo_potential', pseudo_potential )
 
 # Set k-point mesh. Only automatic 
-pwscf.kpoints.nk = [ 3 , 3 , 1]
-pwscf.kpoints.sk = [ 0 , 0 , 0]
+update_keyword( pwscf.kpoints, 'mesh',  [ 15, 15, 15] )
+update_keyword( pwscf.kpoints, 'smesh', [  0,  0, 0 ]  )
 
-
+# Write input file
 write_pwscf_input ( pwscf , 'input.inp' )
-
-# set more input
-setattr ( pwscf.ions , 'upscale', 100.0 )
-write_pwscf_input ( pwscf , 'input.1.inp' )
-
-# remove some setting
-del  pwscf.ions.upscale
-del  pwscf.control.ion_relax.tstress
-write_pwscf_input ( pwscf , 'input.2.inp' )
-
-# change default setting
-setattr ( pwscf.electrons , 'mixing_beta', 0.2 )
-write_pwscf_input ( pwscf , 'input.3.inp' )
 ```
