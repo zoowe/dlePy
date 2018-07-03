@@ -45,9 +45,6 @@ class PWscfInput:
         self.atoms          = atoms
         self.control        = Control ()
         self.system         = System ( atoms )
-        self.starting_magnetization  \
-                            = StartingMagnetization \
-                              (  self.system.structure.ntyp ) 
         self.electrons      = Electrons ()
         self.ions           = Ions ()
         self.cell           = Cell ()
@@ -68,7 +65,7 @@ class Control:
 
 class ControlSettings:
     def __init__(self):
-        self.calculation    = 'relax'
+        self.calculation    = 'scf'
         self.restart_mode   = 'from_scratch'
         self.prefix         = 'pwscf'
         self.pseudo_dir     = 'PATH_TO_PSEUDO_DIR'
@@ -78,12 +75,12 @@ class ControlIO:
         self.outdir         = './tmp/'
         self.verbosity      = 'low'
         self.disk_io        = 'none'
-        self.wf_collect     = False 
+        self.wf_collect     = True 
 
 class ControlIonRelax:
     def __init__(self):
         self.tprnfor        = True
-        self.tstress        = False 
+        self.tstress        = True 
         self.forc_conv_thr  = 1.0e-3
         self.etot_conv_thr  = 1.0e-4
         self.nstep          = 100
@@ -94,6 +91,10 @@ class System:
         self.ecut           = SystemEcut ( )
         self.occupations    = SystemOccupations ( )
         self.spin_pol       = SystemSpinPol ( )
+        self.starting_magnetization  \
+                            = StartingMagnetization \
+                              (  self.structure.ntyp )
+
  
 class SystemStructure:
     def __init__(self , atoms ):
@@ -113,8 +114,8 @@ class SystemEcut:
 class SystemOccupations:
     def __init__(self):
         self.occupations    = 'smearing'
-        self.smearing       = 'fd'
-        self.degauss        = 0.007
+        self.smearing       = 'gaussian'
+        self.degauss        = 0.0073498618
 
 class SystemSpinPol:
     def __init__(self):
@@ -122,10 +123,8 @@ class SystemSpinPol:
 
 class StartingMagnetization:
     def __init__(self , ntyp ):
-        starting_magnetization \
-                            = np.zeros ( [ ntyp ] )
         self.starting_magnetization \
-                            = starting_magnetization
+                            = [ 0. ] * ntyp
 
 class Electrons:
     def __init__(self ):
@@ -164,9 +163,12 @@ class AtomicSpecies:
 class Kpoints:
     def __init__( self ):
         self.type           = 'automatic' 
-        self.nk             = [ 15 , 15 , 1 ]
-        self.sk             = [ 0 , 0 , 0 ]
+        self.mesh           = [ 1 , 1 , 1 ]
+        self.smesh          = [ 0 , 0 , 0 ]
            
+def update_keyword( input_block, keyword, value ):
+    setattr ( input_block, keyword, value )
+
 def get_reduce_atom_list ( atoms ):
     """
     Get list of atomic symbol then reduce it.
@@ -184,13 +186,14 @@ def get_reduce_atom_list ( atoms ):
 
 def write_k_points ( kpoints , f ):
     if kpoints.type.lower() == 'gamma':
-        kpoints.nk[:]=1
-        kpoints.sk[:]=0
+        kpoints.mesh[:]=1
+        kpoints.smesh[:]=0
         
-    print >>f, 'K_POINTS '+kpoints.type 
-    print >>f, "%4i %4i %4i %3i %3i %3i" % ( 
-               kpoints.nk[0] ,  kpoints.nk[1] ,  kpoints.nk[2], 
-               kpoints.sk[0] ,  kpoints.sk[1] ,  kpoints.sk[2] 
+    print >>f, '! .kpoints' 
+    print >>f, 'K_POINTS '+ kpoints.type  + '   ! .kpoints.type '
+    print >>f, "%4i %4i %4i %3i %3i %3i %s" % ( 
+               kpoints.mesh[0] ,  kpoints.mesh[1] ,  kpoints.mesh[2], 
+               kpoints.smesh[0] ,  kpoints.smesh[1] ,  kpoints.smesh[2], '! .kpoints.mesh and .kpoints.smesh' 
                )
 
 def write_key ( item , dict ):
@@ -228,6 +231,13 @@ def write_array_key ( item , dict , f ):
         print >> f, string, value, ','
 
 def write_atomic_species ( atomic_species , f ):
+    if len( atomic_species.mass ) != atomic_species.ntyp:
+        print 'ERROR: len( mass ) != ntyp'
+        exit( 'EXITTING' )
+    if len( atomic_species.pseudo_potential ) != atomic_species.ntyp:
+        print 'ERROR: len( pseudo_potential ) != ntyp'
+        exit( 'EXITTING' )
+
     for i in range ( atomic_species.ntyp ):
         print >> f, "%5s %8.4f %s" % ( \
                     atomic_species.symbol [ i ] , \
@@ -278,20 +288,20 @@ def write_pwscf_input ( object , filename):
     f = open ( filename, 'w' )
     """ Write CONTROL section """
     print >>f, '&CONTROL'
-    print >>f, '! .control.settings.'
+    print >>f, '! .control.settings'
     dict = object.control.settings
     for item in vars( dict ):
         print >>f, write_key ( item , dict )
 
     print >>f, ''
-    print >>f, '! .control.io.'
+    print >>f, '! .control.io'
     dict = object.control.io 
     for item in vars( dict ):
         print >>f, write_key ( item , dict )
  
     if vars( object.control.settings )[ "calculation" ] in [ "relax", "vc-relax" ]:
         print >>f, ''
-        print >>f, '! .control.ion_relax.'
+        print >>f, '! .control.ion_relax'
         dict = object.control.ion_relax
         for item in vars( dict ):
             print >>f, write_key ( item , dict )
@@ -302,41 +312,41 @@ def write_pwscf_input ( object , filename):
 
     """ &SYSTEM section """
     print >>f, '&SYSTEM'
-    print >>f, '! .system.structure.'
+    print >>f, '! .system.structure'
     dict = object.system.structure 
     for item in vars( dict ):
         print >>f, write_key ( item , dict )
 
     print >>f, ''
-    print >>f, '! .system.ecut.'
+    print >>f, '! .system.ecut'
     dict = object.system.ecut
     for item in vars( dict ):
         print >>f, write_key ( item , dict )
 
     print >>f, ''
-    print >>f, '! .system.occupations.'
+    print >>f, '! .system.occupations'
     dict = object.system.occupations
     for item in vars( dict ):
         print >>f, write_key ( item , dict )
 
     if object.system.spin_pol.nspin is 2:
         print >>f, ''
-        print >>f, '! .system.spin_pol.'
+        print >>f, '! .system.spin_pol'
         dict = object.system.spin_pol
         for item in vars( dict ):
             print >>f, write_key ( item , dict )
 
-        print >>f, '! .system.starting_magnetization.'
-        dict = object.starting_magnetization 
-        for item in vars( dict ):
-            write_array_key ( item ,  dict , f)
+        print >>f, '! .system.starting_magnetization'
+        dict = object.system #.starting_magnetization
+        item = 'starting_magnetization'
+        write_array_key ( item ,  dict , f)
 
     print >>f, '/'
     print >>f, ''
 
     """ &ELECTRONS section """
     print >>f, '&ELECTRONS' 
-    print >>f, '! .electrons.'
+    print >>f, '! .electrons'
     dict = object.electrons
     for item in vars( dict ): 
         print >>f, write_key ( item , dict )
@@ -347,7 +357,7 @@ def write_pwscf_input ( object , filename):
     """ &IONS section """
     if vars( object.control.settings )[ "calculation" ] in [ "relax", "vc-relax", "md", "vc-md" ]:
         print >>f, '&IONS'
-        print >>f, '! .ions.'
+        print >>f, '! .ions'
         dict = object.ions
         for item in vars( dict ):
             print >>f, write_key ( item , dict )
@@ -358,7 +368,7 @@ def write_pwscf_input ( object , filename):
     """ &CELL section """
     if vars( object.control.settings )[ "calculation" ] in [ "vc-relax", "vc-md" ]:
         print >>f, '&CELL'
-        print >>f, '! .cell.'
+        print >>f, '! .cell'
         dict = object.cell
         for item in vars( dict ):
             print >>f, write_key ( item , dict )
@@ -367,6 +377,7 @@ def write_pwscf_input ( object , filename):
         print >>f, ''
 
     """ ATOMIC_SPECIES section """
+    print >>f, '! .atomic_species'
     print >>f, 'ATOMIC_SPECIES'
     write_atomic_species ( object.atomic_species , f )
     print >>f, ''
