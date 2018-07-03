@@ -39,6 +39,6 @@ Inside `input_default.inp`, keywords are grouped to several blocks. Pay attentio
 ## :three: Final products
 The following items must be delivered to `LESSON_07` folder before moving to `LESSON_08`
 
-:heavy_check_mark: A python script named `write_input.py` that can generate an input file for `pwscf` calculation named `input.inp` with the same keywords and values as shown in `LESSION_04/input.inp`, except for kinetic energy cutoff for wave function and for charge density and k-point mesh. Use value obtained in `LESSON_05` and LESSON_06` accordingly.
+:heavy_check_mark: A python script named `write_input.py` that can generate an input file for `pwscf` calculation named `input.inp` with the same keywords and values as shown in `LESSION_04/input.inp`, except for kinetic energy cutoff for wave function and for charge density and k-point mesh. Use value obtained in `LESSON_05` and `LESSON_06` accordingly.
 
 
