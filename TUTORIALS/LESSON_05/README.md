@@ -26,7 +26,7 @@ In each `output.dat` file, the following information need to be extracted:
 
 - Kinetic energy cut-off
 - Total energy
-- Total running time (CPU time and Walltime)
+- Total running time (use CPU time instead of Walltime)
 
 Save the information to a 3-column data file, named `DATA.dat`.
 
