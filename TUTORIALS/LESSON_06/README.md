@@ -24,7 +24,7 @@ In each `output.dat` file, the following information need to be extracted:
 - Number of grid point used in k-point sampling
 - Number of k-points in calculations 
 - Total energy
-- Total running time (Walltime)
+- Total running time (CPU time and Walltime)
 
 Save the information to a 4-column data file, named `DATA.dat`.
 
