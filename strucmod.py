@@ -101,8 +101,9 @@ def sort_group( atoms, indices = [], symbols = [] ):
     atoms:  ase.Atoms object
          The system of which a group of atoms need to be rotated
     indices:  list of indices
+         List of indices of atoms for sorting  
     symbols:  list of symbols
-         List of symbols of 
+         List of symbols of atoms for sorting
 
     Returns
     -------

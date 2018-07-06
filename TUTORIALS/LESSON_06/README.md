@@ -36,6 +36,8 @@ Three plots are needed:
 - Total energy vs Number of k-points in calculations 
 - Total running time vs Number of k-points in calculations
 
+**NOTE** Use simple math to converge total energy from `Ry` to `eV` before plotting.
+
 You need to write one or two short codes, using `python` and `matplotlib` (refer to `LESSON_02`). The code needs to read data from `DATA.dat`. Use appropriate `label` each axis (check out `matplotlib` manual for instruction)).
 
 ## :three: Final products
