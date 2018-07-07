@@ -10,9 +10,10 @@ def get_lines_outcar( outcar ):
         with open( outcar, 'r' ) as f:
             lines = f.readlines( )
     #Check if calculation is done
+
     job_done = False
     for iline in range( len( lines ) - 1, -1, -1 ):
-        if 'reached required accuracy - stopping structural energy minimisation' in lines[ iline ]:
+        if 'General timing and accounting informations for this job' in lines[ iline ]:
             job_done = True
             break
     if not job_done:
@@ -53,6 +54,10 @@ def get_calculation_details( outcar ):
         if "NELECT =" in lines[ iline ]:
             NELECT = float( lines[ iline ].split( )[ 2 ].replace( ';', '' ) )
 
+        if "NSW =" in lines[ iline ]:
+            NSW = float( lines[ iline ].split( )[ 2 ].replace( ';', '' ) )
+
+
     k = np.zeros( [ NKPTS, 4] )  # coordinates + weight
     for iline in range( len( lines ) - 1, -1, -1 ):
         if 'Following reciprocal coordinates:' in lines[ iline ]:
@@ -71,6 +76,7 @@ def get_calculation_details( outcar ):
                 "NKPTS"      : NKPTS,
                 "NBANDS"     : NBANDS,
                 "NELECT"     : NELECT,
+                "NSW"        : NSW
               }
 
     del lines

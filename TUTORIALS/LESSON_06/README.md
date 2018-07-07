@@ -26,6 +26,11 @@ In each `output.dat` file, the following information need to be extracted:
 - Total energy
 - Total running time (use CPU time instead of Walltime)
 
+**Hint:** Use `grep` to extract data. For example:
+```
+grep ! output.dat
+``` 
+
 Save the information to a 4-column data file, named `DATA.dat`.
 
 ### :large_blue_diamond: Plot the data
