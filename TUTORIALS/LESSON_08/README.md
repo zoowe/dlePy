@@ -5,7 +5,7 @@ Use DFT to find/optimize lattice parameter of Ge and compare with experimental d
 
 ## :two: Hows
 ### :large_blue_diamond: Performing scf calculation for bulk Ge with a series of lattice parameters and collect data.
-**Calculate for each lattice parameter must be in a folder named `A-X.XX`, where `X.XX` is the lattice parameter. In each folder, there must be a file named `make_input.py` which is used to create `input.inp` file (See [LESSON_07](../LESSON_07)). Use the optimized `kinetice energy cutoff` and `k-point mesh`. Copy `job` file from previous lesson to each folder.**
+**Calculation for each lattice parameter must be in a folder named `A-X.XX`, where `X.XX` is the lattice parameter. In each folder, there must be a file named `make_input.py` which is used to create `input.inp` file (See [LESSON_07](../LESSON_07)). Use the optimized `kinetice energy cutoff` and `k-point mesh`. Copy `job` file from previous lesson to each folder.**
 
 - Step 1: Perform `scf` calculation for buld Ge with lattice parameters ranging from 5.40 to 5.70 Angstrom with a step of 0.05 Angstrom.
 - Step 2: Collect total energy for each value of lattice parameter. Save them (lattice parameter, total energy) to a 2 column data file named `DATA_01.dat`.
