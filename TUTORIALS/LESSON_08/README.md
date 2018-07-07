@@ -16,9 +16,9 @@ Use DFT to find/optimize lattice parameter of Ge and compare with experimental d
 - Step 7: Collect 11 data points ( lattice parameter, total energy) for lattice parameters ranging from `a2 - 0.05` to `a2 + 0.05` Angstrom with a step of 0.01 Angstrom. If any data is not available, perform additional scf calcuation to obtain data. Save data to 2 column data file named `DATA.dat`
 - Step 8: Plot data from `DATA.dat`. We want a figure like the one in https://wiki.fysik.dtu.dk/ase/tutorials/eos/eos.html (need line and scatter plot). Save the plot as `aVSe.png`
 
-### :large_blue_diamond: Determine the optimized lattice parameter
+### :large_blue_diamond: Determine the optimized lattice parameter of Ge
 
-In this step, we will fit the data obtained above to an equation of states to determine the optimized lattice parameters. Check out this link for reference to [equation of states](https://wiki.fysik.dtu.dk/ase/ase/eos.html)
+In this step, we will fit the data obtained above to an equation of states to determine the optimized lattice parameter. Check out this link for reference to [equation of states](https://wiki.fysik.dtu.dk/ase/ase/eos.html)
 
 We will have to write a short code to perform fitting. The code must do the following:
 ```
@@ -26,10 +26,10 @@ Read the data from DATA.dat to two array: a and e
 ```
 Since we need volume for equation of states so:
 ```
-Use simple math to calculate volume from lattice parameters.
+Use simple math to calculate volumes from lattice parameters.
 v = function of a
 ```
-Now, fit the `v` and `e` to equation of states. Check out this [link](https://wiki.fysik.dtu.dk/ase/tutorials/eos/eos.html) for example how it is done.
+Now, fit the `v` and `e` to equation of states. Check out this [link](https://wiki.fysik.dtu.dk/ase/tutorials/eos/eos.html) for an example of how it is done.
 ```
 eos = EquationOfState(volumes, energies)
 v0, e0, B = eos.fit()
@@ -40,11 +40,12 @@ Finaly, use simple math to calculate the optimized lattice parameter `a0`
 ```
 a0 = function of v0
 ```
+And print out the optimized lattice parameter, bulk modulus of Ge.
 
 ## :three: Final products
 The following items must be delivered to `LESSON_08` folder before moving to `LESSON_09`
 
-:heavy_check_mark: All folders, named `A-X.XX`, where `X.XX` is lattice parameter. In each folder, there are 3 files: `make_input.py`, `input.inp`, `output,dat`, and `job`.
+:heavy_check_mark: All folders, named `A-X.XX`, where `X.XX` is lattice parameter. In each folder, there are 4 files: `make_input.py`, `input.inp`, `output.dat`, and `job`.
 
 :heavy_check_mark: `DATA_01.dat`, `DATA_02.dat`, `DATA.dat`, `aVSe.png`
 
