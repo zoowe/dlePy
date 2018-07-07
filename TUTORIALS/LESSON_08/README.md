@@ -47,7 +47,7 @@ The following items must be delivered to `LESSON_08` folder before moving to `LE
 
 :heavy_check_mark: All folders, named `A-X.XX`, where `X.XX` is lattice parameter. In each folder, there are 4 files: `make_input.py`, `input.inp`, `output.dat`, and `job`.
 
-:heavy_check_mark: `DATA_01.dat`, `DATA_02.dat`, `DATA.dat`, `aVSe.png`
+:heavy_check_mark: `DATA_01.dat`, `DATA_02.dat`, `DATA.dat`, python script for plotting, and `aVSe.png`
 
 :heavy_check_mark: A file name `RESULTS.dat` with the following information:
 - Optimized lattice parameter of Ge
