@@ -35,7 +35,8 @@ eos = EquationOfState(volumes, energies)
 v0, e0, B = eos.fit()
 ```
 `v0, e0, B` are the optimized volume, total energy, and bulk modulus of Ge.
-Finaly, use simple math to calculate to optimized lattice parameter `a0`
+
+Finaly, use simple math to calculate the optimized lattice parameter `a0`
 ```
 a0 = function of v0
 ```
