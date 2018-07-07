@@ -19,9 +19,9 @@ Performing convergence test for k-point sampling. Generally, the denser k-point 
 
 ### :large_blue_diamond: Collecting data
 
-In each `output.dat` file, the following information need to be extracted:
+From each `output.dat` file, the following information need to be extracted:
 
-- Number of grid point used in k-point sampling
+- Number of grid point used in k-point sampling ( if it can not be found in `output.dat`, use value from `input.inp` )
 - Number of k-points in calculations 
 - Total energy
 - Total running time (use CPU time instead of Walltime)
