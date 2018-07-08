@@ -7,7 +7,7 @@ Performing convergence test for k-point sampling. Generally, the denser k-point 
 ## :two: Hows
 ### :large_blue_diamond: Performing scf calculation for a series of k-point mesh.
 
-- In this step, a series of scf calculations will be performed with k-point mesh (`k x k x k`) with `k` is the number of grid point, ranging from 4 to 18.
+- In this step, a series of scf calculations will be performed with k-point mesh (`k x k x k`) with `k` is the number of grid points, ranging from 4 to 18.
 
 - Each calculation must be done inside a folder named `K-k`, where `k` is the number of grid point mentioned above.
 
@@ -37,7 +37,7 @@ Save the information to a 4-column data file, named `DATA.dat`.
 
 Three plots are needed:
 
-- Total energy vs Number of grid point used in k-point sampling 
+- Total energy vs Number of grid points used in k-point sampling 
 - Total energy vs Number of k-points in calculations 
 - Total running time vs Number of k-points in calculations
 
