@@ -16,6 +16,17 @@ Use DFT to find/optimize lattice parameter of Ge and compare with experimental d
 - Step 7: Collect 11 data points ( lattice parameter, total energy) for lattice parameters ranging from `a2 - 0.05` to `a2 + 0.05` Angstrom with a step of 0.01 Angstrom. If any data is not available, perform additional scf calcuation to obtain data. Save data to 2 column data file named `DATA.dat`
 - Step 8: Plot data from `DATA.dat`. We want a figure like the one in https://wiki.fysik.dtu.dk/ase/tutorials/eos/eos.html (need line and scatter plot). Save the plot as `aVSe.png`
 
+**USEFUL INFORMATION**
+```
+Try the following commands to learn about each part of the commands:
+grep ! A-*/output.dat 
+grep ! A-*/output.dat | sed 's/\// /' 
+grep ! A-*/output.dat | sed 's/\// /' | sed 's/A-//'
+grep ! A-*/output.dat | sed 's/\// /' | sed 's/A-//' | awk '{print $1, $6}'
+grep ! A-*/output.dat | sed 's/\// /' | sed 's/A-//' | awk '{print $1, $6}'  > DATA_00.dat
+
+Learn more about grep, sed, awk. They are very helpful.
+```
 ### :large_blue_diamond: Determine the optimized lattice parameter of Ge
 
 In this step, we will fit the data obtained above to an equation of states to determine the optimized lattice parameter. Check out this link for reference to [equation of states](https://wiki.fysik.dtu.dk/ase/ase/eos.html)
