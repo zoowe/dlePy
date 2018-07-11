@@ -9,7 +9,7 @@ Use DFT to find/optimize lattice parameter of Ge and compare with experimental d
 
 - Step 1: Perform `scf` calculation for buld Ge with lattice parameters ranging from 5.60 to 5.85 Angstrom with a step of 0.05 Angstrom.
 - Step 2: Collect total energy for each value of lattice parameter. Save them (lattice parameter, total energy) to a 2 column data file named `DATA_01.dat`.
-- Step 3: Plot the data in `DATA_01.dat`, a parabolic curve is expected (if not, expand the range in Step 1 to obtain such curve). Find the value of lattice parameter ( refered as `a1` ) that gives the lowest total energy. 
+- Step 3: Plot the data in `DATA_01.dat`, a parabolic-like curve is expected (if not, expand the range in Step 1 to obtain such curve). Find the value of lattice parameter ( refered as `a1` ) that gives the lowest total energy. 
 - Step 4: Perform `scf` calculation for buld Ge with lattice parameters ranging from `a1 - 0.07` to `a1 + 0.07` Angstrom with a step of 0.01 Angstrom.
 - Step 5: Collect total energy for each value of lattice parameter. Save them (lattice parameter, total energy) to a 2 column data file named `DATA_02.dat`.
 - Step 6: Find the value of lattice parameter ( refered as `a2` ) that gives the lowest total energy. 
