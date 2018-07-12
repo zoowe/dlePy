@@ -63,5 +63,5 @@ The following items must be delivered to `LESSON_08` folder before moving to `LE
 :heavy_check_mark: A file name `RESULTS.dat` with the following information:
 - Optimized lattice parameter of Ge
 - Bulk modulus of Ge
-- Comparison of the above value with experimental one.
+- Comparison of the above values with experimental ones.
 
