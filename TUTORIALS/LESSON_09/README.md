@@ -19,7 +19,7 @@ Run a `bands` calculation for bulk Ge in a folder named `BANDS_01`.
 
 - This step is to calculate eigenvalues for a series of idividual k-points along symmetry paths of the Brillouin Zone. Google for Brillouin Zone of `Ge` or `fcc` structure for finding the paths (we can also use `xcrysden` software to visualize the Brillouin Zone).   
 
-- For simplification, we need to calculate band structure along **L $\rightarrow$ $\GAMMA$ $\rightarrow$ X** path. We need to find coordinate of $\text(L,) \GAMMA\text(, X)$ points (in crystal coordinate) and put in to `gen_k.py` script to generate 31 k-points along the path.
+- For simplification, we need to calculate band structure along ![\text{L} \rightarrow  \Gamma  \rightarrow \text{X}](http://www.sciweavers.org/tex2img.php?eq=%5Ctext%7BL%7D%20%5Crightarrow%20%20%5CGamma%20%20%5Crightarrow%20%5Ctext%7BX%7D&bc=White&fc=Black&im=gif&fs=12&ff=arev&edit=0) path. We need to find coordinate of $\text(L,) \GAMMA\text(, X)$ points (in crystal coordinate) and put in to `gen_k.py` script to generate 31 k-points along the path.
 
 - We need an input file, which is the same as the one in `scf` calculation in `Step 1`. However, `calculation` needs to be `bands` and `K_POINTS` section becomes:
 ```
