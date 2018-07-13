@@ -9,7 +9,7 @@
 
 Run a `scf` calculation for bulk Ge in a folder named `SCF`.
 
-- You need to write a script to generate input file that uses lattice constant, energy cutoff, k-point mesh obtained from previous lessons. In addition, `disk_io = 'low'` (or something other than `'none'`) and `tstress = .true.`. 
+- We need to write a script to generate input file that uses lattice constant, energy cutoff, k-point mesh obtained from previous lessons. In addition, `disk_io = 'low'` (or something other than `'none'`) and `tstress = .true.`. 
 - Check the result to see if the total stress is close to zero (if not, we may have to reoptimize lattice parameter again). 
 - **This step is for getting charge density**, which will be written in `outdir`. 
 
@@ -19,7 +19,7 @@ Run a `bands` calculation for bulk Ge in a folder named `BANDS_01`.
 
 - This step is to calculate eigenvalues for a series of idividual k-points along symmetry paths of the Brillouin Zone. Google for Brillouin Zone of `Ge` or `fcc` structure for finding the paths (we can also use `xcrysden` software to visualize the Brillouin Zone).   
 
-- For simplification, we need to calculate band structure along $\text(L) \arrow \GAMMA \arrow \text(X)$ path. We need to find coordinate of $\text(L,) \GAMMA\text(, X)$ points (in crystal coordinate) and put in to `gen_k.py` script to generate 31 k-points along the path.
+- For simplification, we need to calculate band structure along **L $\rightarrow$ $\GAMMA$ $\rightarrow$ X** path. We need to find coordinate of $\text(L,) \GAMMA\text(, X)$ points (in crystal coordinate) and put in to `gen_k.py` script to generate 31 k-points along the path.
 
 - We need an input file, which is the same as the one in `scf` calculation in `Step 1`. However, `calculation` needs to be `bands` and `K_POINTS` section becomes:
 ```
