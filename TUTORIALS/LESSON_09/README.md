@@ -30,7 +30,7 @@ K_POINTS crystal
  ...
 
 ```
-The coordinates of 51 k-points were generated from `gen_k.py` above.
+The coordinates of 31 k-points were generated from `gen_k.py` above.
 
 - Modify the job file if needed to run `pw.x` for this input.
 
