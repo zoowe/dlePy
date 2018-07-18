@@ -12,6 +12,7 @@ Run a `scf` calculation for bulk Ge in a folder named `SCF`.
 - We need to write a script to generate input file that uses lattice constant, energy cutoff, k-point mesh obtained from previous lessons. In addition, `disk_io = 'low'` (or something other than `'none'`) and `tstress = .true.`. 
 - Check the result to see if the total stress is close to zero (if not, we may have to reoptimize lattice parameter again). 
 - **This step is for getting charge density**, which will be written in `outdir`. 
+- **NOTE:** `prefix` must be the same for all calculations performed in this `LESSON`.
 
 ### :large_blue_diamond: STEP 2: BANDS (NSCF) calculation
 
@@ -40,7 +41,7 @@ The coordinates of 31 k-points were generated from `gen_k.py` above.
 
 Run a `bands.x` to extract eigenvalue for each k-point.
 
-- Create input file for `bands.x` run (name the file as `bands.inp`) with the following:
+- Create input file for `bands.x` run (name the file as `bands.inp`) with the following (or with your choosen `prefix`, `outdir`, and `filband`:
 ```
 &BANDS
     prefix  = 'pwscf'
@@ -78,7 +79,7 @@ The following items must be delivered to `LESSON_09` folder before moving to `LE
 
 :heavy_check_mark: A `RESULTS.dat` file with the following information:
 
-- Comparison between the two plots (with 31 and 301 k-points). What do we learn from it.
+- Comparison between the two plots (with 31 and 301 k-points). What do we learn from it?
 
 - Comparison between the calculated band structure with experimental one and with other caculated band structures (from literature)
 
