@@ -13,7 +13,7 @@ Website: http://www.physics.ufc.edu/~dle
 from   ase.io import read
 import numpy as np
 import os
-from dlePy.math import dotproduct, length, area
+from dlePy.math import dotproduct, length, area, tripleproduct
 
 
 def supercell( atoms, n0, n1, n2 ):
@@ -95,6 +95,10 @@ def create_matrix_surface( atoms, matrix = ( 1, 0, 0, 1 ), pad=1, shift = 0.01, 
     A1_surf = a1 * m1 + a2 * n1
     A2_surf = a1 * m2 + a2 * n2
 
+    # Test A1 A2 angle
+    if np.cross( A1_surf, A2_surf )[ 2 ] < 0.:
+        print '''WARNING: Cell vector is left-handed. Some program won't work, use matrix = ( %3i, %3i, %3i, %3i ) instead''' %( m2, n2, m1, n1 )
+
     # Calculate max length of A1, A2 or the diagonal
     max_length = np.max( ( length( A1_surf ), length( A2_surf ), length( A1_surf + A2_surf ) ) )
 
@@ -126,6 +130,7 @@ def create_matrix_surface( atoms, matrix = ( 1, 0, 0, 1 ), pad=1, shift = 0.01, 
     # Remove all atoms outside the new supercell
     surface = remove_atoms_outside( surface, shift = shift, threshold = threshold)
 
+    '''
     # Calculate angle between A1_surface and x axis
     A1angle = np.arcsin( surface.cell[ 0, 1 ] / length( surface.cell[ 0 ] ) )
     if surface.cell[ 0, 0 ] / length( surface.cell[ 0 ] ) < 0:
@@ -133,6 +138,16 @@ def create_matrix_surface( atoms, matrix = ( 1, 0, 0, 1 ), pad=1, shift = 0.01, 
  
     # Rotate the cell so that A1_surface is parallel to x axis.
     surface.rotate( -A1angle / np.pi * 180., 'z', center = ( 0., 0., 0. ), rotate_cell = True)
+    '''
+    #if trippleproduct( surface.cell[ 0 ], surface.cell[ 1 ], surface.cell[ 2 ] ) < 0:
+    #    print trippleproduct( surface.cell[ 0 ], surface.cell[ 1 ], surface.cell[ 2 ] ) 
+    #    surface = align_with_x_axis( surface, vector_num = 1 )
+    #    print trippleproduct( surface.cell[ 0 ], surface.cell[ 1 ], surface.cell[ 2 ] ) 
+    #else:
+    #    surface = align_with_x_axis( surface, vector_num = 0 )
+    #print trippleproduct( surface.cell[ 0 ], surface.cell[ 1 ], surface.cell[ 2 ] ) 
+
+    surface = align_with_x_axis( surface, vector_num = 0 )
 
     # Verify: Calculate expecte number of atoms in new supercell based on area.
     # If it is different from number of atoms in surface, then we have problem.
@@ -143,6 +158,25 @@ def create_matrix_surface( atoms, matrix = ( 1, 0, 0, 1 ), pad=1, shift = 0.01, 
     if np.abs( nat_expected - nat ) > 0.1:
         print "WARNING: Expected number of atoms is %10i but real number of atoms is %10i" %(nat_expected, nat)
     
+    return surface
+
+def align_with_x_axis( surface, vector_num = 0 ):
+    # Calculate angle between A1_surface and x axis
+    if vector_num == 0:
+        vector = surface.cell[ 0 ]
+    elif vector_num == 1:
+        vector = surface.cell[ 1 ]
+    else:
+        print 'ERROR: vector_num = 0 or 1'
+        exit( 'EXITTING' )
+
+    A1angle = np.arcsin( vector[ 1 ] / length( vector ) )
+    if vector[ 0 ] / length( vector ) < 0:
+        A1angle = np.pi - A1angle
+
+    # Rotate the cell so that A1_surface is parallel to x axis.
+    surface.rotate( -A1angle / np.pi * 180., 'z', center = ( 0., 0., 0. ), rotate_cell = True)
+
     return surface
 
 if __name__ == "__main__":

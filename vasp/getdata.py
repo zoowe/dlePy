@@ -25,7 +25,8 @@ def get_lines_outcar( outcar ):
 def get_calculation_details( outcar ):
     
     lines = get_lines_outcar( outcar )
-
+    
+    NSW = 0
     for iline in range( len( lines ) - 1, -1, -1 ):
   
         if "PREC " in lines[ iline ]:
@@ -37,24 +38,24 @@ def get_calculation_details( outcar ):
         if "LREAL " in lines[ iline ]:
             LREAL = str2bool( lines[ iline ].split( )[ 2 ] )
 
-        if "EDIFF  =" in lines[ iline ]:
+        if "EDIFF " in lines[ iline ] and '=' in lines[ iline ]:
             EDIFF = float( lines[ iline ].split( )[ 2 ] )
 
-        if "EDIFFG " in lines[ iline ]:
+        if "EDIFFG" in lines[ iline ]:
             EDIFFG = float( lines[ iline ].split( )[ 2 ] )
 
-        if "ISMEAR =" in lines[ iline ]:
+        if "ISMEAR" in lines[ iline ]:
             ISMEAR = int( lines[ iline ].split( )[ 2 ].replace( ';', '' ) ) 
             SIGMA  = float( lines[ iline ].split( )[ 5 ] )
 
-        if "NBANDS=" in lines[ iline ]:
+        if "NBANDS" in lines[ iline ]:
             NKPTS = int( lines[ iline ].split( )[ 3 ].replace( ';', '' ) )
             NBANDS = int( lines[ iline ].split( )[ 14 ] )
 
-        if "NELECT =" in lines[ iline ]:
+        if "NELECT" in lines[ iline ]:
             NELECT = float( lines[ iline ].split( )[ 2 ].replace( ';', '' ) )
 
-        if "NSW =" in lines[ iline ]:
+        if "NSW" in lines[ iline ] and "=" in lines[ iline ]:
             NSW = float( lines[ iline ].split( )[ 2 ].replace( ';', '' ) )
 
 
@@ -86,6 +87,7 @@ def get_calculation_details( outcar ):
 
 def get_energy( outcar ):
 
+    ener = 100000.
     lines = get_lines_outcar( outcar )
 
     for iline in range( len( lines ) - 1, -1, -1 ):

@@ -17,3 +17,6 @@ def area( v1, v2 ):
 
 def str2bool( s ):
     return s.lower() in ( "yes", "true", "t", "1" )
+
+def tripleproduct( v1, v2, v3 ):
+    return dotproduct( v3, np.cross( v1, v2 ) )
