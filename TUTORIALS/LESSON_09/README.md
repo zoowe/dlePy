@@ -41,7 +41,7 @@ The coordinates of 31 k-points were generated from `gen_k.py` above.
 
 Run a `bands.x` to extract eigenvalue for each k-point.
 
-- Create input file for `bands.x` run (name the file as `bands.inp`) with the following (or with your choosen `prefix`, `outdir`, and `filband`:
+- Create input file for `bands.x` run (name the file as `bands.inp`) with the following (or with your chosen `prefix`, `outdir`, and `filband`:
 ```
 &BANDS
     prefix  = 'pwscf'
