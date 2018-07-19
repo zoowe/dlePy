@@ -11,7 +11,7 @@ Run a `scf` calculation for bulk Ge in a folder named `SCF`.
 
 - We need to write a script to generate input file that uses lattice constant, energy cutoff, k-point mesh obtained from previous lessons. In addition, `disk_io = 'low'` (or something other than `'none'`) and `tstress = .true.`. 
 - Check the result to see if the total stress is close to zero (if not, we may have to reoptimize lattice parameter again). 
-- **This step is for getting charge density**, which will be written in `outdir`. 
+- **This step is for getting charge density** and other nesseary files/data, which will be written in `outdir`. 
 - **NOTE:** `prefix` must be the same for all calculations performed in this `LESSON`.
 
 ### :large_blue_diamond: STEP 2: BANDS (NSCF) calculation
