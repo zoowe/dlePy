@@ -63,7 +63,7 @@ In this step, we will plot band structure using data in `bands.dat.gnu`. We will
 
 - Read data from `bands.dat.gnu` to `kpt` and `eigenval`.
 
-- Use scater plot to plot the data. Horizontal axis shows k-points along the ![\text{L} \rightarrow  \Gamma  \rightarrow \text{X}](http://www.sciweavers.org/tex2img.php?eq=%5Ctext%7BL%7D%20%5Crightarrow%20%20%5CGamma%20%20%5Crightarrow%20%5Ctext%7BX%7D&bc=White&fc=Black&im=gif&fs=12&ff=arev&edit=0) path. Vertical axis shows eigen values for each k-points.
+- Use scatter plot to plot the data. Horizontal axis shows k-points along the ![\text{L} \rightarrow  \Gamma  \rightarrow \text{X}](http://www.sciweavers.org/tex2img.php?eq=%5Ctext%7BL%7D%20%5Crightarrow%20%20%5CGamma%20%20%5Crightarrow%20%5Ctext%7BX%7D&bc=White&fc=Black&im=gif&fs=12&ff=arev&edit=0) path. Vertical axis shows eigen values for each k-points.
 
 - Draw three vertical lines at the position of ![\text{L, }\Gamma\text{, and X}](http://www.sciweavers.org/tex2img.php?eq=%5Ctext%7BL%2C%20%7D%5CGamma%5Ctext%7B%2C%20and%20X%7D&bc=White&fc=Black&im=gif&fs=12&ff=arev&edit=0) points.
 
