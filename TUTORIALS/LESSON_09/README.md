@@ -33,6 +33,8 @@ K_POINTS crystal
 ```
 The coordinates of 31 k-points were generated from `gen_k.py` above.
 
+- **We also need `outdir` where charge density calculated in `Step 1` is save. We can defind `outdir` so that it points to the `outdir` of `scf` calclation. However, in this `LESSON`, we copy the whole `outdir` of `scf` run to this folder `BANDS_01`.**
+
 - Modify the job file if needed to run `pw.x` for this input.
 
 - Make sure the run is succesful.
