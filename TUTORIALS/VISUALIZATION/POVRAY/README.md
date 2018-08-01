@@ -20,23 +20,23 @@ module load ImageMagick
 ### Learn from examples
 
 #### There are 6 python codes to make image for benzene molecule (first_image.py to sixth_image.py). Check each of them, from the first to 6th image.
-- first_image.py: Simplest code.
+- [first_image.py](first_image.py): Simplest code.
 
 ![first_image.py](first_image.png)
 
-- second_image.py: Change resolution.
+- [second_image.py](second_image.py): Change resolution.
 
 Keyword: `canvas_width` (or `canvas_height`)
 
 ![second_image.py](second_image.png)
 
-- third_image.py: Change radii of atoms
+- [third_image.py](third_image.py): Change radii of atoms
 
 Keyword: `radii`. Radii of all atoms can be specified in a 1-D array.
 
 ![third_image.py](third_image.png)
 
-- fourth_image.py: Display bonds
+- [fourth_image.py](fourth_image.py): Display bonds
 
 Keyword: `bondatoms = bond_pairs`.
 
@@ -47,7 +47,7 @@ bond_pairs = get_bondpairs( benzene, radius = 1.1 )
 ```
 ![fourth_image.py](fourth_image.png)
 
-- fifth_image.py: change color of atoms.
+- [fifth_image.py](fifth_image.py): change color of atoms.
 
 Keyword: `colors = colors`
 
@@ -55,17 +55,17 @@ Keyword: `colors = colors`
 
 ![fifth_image.py](fifth_image.png)
 
-- sixth_image.py: add rotations to image
+- [sixth_image.py](sixth_image.py): add rotations to image
 
 Keyword: `rotation = '90x,-30y,45z,-30x'`
 
 ![sixth_image.py](sixth_image.png)
 
-#### movie.py: Rotation of a benzene molecule
+#### [movie.py](movie.py): Rotation of a benzene molecule
 
 ![movie.py](movie.gif)
 
-#### demo.py: Rotation of an Icosahedron nanoparticle
+#### [demo.py](demo.py): Rotation of an Icosahedron nanoparticle
 
 ![demo.py](ico.gif)
 
