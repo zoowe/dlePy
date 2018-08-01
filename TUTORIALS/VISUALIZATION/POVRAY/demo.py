@@ -1,13 +1,7 @@
-from ase.build.molecule import molecule
-from ase.io import write, read
-from ase.io.pov import get_bondpairs
-
-import numpy as np
-import os
-
-from ase.cluster.icosahedron import *
-from ase.io import *
+from ase.io import write
+from ase.cluster.icosahedron import Icosahedron
 import matplotlib.cm as cmx
+import os
 
 system=Icosahedron('Ag',3)
 for j in range(3):
