@@ -23,11 +23,13 @@ module load ImageMagick
 - first_image.py: Simplest code.
 
 ![first_image.py](first_image.png)
+
 - second_image.py: Change resolution.
 
 Keyword: `canvas_width` (or `canvas_height`)
 
 ![second_image.py](second_image.png)
+
 - third_image.py: Change radii of atoms
 
 Keyword: `radii`. Radii of all atoms can be specified in a 1-D array.

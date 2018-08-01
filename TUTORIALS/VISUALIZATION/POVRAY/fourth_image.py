@@ -24,7 +24,7 @@ from ase.io.pov import get_bondpairs
 bond_pairs = get_bondpairs( benzene, radius = 1.1 )
 
 write( 'fourth_image.pov', benzene, format = 'pov', run_povray = True,
-       canvas_width = 1000,    # Set width, in pixel
+       canvas_width = 200,     # Set width, in pixel
        radii = r,              # Set radius 
        bondatoms = bond_pairs  # Display bonds 
       )

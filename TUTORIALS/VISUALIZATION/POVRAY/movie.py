@@ -53,7 +53,7 @@ angle = 360 / float( number_of_frames )
 for i in range( number_of_frames ):
     benzene.rotate( angle, 'z', center = center )
     write( 'frame_' + str( i ) + '.pov', benzene, format = 'pov', run_povray = True, 
-       canvas_width = 600,    # Set width, in pixel
+       canvas_width = 200,    # Set width, in pixel
        radii = r,              # Set radius 
        bondatoms = bond_pairs, # Display bonds
        colors = colors,        # Set colors

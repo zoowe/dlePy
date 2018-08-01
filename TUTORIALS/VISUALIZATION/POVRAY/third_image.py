@@ -19,6 +19,6 @@ for i, at in enumerate( benzene ):
 
 
 write( 'third_image.pov', benzene, format = 'pov', run_povray = True, 
-       canvas_width = 1000,   # Set width, in pixel
+       canvas_width = 200,   # Set width, in pixel
        radii = r              # Set radius 
       )                 
