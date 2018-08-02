@@ -61,7 +61,7 @@ Keyword: `rotation = '90x,-30y,45z,-30x'`
 
 ![sixth_image.py](sixth_image.png)
 
-#### [movie.py](movie.py): Rotation of a benzene molecule
+#### [movie.py](movie.py): Breathing of a benzene molecule
 
 ![movie.py](movie.gif)
 

@@ -36,11 +36,12 @@ for i, at in enumerate( benzene ):
 
 
 # For making movie, it is important to put the molecule in a box for easier control the image.
-benzene.set_cell( [20, 20, 20] )
+L = 20.
+benzene.set_cell( [ L, L, L] )
 benzene.center()
 
 #Boundary for image
-center = (10, 10, 10 )
+center = ( L / 2., L / 2., L / 2. )
 width  = 6
 height = 6
 xmin = center[ 0 ] - width / 2.
@@ -48,6 +49,8 @@ ymin = center[ 1 ] - height / 2.
 xmax = center[ 0 ] + width / 2.
 ymax = center[ 1 ] + height / 2.
 
+'''
+# Molecule rotation
 number_of_frames = 18
 angle = 360 / float( number_of_frames )
 for i in range( number_of_frames ):
@@ -59,6 +62,28 @@ for i in range( number_of_frames ):
        colors = colors,        # Set colors
        bbox  = ( xmin, ymin, xmax, ymax ) # set boundary for image
       )           
+'''
+
+# Molecule breathing
+from ase.build.surface import add_adsorbate
+number_of_frames = 19 
+disp = 10. # %
+for i in range( number_of_frames ):
+    eps = i  / float( number_of_frames - 1)  * 2 * disp  - disp
+    image = benzene.copy()
+    add_adsorbate( image, 'O', 0., position = ( center[ 0 ], center[ 1 ] ) )
+    image[ -1 ].position[ 2 ] = L / 2.
+    for at in range( len( image ) - 1 ):
+        image.set_distance( -1, at, image.get_distance( -1, at ) * (1 + eps / 100.), fix = 0  )
+    del image[ -1 ]
+
+    write( 'frame_' + str( i ) + '.pov', image, format = 'pov', run_povray = True, 
+       canvas_width = 200,    # Set width, in pixel
+       radii = r,              # Set radius 
+       bondatoms = bond_pairs, # Display bonds
+       colors = colors,        # Set colors
+       bbox  = ( xmin, ymin, xmax, ymax ) # set boundary for image
+      )    
 
 # Make movie
 #List images
@@ -66,8 +91,11 @@ s = ' '
 for i in range( number_of_frames ):
     s +=  ' frame_' + str( i ) + '.png' 
 
+for i in range( number_of_frames - 1, 0, -1 ):
+    s +=  ' frame_' + str( i ) + '.png' 
+
 #Delay     
-delay = 50  # 50 1/100 s
+delay = 5  # 50 1/100 s
 
 #loop
 loop = 0    # Number of loops. 0 = infinit. 
