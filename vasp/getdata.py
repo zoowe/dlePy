@@ -27,6 +27,7 @@ def get_calculation_details( outcar ):
     lines = get_lines_outcar( outcar )
     
     NSW = 0
+    EFIELD = 0
     for iline in range( len( lines ) - 1, -1, -1 ):
   
         if "PREC " in lines[ iline ]:
@@ -57,7 +58,9 @@ def get_calculation_details( outcar ):
 
         if "NSW" in lines[ iline ] and "=" in lines[ iline ]:
             NSW = float( lines[ iline ].split( )[ 2 ].replace( ';', '' ) )
-
+   
+        if "EFIELD" in lines[ iline ] and '=' in lines[ iline ]:
+            EFIELD = float( lines[ iline ].split( )[ 2 ] )
 
     k = np.zeros( [ NKPTS, 4] )  # coordinates + weight
     for iline in range( len( lines ) - 1, -1, -1 ):
@@ -77,7 +80,8 @@ def get_calculation_details( outcar ):
                 "NKPTS"      : NKPTS,
                 "NBANDS"     : NBANDS,
                 "NELECT"     : NELECT,
-                "NSW"        : NSW
+                "NSW"        : NSW,
+                "EFIELD"     : EFIELD
               }
 
     del lines
