@@ -118,14 +118,14 @@ import numpy as np
 # Fit to 2nd order polynomial
 z2   = np.polyfit( data[ 'N*P' ], data[ 'R' ], 2 )
 # Make it become a function
-f2   = np.poly1d( z2 )
+f2   = np.poly1d ( z2 )
 # Calculate mean error
-err2 = np.abs( f2( data[ 'N*P' ] ) - data[ 'R' ] ).mean( )
+err2 = np.abs    ( f2( data[ 'N*P' ] ) - data[ 'R' ] ).mean( )
 
 # Do the same for 3rd oder polynomial
 z3   = np.polyfit( data[ 'N*P' ], data[ 'R' ], 2 )
-f3   = np.poly1d( z3 )
-err3 = np.abs( f3( data[ 'N*P' ] ) - data[ 'R' ] ).mean( )
+f3   = np.poly1d ( z3 )
+err3 = np.abs    ( f3( data[ 'N*P' ] ) - data[ 'R' ] ).mean( )
 ```
 
 The two fits give similar errors. Thus, we should expect the their curves are very close. Plot them.
@@ -141,11 +141,11 @@ The plot shows identical curves.
 
 ```python
 f2d  = np.polyder( f2, 1 )   # Take first derivative of f2
-NP_2 = np.roots( f2d )      # Optimal value of N*P from 2nd order fit
+NP_2 = np.roots  ( f2d   )   # Optimal value of N*P from 2nd order fit
 
 f3d  = np.polyder( f3, 1 )   # Take first derivative of f3
-NP_3 = np.roots( f3d )      # Optimal value of N*P from 3nd order fit.
-                            # It should give 2 values, chose one appropriate.
+NP_3 = np.roots  ( f3d   )   # Optimal value of N*P from 3nd order fit.
+                             # It should give 2 values, chose one appropriate.
 ```
 
 #### Step 9: Make figure nicer and save
