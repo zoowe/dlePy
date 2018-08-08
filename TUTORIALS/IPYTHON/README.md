@@ -151,13 +151,13 @@ NP_3 = np.roots  ( f3d   )   # Optimal value of N*P from 3nd order fit.
 #### Step 9: Make figure nicer and save
 
 ```python
-plt.figure(4)               # working on figure 4
-plt.legend( loc = 1 )
-plt.xlabel( r'N$\times$P' )
-plt.ylabel( 'R' )
+plt.figure ( 4 )               # working on figure 4
+plt.legend ( loc = 1 )
+plt.xlabel ( r'N$\times$P' )
+plt.ylabel ( 'R' )
 plt.savefig( 'fit.png', dpi = 600, bbox_inches = 'tight')
 
-plt.figure(3)               # working on figure 3
+plt.figure ( 3 )               # working on figure 3
 plt.savefig( 'data.png', dpi = 600, bbox_inches = 'tight')
 ```
 
