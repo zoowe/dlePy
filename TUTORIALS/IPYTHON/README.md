@@ -19,8 +19,16 @@ module load pandas
 
 ### Exercise
 
-`data.cvs` is a dataset for a hyperthetical experiments on the resistivity (R) of a material as function of doping (N, P, O). There is also a column of data with label `T`. Experimentalist forgot what it is about. We will find the relationship between `R` and N, P, O doping concentrations and the unkown `T`.
+`data.csv` is a dataset for a hyperthetical experiments on the resistivity (R) of a material as function of doping (N, P, O). There is also a column of data with label `T`. Experimentalist forgot what it is about. We will find the relationship between `R` and N, P, O doping concentrations and the unkown `T`.
 
+Get the data set:
+```
+wget https://github.com/zoowe/dlePy/blob/master/TUTORIALS/IPYTHON/data.csv
+```
+If it does not work:
+```
+cp -a /shared/apps/dlePy/0.10/dlePy/TUTORIALS/IPYTHON/data.csv .
+```
 #### Step 1: Launch ipython
 
 ```
@@ -77,7 +85,7 @@ Plot again to verify
 scatter_matrix( data, alpha = 0.8 )
 ```
 
-There is no obvious correlation between R and doping concentrations. The next best guest is the cross terms, i.e. N*P, N*O, O*P. We do not know which one is good, thus we calculate all three and add to the dataset.
+There is no obvious correlation between R and doping concentrations. The next best guest is the cross terms, i.e. `N*P`, `N*O`, `O*P`. We do not know which one is good, thus we calculate all three and add to the dataset.
 
 #### Step 6: Add cross terms to dataset
 
