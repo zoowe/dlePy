@@ -145,7 +145,7 @@ NP_2 = np.roots  ( f2d   )   # Optimal value of N*P from 2nd order fit
 
 f3d  = np.polyder( f3, 1 )   # Take first derivative of f3
 NP_3 = np.roots  ( f3d   )   # Optimal value of N*P from 3nd order fit.
-                             # It should give 2 values, chose one appropriate.
+                             # It should give 2 values, chose the appropriate one.
 ```
 
 #### Step 9: Make figure nicer and save
