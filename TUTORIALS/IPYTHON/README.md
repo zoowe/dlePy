@@ -148,7 +148,7 @@ NP_3 = np.roots  ( f3d   )   # Optimal value of N*P from 3nd order fit.
                              # It should give 2 values, chose the appropriate one.
 ```
 
-#### Step 9: Make figure nicer and save
+#### Step 9: Make figures nicer and save them
 
 ```python
 plt.figure ( 4 )               # working on figure 4
