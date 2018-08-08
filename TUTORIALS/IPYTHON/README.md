@@ -56,7 +56,7 @@ Before reading data, use `less` or `vi` to inspect the `data.csv`. In `ipython`,
 
 Read data
 ```python
-data = pd.read_csv( 'data.csv', sep='\t' )
+data = pd.read_csv( 'data.csv', sep=',' )
 ```
 
 Run the following to see data
@@ -122,7 +122,7 @@ f2   = np.poly1d ( z2 )
 # Calculate mean error
 err2 = np.abs    ( f2( data[ 'N*P' ] ) - data[ 'R' ] ).mean( )
 
-# Do the same for 3rd oder polynomial
+# Do the same for 3rd order polynomial
 z3   = np.polyfit( data[ 'N*P' ], data[ 'R' ], 3 )
 f3   = np.poly1d ( z3 )
 err3 = np.abs    ( f3( data[ 'N*P' ] ) - data[ 'R' ] ).mean( )
@@ -159,6 +159,7 @@ plt.savefig( 'fit.png',  dpi = 600, bbox_inches = 'tight')
 
 plt.figure ( 3 )               # working on figure 3
 plt.savefig( 'data.png', dpi = 600, bbox_inches = 'tight')
+
 ```
 
 #### Step 10: Save your working log
