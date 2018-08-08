@@ -19,7 +19,7 @@ module load pandas
 
 ### Exercise
 
-`data.csv` is a dataset for a hyperthetical experiments on the resistivity (R) of a material as function of doping (N, P, O). There is also a column of data with label `T`. Experimentalist forgot what it is about. We will find the relationship between `R` and N, P, O doping concentrations and the unkown `T`.
+`data.csv` is a faked dataset for an experiments on the resistivity (R) of a material as function of doping (N, P, O). There is also a column of data with label `T`. Experimentalist forgot what it is about. We will find the relationship between `R` and N, P, O doping concentrations and the unkown `T`.
 
 Get the data set:
 ```
