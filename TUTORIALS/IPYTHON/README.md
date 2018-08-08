@@ -42,7 +42,7 @@ If you have not used `ipython`, do few simple maths to get familiar with it.
 ```python
 import pandas as pd                                # For data related task
 from pandas.tools.plotting import scatter_matrix   # For plotting correlations
-import matplotlib.pylot as plt                     # For graphing
+import matplotlib.pyplot as plt                     # For graphing
 %matplotlib                                        # Using matplotlib backend: TkAgg, iteractive mode for plotting
 ```
 
@@ -123,7 +123,7 @@ f2   = np.poly1d ( z2 )
 err2 = np.abs    ( f2( data[ 'N*P' ] ) - data[ 'R' ] ).mean( )
 
 # Do the same for 3rd oder polynomial
-z3   = np.polyfit( data[ 'N*P' ], data[ 'R' ], 2 )
+z3   = np.polyfit( data[ 'N*P' ], data[ 'R' ], 3 )
 f3   = np.poly1d ( z3 )
 err3 = np.abs    ( f3( data[ 'N*P' ] ) - data[ 'R' ] ).mean( )
 ```
@@ -132,7 +132,7 @@ The two fits give similar errors. Thus, we should expect the their curves are ve
 ```
 x = np,arange( np.min( data[ 'N*P' ] ), np.max( data[ 'N*P' ] ), 0.01 )
 plt.plot( x, f2( x ), 'b-', label= '2nd order polyfit' )
-plt.plot( x, f3( x ), 'g--', label= '3nd order polyfit' )
+plt.plot( x, f3( x ), 'g--', label= '3rd order polyfit' )
 ```
 
 The plot shows identical curves.
