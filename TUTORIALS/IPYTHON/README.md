@@ -107,7 +107,7 @@ The plot shows that `R` correlates with `N*P`.
 
 We first plot `R` and `N*P` in a nicer plot
 ```python
-plt.figure(4)    # Number 4 indicates the plot 4. The previous 3 should have been numbered as 1,2,3
+plt.figure(4, figsize = ( 3.5, 3.5 ) )    # Number 4 indicates the plot 4. The previous 3 should have been numbered as 1,2,3
 plt.scatter( data[ 'N*P' ], data[ 'R' ], color = 'r', marker='o' , label  = 'data' )
 ```
 
