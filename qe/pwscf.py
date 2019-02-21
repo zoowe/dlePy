@@ -35,6 +35,7 @@ Website: http://www.physics.ufc.edu/~dle
 
 import numpy as np
 from ase.constraints import FixAtoms, FixScaled
+from ..small_tools import file_exist
 
 class PWscfInput:
     def __init__(self, atoms):
@@ -283,8 +284,33 @@ def write_structure ( atoms, f, ibrav):
                  atoms.cell[i,1], \
                  atoms.cell[i,2]) 
 
+def verify_potential( object ):
+    pseudo_dir = object.control.settings.pseudo_dir
+    ecutwfc = []
+    ecutrho = [] 
+    for i in range ( object.atomic_species.ntyp ):
+        pot = object.atomic_species.pseudo_potential [ i ]
+        exist, txt = file_exist( pseudo_dir + '/' + pot )
+        if not exist:
+            print 'WARNING :' + txt
+        else:
+            with open( pseudo_dir + '/' + pot, 'r' ) as fpot:
+                lines = fpot.readlines( )
+            for line in lines:
+                if 'Suggested minimum cutoff for wavefunctions' in line:
+                    ecutw = float( line.split()[ - 2] )    
+                    ecutwfc.append( ecutw )
+                    break
+            for line in lines:
+                if 'Suggested minimum cutoff for charge density' in line:
+                    ecutc = float( line.split()[ - 2] )    
+                    ecutrho.append( ecutc )
+                    break
+    print "Suggested minimum cutoff for wavefunctions: ecutwfc = %4.1f Ry" %( np.max( np.array( ecutwfc ) ) )
+    print "Suggested minimum cutoff for charge density: ecutrho = %4.1f Ry" %( np.max( np.array( ecutrho ) ) )
+    print "You are using ecutwfc = %4.1f Ry and ecutrho = %4.1f Ry" % ( object.system.ecut.ecutwfc, object.system.ecut.ecutrho )
 
-def write_pwscf_input ( object , filename):
+def write_pwscf_input ( object , filename, verify_pot = False):
     f = open ( filename, 'w' )
     """ Write CONTROL section """
     print >>f, '&CONTROL'
@@ -385,3 +411,6 @@ def write_pwscf_input ( object , filename):
 
     print >>f, ''
     write_k_points       ( object.kpoints, f)
+    
+    if verify_pot:
+        verify_potential( object )
