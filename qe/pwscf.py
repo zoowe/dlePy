@@ -306,9 +306,14 @@ def verify_potential( object ):
                     ecutc = float( line.split()[ - 2] )    
                     ecutrho.append( ecutc )
                     break
-    print "Suggested minimum cutoff for wavefunctions: ecutwfc = %4.1f Ry" %( np.max( np.array( ecutwfc ) ) )
-    print "Suggested minimum cutoff for charge density: ecutrho = %4.1f Ry" %( np.max( np.array( ecutrho ) ) )
-    print "You are using ecutwfc = %4.1f Ry and ecutrho = %4.1f Ry" % ( object.system.ecut.ecutwfc, object.system.ecut.ecutrho )
+    if len( ecutwfc ) * len( ecutrho ) > 0:
+        print "*************************"
+        print "Suggested minimum cutoff for wavefunctions: ecutwfc = %4.1f Ry" %( np.max( np.array( ecutwfc ) ) )
+        print "Suggested minimum cutoff for charge density: ecutrho = %4.1f Ry" %( np.max( np.array( ecutrho ) ) )
+        print "You are using ecutwfc = %4.1f Ry and ecutrho = %4.1f Ry" % ( object.system.ecut.ecutwfc, object.system.ecut.ecutrho )
+    else:
+        print "*************************"
+        print "No suggestion for cutoff values as potential files cannot be read"
 
 def write_pwscf_input ( object , filename, verify_pot = False):
     f = open ( filename, 'w' )
