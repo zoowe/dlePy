@@ -368,7 +368,7 @@ def write_pwscf_input ( object , filename, verify_pot = False):
             print >>f, write_key ( item , dict )
 
         print >>f, '! .system.starting_magnetization'
-        dict = object.system #.starting_magnetization
+        dict = object.system.starting_magnetization
         item = 'starting_magnetization'
         write_array_key ( item ,  dict , f)
 
