@@ -95,7 +95,7 @@ class System:
         self.starting_magnetization  \
                             = StartingMagnetization \
                               (  self.structure.ntyp )
-
+        self.additional_keywords = AdditionalKeywords( )
  
 class SystemStructure:
     def __init__(self , atoms ):
@@ -126,6 +126,10 @@ class StartingMagnetization:
     def __init__(self , ntyp ):
         self.starting_magnetization \
                             = [ 0. ] * ntyp
+
+class AdditionalKeywords:
+    def __init__(self ):
+        self.tot_charge = 0
 
 class Electrons:
     def __init__(self ):
@@ -246,7 +250,7 @@ def write_atomic_species ( atomic_species , f ):
                     atomic_species.pseudo_potential [ i ]
                     )
 
-def write_structure ( atoms, f, ibrav):
+def write_structure ( atoms, f, ibrav, a):
 
     print >>f,'ATOMIC_POSITIONS  crystal '
     sflags = np.zeros((len(atoms), 3), dtype=bool)
@@ -280,10 +284,15 @@ def write_structure ( atoms, f, ibrav):
         print >>f,'CELL_PARAMETERS'
         for i in range (3):
             print >>f,'%20.14f %20.14f %20.14f' %( \
-                 atoms.cell[i,0], \
-                 atoms.cell[i,1], \
-                 atoms.cell[i,2]) 
-
+                 atoms.cell[i,0] / a, \
+                 atoms.cell[i,1] / a, \
+                 atoms.cell[i,2] / a )
+    else:
+        print "PLEASE SET ibrav to 0, or REMOVE THE LINE THAT SETS VALUE FOR ibrav"
+        exit( )
+    if np.abs( a - 1 ) > 1.0e-10:
+        print "PLEASE SET LATTICE CONSTANT a TO 1, OR REMOVE THE LINE THAT SETS VALUE FOR a. IT IS HARMLESS but BEST NOT TO SET IT"
+        
 def verify_potential( object ):
     pseudo_dir = object.control.settings.pseudo_dir
     ecutwfc = []
@@ -344,6 +353,13 @@ def write_pwscf_input ( object , filename, verify_pot = False):
     """ &SYSTEM section """
     print >>f, '&SYSTEM'
     print >>f, '! .system.structure'
+    if np.abs( object.system.structure.a - 1.0e-10 ) > 0:
+        print "Lattice constant a is set to 1"
+        object.system.structure.a = 1.
+    if object.system.structure.ibrav != 0:
+        print "ibrav is set to 0"
+        object.system.structure.ibrav = 0
+
     dict = object.system.structure 
     for item in vars( dict ):
         print >>f, write_key ( item , dict )
@@ -371,6 +387,13 @@ def write_pwscf_input ( object , filename, verify_pot = False):
         dict = object.system.starting_magnetization
         item = 'starting_magnetization'
         write_array_key ( item ,  dict , f)
+
+    print >>f, ''
+    print >>f, '! .system.additional_keywords'
+    dict = object.system.additional_keywords
+    for item in vars( dict ):
+        print >>f, write_key ( item , dict )
+
 
     print >>f, '/'
     print >>f, ''
@@ -412,7 +435,7 @@ def write_pwscf_input ( object , filename, verify_pot = False):
     print >>f, 'ATOMIC_SPECIES'
     write_atomic_species ( object.atomic_species , f )
     print >>f, ''
-    write_structure      ( object.atoms, f, object.system.structure.ibrav)
+    write_structure      ( object.atoms, f, object.system.structure.ibrav, object.system.structure.a )
 
     print >>f, ''
     write_k_points       ( object.kpoints, f)
