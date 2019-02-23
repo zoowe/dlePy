@@ -180,10 +180,12 @@ pwscf = PWscfInput ( Gebulk )
 # The following are for changing default values, keyword
 
 # Change calculation to scf
-update_keyword( pwscf.control.settings, 'calculation', 'scf' )
+pwscf.control.settings.calculation = 'scf' 
+#or update_keyword( pwscf.control.settings, 'calculation', 'scf' )
 
 # Update pseudo_dir
-update_keyword( pwscf.control.settings, 'pseudo_dir', '/shared/ESPRESSO/PSLIBRARY/1.0.0/pbe/PSEUDOPOTENTIALS/' )
+pwscf.control.settings.pseudo_dir =  '/shared/ESPRESSO/PSLIBRARY/1.0.0/pbe/PSEUDOPOTENTIALS/' 
+#or update_keyword( pwscf.control.settings, 'pseudo_dir', '/shared/ESPRESSO/PSLIBRARY/1.0.0/pbe/PSEUDOPOTENTIALS/' )
 
 # Modify a keyword to a block (example block .system.structure)
 pwscf.system.structure.nbnd = 10
