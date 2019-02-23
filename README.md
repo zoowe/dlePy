@@ -185,6 +185,10 @@ update_keyword( pwscf.control.settings, 'calculation', 'scf' )
 # Update pseudo_dir
 update_keyword( pwscf.control.settings, 'pseudo_dir', '/shared/ESPRESSO/PSLIBRARY/1.0.0/pbe/PSEUDOPOTENTIALS/' )
 
+# Modify a keyword to a block (example block .system.structure)
+pwscf.system.structure.nbnd = 10
+# or update_keyword( pwscf.system.structure, 'nbnd', 10 )
+
 # Set mass and pseudo potential file for each type
 mass = [ 72.6300 ]
 pseudo_potential = [ 'Ge.pbe-n-kjpaw_psl.1.0.0.UPF' ]
@@ -194,6 +198,14 @@ update_keyword( pwscf.atomic_species, 'pseudo_potential', pseudo_potential )
 # Set k-point mesh. Only automatic 
 update_keyword( pwscf.kpoints, 'mesh',  [ 15, 15, 15] )
 update_keyword( pwscf.kpoints, 'smesh', [  0,  0, 0 ]  )
+
+# Add additional keyword that was not in default list
+pwscf.system.additional_keywords.tot_charge = 2
+pwscf.system.additional_keywords.vdw_corr  = 'DFT-D3'
+
+# Remove keyword
+del  pwscf.ions.pot_extrapolation
+del  pwscf.ions.wfc_extrapolation
 
 # Write input file
 write_pwscf_input ( pwscf , 'input.inp' )
