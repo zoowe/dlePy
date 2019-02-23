@@ -3,7 +3,7 @@ Has not been cleaned up
 '''
 from numpy import *
 import sys
-from dlePy.small_tools import file_exist 
+from ..small_tools import file_exist 
 import gzip as gz
 
 def get_band_atom(ATOM,NATOMS,NKPTS,NBANDS,PROCAR,NKPTS0,NSPIN,hse=False,nskip=0,LSORBIT=False):

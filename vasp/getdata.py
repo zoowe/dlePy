@@ -1,6 +1,6 @@
 import numpy as np
 import gzip as gz
-from dlePy.math import str2bool
+from ..math import str2bool
 
 def get_lines_outcar( outcar ):
     if '.gz' in outcar:

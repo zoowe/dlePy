@@ -13,7 +13,7 @@ Website: http://www.physics.ufc.edu/~dle
 from   ase.io import read
 import numpy as np
 import os
-from dlePy.math import dotproduct, length, area, tripleproduct
+from .math import dotproduct, length, area, tripleproduct
 
 
 def supercell( atoms, n0, n1, n2 ):

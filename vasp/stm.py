@@ -16,8 +16,8 @@ tersoff_hamann('PARCHG','OUTPUT_PREFIX',TOP,LDOS_IN,ref)
 from ase import *
 from ase.io import *
 import numpy as np
-from dlePy.vasp.chgcar import *
-from dlePy.small_tools import file_exist
+from ..vasp.chgcar import *
+from ..small_tools import file_exist
 from scipy.interpolate import interp1d
 #from datetime import datetime
 

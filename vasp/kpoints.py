@@ -1,7 +1,7 @@
 from ase import *
 from ase.io import *
 import numpy as np
-from dlePy.math import length
+from ..math import length
 
 def vasp_band_gen_k(klist, npts0, ppf,hse=False):    
     
