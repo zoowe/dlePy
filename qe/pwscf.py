@@ -250,7 +250,7 @@ def write_atomic_species ( atomic_species , f ):
                     atomic_species.pseudo_potential [ i ]
                     )
 
-def write_structure ( atoms, f, ibrav, a):
+def write_structure ( atoms, f, ibrav, a, recenter = True):
 
     print >>f,'ATOMIC_POSITIONS  crystal '
     sflags = np.zeros((len(atoms), 3), dtype=bool)
@@ -268,9 +268,10 @@ def write_structure ( atoms, f, ibrav, a):
                 
     for i in range(len(atoms)):
         x = atoms.get_scaled_positions()[i,:]
-        for j in range(3):
-            if x[j] > 0.5:
-                x[j]-=1.
+        if recenter:
+            for j in range(3):
+                if x[j] > 0.5:
+                   x[j]-=1.
         print >>f, '%3s %20.14f %20.14f %20.14f %3i %3i %3i' %( \
                     atoms.get_chemical_symbols()[i], \
                     x[0] , x[1] , x[2],  \
@@ -324,7 +325,7 @@ def verify_potential( object ):
         print "*************************"
         print "No suggestion for cutoff values as potential files cannot be read"
 
-def write_pwscf_input ( object , filename, verify_pot = False):
+def write_pwscf_input ( object , filename, verify_pot = False, recenter = False):
     f = open ( filename, 'w' )
     """ Write CONTROL section """
     print >>f, '&CONTROL'
@@ -435,7 +436,7 @@ def write_pwscf_input ( object , filename, verify_pot = False):
     print >>f, 'ATOMIC_SPECIES'
     write_atomic_species ( object.atomic_species , f )
     print >>f, ''
-    write_structure      ( object.atoms, f, object.system.structure.ibrav, object.system.structure.a )
+    write_structure      ( object.atoms, f, object.system.structure.ibrav, object.system.structure.a, recenter )
 
     print >>f, ''
     write_k_points       ( object.kpoints, f)
