@@ -33,7 +33,7 @@ git clone https://github.com/zoowe/dlePy.git
 Add the path to **`dlePy`** folder to $PYTHONPATH environment.
 There are many ways to accomplish this. Here is an example.
 ```
-export $PYTHONPATH=Path_to_dlePy:$PYTHONPATH
+export PYTHONPATH=Path_to_dlePy:$PYTHONPATH
 ```
 
 # :four: Instruction
