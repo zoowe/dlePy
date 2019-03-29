@@ -130,7 +130,7 @@ def reduce_chgcar( INDATA, factor, CONTCAR = 'CONTCAR' ):
     system = read( CONTCAR )
 
     total  = read_chgcar( INDATA, CONTCAR = CONTCAR )
-    total_ = reduce_array( total, factor ) /  system.get_volume()
+    total_ = reduce_array( total, factor ) 
 
     print 'Write Charge'
     write_chgcar( OUTPRE, system, data = total_ )
@@ -170,7 +170,7 @@ def reduce_spin_chgcar(INDATA, factor,CONTCAR='CONTCAR'):
     total = np.fromfile( file, count = ng[ 0 ] * ng[ 1 ] * ng[ 2 ], sep=' ')
     total = total.reshape( ng[ 2 ], ng[ 1 ], ng[ 0 ] ).T
 
-    total_ = reduce_array( total, factor ) /  system.get_volume()
+    total_ = reduce_array( total, factor ) 
     del (total)
 
     print 'Write Charge'
@@ -187,7 +187,7 @@ def reduce_spin_chgcar(INDATA, factor,CONTCAR='CONTCAR'):
     spin = np.fromfile(file, count = ng[0]*ng[1]*ng[2], sep=' ')
     spin = spin.reshape (ng[2], ng[1],ng[0]).T
 
-    spin_ = reduce_array( spin, factor ) /  system.get_volume()
+    spin_ = reduce_array( spin, factor ) 
     del (spin)
     
     file.close()
