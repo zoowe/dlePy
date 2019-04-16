@@ -1,0 +1,11 @@
+&projwfc
+    prefix='scf'
+    outdir='./tmp'
+    ngauss = 0
+    degauss = 0.0036749309
+    Emin = -20
+    Emax = 20
+    DeltaE = 0.001
+    filpdos = 'data'
+ /
+

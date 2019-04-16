@@ -212,3 +212,41 @@ del  pwscf.ions.wfc_extrapolation
 # Write input file
 write_pwscf_input ( pwscf , 'input.inp' )
 ```
+### :large_blue_diamond: [Atomic Wavefunction Projected band structure](qe/projwfc.py)
+Ploting band structure with projection onto atomic wave function
+#### [Example](examples/pwscf/projected-bands)
+There are three steps:
+
+####SCF calculation
+Perform normal SCF calculation (with disk_io = 'low' )
+####NSCF calculation
+Perform NSCF calculation for a set of k-point along high symmetry path.
+####PROJWFC calculation
+Generate nessesary data for plotting
+
+See [Example](examples/pwscf/projected-bands) for details.
+
+This is an simple code for getting data for s-character of Ge band structure
+
+```python
+from  dlePy.qe.projwfc import *
+loc = 'STEP_03_PROJWFC/'
+filename = 'output.dat'
+output = loc + filename
+
+# Reading output file of a projwfc run
+data = parse( output )
+
+# number of band
+nbnd  = get_number_of_bands( data )
+
+# List all projection   
+list_projections( data )
+
+# Indices of s projection
+sdos_index = [ 0, 4 ]
+
+# Sum all projection with indices in sdos_index
+sdos       = sum_states( data, state_index = sdos_index )
+
+```

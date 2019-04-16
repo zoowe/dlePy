@@ -1,7 +1,3 @@
-import matplotlib.pyplot as plt
-import matplotlib.colors as colors
-import matplotlib.cm as cmx
-import matplotlib.ticker as ticker
 import numpy as np
 import gzip as gz
 import os
@@ -92,30 +88,43 @@ def read_projection( data, lines ):
 
     return data    
 
-def parse( lines ):
-    data = {}
-    
-    data = read_keys( data, lines )
+def list_projections( data ):
+    print "%-12s %-s" %( 'State Index', 'Projection' )
+    for key in sorted( data[ "Atomic states" ].keys() ):
+        print "State %4s: %-s" %( key, data[ "Atomic states" ][ key ])
 
+def get_number_of_kpoinst( data ):
+    return data[ 'nkstot' ]
+
+def get_number_of_bands( data ):
+    return data[ 'nbnd' ]
+
+def sum_states( data, state_index = [ 0 ] ):
+    print "Suming the following projections:"
+    print "%-8s %-s" %( 'Index', 'Projection' )
+    for key in state_index:
+        print "%-8s %-s" %( key, data[ "Atomic states" ][ key ])
+
+    nkstotal = get_number_of_kpoinst( data )
+    nbnd     = get_number_of_bands( data )
+    sum_data = np.zeros( [ nkstotal * nbnd, 3 ] ) # 3 columns for ik, e, sum
+    for ik in sorted( data[ 'atomic projection' ].keys() ):
+        for ie in sorted( data[ 'atomic projection' ][ ik ]['eigen'].keys() ):
+             proj = data[ 'atomic projection' ][ ik ]['eigen'][ ie ][ 'psi' ]
+             pdos = 0
+             for idx in state_index:
+                 pdos += proj[ idx ]
+             e = data[ 'atomic projection' ][ ik ]['eigen'][ ie ][ 'e' ]
+             sum_data[ ik * nbnd + ie, : ] =  np.array( [ ik, e, pdos ] )
+    return sum_data
+
+def parse( output ):
+    lines = read_file( output )
+    data = {}
+    data = read_keys( data, lines )
     data = read_atomic_states( data, lines ) 
-     
     data = read_projection( data, lines )
   
     return data
 
 
-if __name__ == "__main__":
-    loc = '/home/duy/PROJ_MetalOnSemiconductor/andre/TUTORIALS/DensityofStates/Dataaccumalation/k48/thesmear.020/u=2/'
-    filename = 'outputpdos.dat'
-    lines = read_file( loc + filename )
-    data = parse( lines )
-    nkstotal = data[ 'nkstotal' ]
-    nbnd     = data[ 'nbnd' ]    
-    band_data = np.zeros( [ nbnd * nbnd, 4 ] ) # 4 columns for ik, e, s, p
-    for ik in sorted( data[ 'atomic projection' ].keys() ):
-        for ie in sorted( data[ 'atomic projection' ][ ik ]['eigen'].keys() ):
-             proj = data[ 'atomic projection' ][ ik ]['eigen'][ ie ][ 'psi' ]
-             s = proj[ 0 ] + proj[ 4 ]
-             p = proj[ 1 ] + proj[ 2 ] + proj[ 3 ] +  proj[ 5 ] + proj[ 6 ] + proj[ 7 ] 
-             e = data[ 'atomic projection' ][ ik ]['eigen'][ ie ][ 'e' ]
-             band_data[ ik * 16 + ie, : ] =  np.array( [ ik, e, s, p ] )
