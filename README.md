@@ -214,14 +214,14 @@ write_pwscf_input ( pwscf , 'input.inp' )
 ```
 ### :large_blue_diamond: [Atomic Wavefunction Projected band structure](qe/projwfc.py)
 Ploting band structure with projection onto atomic wave function
-#### [Example](examples/pwscf/projected-bands)
+
 There are three steps:
 
-####SCF calculation
+#### SCF calculation
 Perform normal SCF calculation (with disk_io = 'low' )
-####NSCF calculation
+#### NSCF calculation
 Perform NSCF calculation for a set of k-point along high symmetry path.
-####PROJWFC calculation
+#### PROJWFC calculation
 Generate nessesary data for plotting
 
 See [Example](examples/pwscf/projected-bands) for details.
