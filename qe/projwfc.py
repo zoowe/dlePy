@@ -31,6 +31,14 @@ def read_keys( data, lines ):
                count_key += 1
                if count_key == len( list_key ):
                    break
+    nspin = 1
+    for line in lines:
+        if "spin up" in line:
+            nspin  = 2
+            data[ 'nkstot' ] = data[ 'nkstot' ] / 2
+            break
+    data[ 'nspin' ] = nspin
+    
 
     return data
 
@@ -82,7 +90,7 @@ def read_projection( data, lines ):
                     if ie == data[ 'nbnd']:
                         break
             ik += 1
-            if ik == data[ 'nkstot' ]:
+            if ik == data[ 'nkstot' ] * data[ 'nspin' ]:
                 break 
     data[ 'atomic projection' ] = kdata
 
@@ -99,7 +107,10 @@ def get_number_of_kpoinst( data ):
 def get_number_of_bands( data ):
     return data[ 'nbnd' ]
 
-def sum_states( data, state_index = [ 0 ] ):
+def get_nspin( data ):
+    return data[ 'nspin' ]
+
+def sum_states( data, spin = 'up', state_index = [ 0 ] ):
     print "Suming the following projections:"
     print "%-8s %-s" %( 'Index', 'Projection' )
     for key in state_index:
@@ -107,8 +118,24 @@ def sum_states( data, state_index = [ 0 ] ):
 
     nkstotal = get_number_of_kpoinst( data )
     nbnd     = get_number_of_bands( data )
-    sum_data = np.zeros( [ nkstotal * nbnd, 3 ] ) # 3 columns for ik, e, sum
-    for ik in sorted( data[ 'atomic projection' ].keys() ):
+    nspin    = get_nspin( data )
+    sum_data = np.zeros( [ nspin * nkstotal * nbnd, 3 ] ) # 3 columns for ik, e, sum
+    ik_start = 0
+    ik_end   = nkstotal
+
+    if spin == 'down' and nspin == 2:
+       ik_start = nkstotal
+       ik_end   = 2 * nkstotal
+    elif nspin == 1 and spin == 'down':
+       print "Output file indicates non-spin-polarized calculation"
+       print "spin = \"down\" is ignored"
+
+    if spin == "up" and nspin == 2:
+       print "Output file indicates spin-polarized calculation"
+       print "Use spin = \"down\" for spin-down data"
+       
+    #for ik in sorted( data[ 'atomic projection' ].keys():
+    for ik in range( ik_start, ik_end ):
         for ie in sorted( data[ 'atomic projection' ][ ik ]['eigen'].keys() ):
              proj = data[ 'atomic projection' ][ ik ]['eigen'][ ie ][ 'psi' ]
              pdos = 0
