@@ -66,7 +66,7 @@ def read_projection( data, lines ):
             kdata[ ik ][ 'coordinate' ] = k_coor
             ie = 0
             kdata[ ik ][ 'eigen' ]  = {}
-            for j in range( i + 1, i + 10 * data[ 'nbnd' ] ):
+            for j in range( i + 1, i + 1000 * data[ 'nbnd' ] ):
                 if 'e =' in lines[ j ]:
                     band = {}
                     e = float( lines[ j ].split()[ -2 ] )
