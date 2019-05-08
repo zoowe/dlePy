@@ -129,7 +129,7 @@ def sort_group( atoms, indices = [], symbols = [] ):
 
     if len( indices ) > 0:
 
-        for at in range( len( atoms ) -1, -1, -1 ):
+        for at in range( len( atoms ) ):
             if atoms[ at ].index in indices:
                 atomsortlist.append( at )
             else:
@@ -188,5 +188,4 @@ def sort_layers( system, layer=[] ):
         atoms += system[ layer[ ilayer ] ]
 
     return atoms
-
 

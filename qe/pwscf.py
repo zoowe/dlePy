@@ -169,7 +169,7 @@ class Kpoints:
     def __init__( self ):
         self.type           = 'automatic' 
         self.mesh           = [ 1 , 1 , 1 ]
-        self.smesh          = [ 0 , 0 , 0 ]
+        self.smesh          = [ 0 , 0 , 0 ] 
            
 def update_keyword( input_block, keyword, value ):
     setattr ( input_block, keyword, value )
@@ -191,8 +191,8 @@ def get_reduce_atom_list ( atoms ):
 
 def write_k_points ( kpoints , f ):
     if kpoints.type.lower() == 'gamma':
-        kpoints.mesh[:]=1
-        kpoints.smesh[:]=0
+        kpoints.mesh  = [ 1, 1, 1 ]
+        kpoints.smesh = [ 0, 0, 0 ]
         
     print >>f, '! .kpoints' 
     print >>f, 'K_POINTS '+ kpoints.type  + '   ! .kpoints.type '
@@ -340,12 +340,12 @@ def write_pwscf_input ( object , filename, verify_pot = False, recenter = False)
     for item in vars( dict ):
         print >>f, write_key ( item , dict )
  
-    if vars( object.control.settings )[ "calculation" ] in [ "relax", "vc-relax" ]:
-        print >>f, ''
-        print >>f, '! .control.ion_relax'
-        dict = object.control.ion_relax
-        for item in vars( dict ):
-            print >>f, write_key ( item , dict )
+    #if vars( object.control.settings )[ "calculation" ] in [ "relax", "vc-relax" ]:
+    print >>f, ''
+    print >>f, '! .control.ion_relax'
+    dict = object.control.ion_relax
+    for item in vars( dict ):
+        print >>f, write_key ( item , dict )
 
     print >>f, '/'
 
