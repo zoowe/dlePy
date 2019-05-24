@@ -282,7 +282,7 @@ def write_structure ( atoms, f, ibrav, a, recenter = True):
 #                    newsflags[i,0] , newsflags[i,1], newsflags[i,2] )
 
     if ibrav == 0: 
-        print >>f,'CELL_PARAMETERS'
+        print >>f,'CELL_PARAMETERS alat'
         for i in range (3):
             print >>f,'%20.14f %20.14f %20.14f' %( \
                  atoms.cell[i,0] / a, \
