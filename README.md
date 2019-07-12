@@ -248,6 +248,7 @@ sdos_index = [ 0, 4 ]
 
 # Sum all projection with indices in sdos_index
 sdos       = sum_states( data, state_index = sdos_index )
+```
 
 ## Automatic monitoring and resubmitting job
 ### :large_blue_diamond: [For vasp](vasp/job_monitor.py)
@@ -255,4 +256,3 @@ This help monitor, resubmit a series of jobs automatically. It is very helpful a
 
 See example: [examples/job_monitor.py](examples/job_monitor.py) for instruction.
 
-```
