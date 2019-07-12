@@ -6,10 +6,22 @@ import smtplib
 
 def get_SMTP( ):
     SMTP = { }
-    SMTP[ 'server' ] = os.environ[ "mail_server" ] 
-    SMTP[ 'port' ]   = int( os.environ[ "mail_port" ] )
-    SMTP[ 'username' ] = os.environ[ "mail_login" ] 
-    SMTP[ 'password' ] = os.environ[ "mail_password" ]
+    try:
+        SMTP[ 'server' ] = os.environ[ "mail_server" ] 
+    except:
+        SMTP[ 'server' ] = "in-v3.mailjet.com"
+    try: 
+        SMTP[ 'port' ]   = int( os.environ[ "mail_port" ] )
+    except:
+        SMTP[ 'port' ]   = 587
+    try:
+        SMTP[ 'username' ] = os.environ[ "mail_login" ] 
+    except:
+        SMTP[ 'username' ] = "" 
+    try:
+        SMTP[ 'password' ] = os.environ[ "mail_password" ]
+    except:
+        SMTP[ 'password' ] = ""
     return SMTP
  
 def send_email ( fromaddr, toaddrs, message, SMTP = get_SMTP( )):
