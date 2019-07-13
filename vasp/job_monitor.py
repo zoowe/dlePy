@@ -5,14 +5,14 @@ import getpass
 import subprocess
 from ..send_email import send_email
 def get_mtime( file ):
-    (mode, ino, dev, nlink, uid, gid, size, atime, mtime, ctime) = os.stat(file)
+    ( mode, ino, dev, nlink, uid, gid, size, atime, mtime, ctime ) = os.stat( file )
     return mtime
 
 def if_vasp_done( outcar ):
     job_done = False
-    niter = 0
-    NWS = 10000
-    mtime = 0
+    niter    = 0
+    NWS      = 10000
+    mtime    = 0
     if os.path.isfile( outcar ):
         with open( outcar, 'r' ) as f:
             lines = f.readlines( )
@@ -22,7 +22,7 @@ def if_vasp_done( outcar ):
         while i > 0:
             i -= 1
             if "Iteration " in lines[ i ]:
-                niter = lines[ i ].replace( '-','' ).replace( '(',' ' ).replace( ')','' ).split()[ -2 ]
+                niter = lines[ i ].replace( '-','' ).replace( '(',' ' ).replace( ')','' ).split( )[ -2 ]
                 niter = int( niter ) - 1
                 for j in range( i, len( lines ) ):
                     if "free  energy   TOTEN" in lines[ j ]:
@@ -36,18 +36,18 @@ def if_vasp_done( outcar ):
                 break
             i += 1
 
-        mtime = get_mtime( outcar ) - time.time()
+        mtime = get_mtime( outcar ) - time.time( )
     return job_done, niter, NWS, mtime
 
 def get_jobs_in_queue( ):
     os.environ["SQUEUE_FORMAT"]="%.18i %.9P %.20j %.8u %.2t %.10M %.6D %.20R %q"
-    username = getpass.getuser()
-    proc = subprocess.Popen(['squeue', '-u', username ],stdout=subprocess.PIPE)
-    lines = proc.stdout.readlines()
+    username     = getpass.getuser( )
+    proc         = subprocess.Popen( [ 'squeue', '-u', username ],stdout=subprocess.PIPE )
+    lines        = proc.stdout.readlines( )
     job_in_queue = {}
     for i in range( 1, len( lines ) ):
-        job_name   = lines[ i ].split()[ 2 ]
-        job_status = lines[ i ].split()[ 4 ]
+        job_name                 = lines[ i ].split()[ 2 ]
+        job_status               = lines[ i ].split()[ 4 ]
         job_in_queue[ job_name ] = job_status 
     return job_in_queue
 
@@ -57,7 +57,7 @@ def get_run_num( ):
 
 def backup( run, backup_files = [ 'OUTCAR', 'INCAR', 'KPOINTS', 'vasprun.xml', 'CONTCAR' ]  ):
     folder = 'RUN' + run
-    print "%s" %( 'BACKUP TO FOLDER: ' + folder)
+    print "%s" %( 'BACKUP TO FOLDER: ' + folder )
     os.system( 'mkdir -p ' + folder )
     for item in backup_files:
         os.system( 'cp -a ' + item + ' ' + folder + '/' )
@@ -188,14 +188,14 @@ def print_info( jobs, top_dir, jobs_in_queue ):
     print " "
 
 def send_error_email( top_dir, name, email_setting ):
-    message = 'Subject: ERROR ' + name
+    message  = 'Subject: ERROR ' + name
     message += '\n'
     message += '\nThis job has an error. No iteration'
     message += '\nJob location: %s' %( top_dir )
-    send_email ( email_setting[ 'from'], email_setting[ 'to'], message, email_setting[ 'SMTP' ])
+    send_email ( email_setting[ 'from' ], email_setting[ 'to' ], message, email_setting[ 'SMTP' ])
 
 def send_finish_email( top_dir, monitorID, jobs, email_setting ):
-    message = 'Subject: FINSIHED: ' + monitorID 
+    message  = 'Subject: FINSIHED: ' + monitorID 
     message += '\n'
     message +="\n=========================================="
     message +="\nAutomatic monitoring and resubmitting jobs"
@@ -211,12 +211,12 @@ def send_finish_email( top_dir, monitorID, jobs, email_setting ):
     nfinished, ntotal, nerror = count_jobs( jobs )
 
     message += '\nThis job is finished. %i/%i are succesfully done.' % ( nfinished, ntotal )
-    send_email ( email_setting[ 'from'], email_setting[ 'to'], message, email_setting[ 'SMTP' ])
+    send_email ( email_setting[ 'from' ], email_setting[ 'to' ], message, email_setting[ 'SMTP' ] )
     
 def run_job_monitor( jobs, time_from_last_write = 600, time_to_check= 1500, submit_cmd = "sbatch job", send_email = False, email_setting = { }, monitorID = 'Automatic Monitoring' ):
     nfinished, ntotal, nerror = count_jobs( jobs )
-    jobs_in_queue = get_jobs_in_queue( )
-    top_dir = os.getcwd( )
+    jobs_in_queue             = get_jobs_in_queue( )
+    top_dir                   = os.getcwd( )
     print_info( jobs, top_dir, jobs_in_queue )
     check_jobs( jobs, top_dir )
 
@@ -229,8 +229,8 @@ def run_job_monitor( jobs, time_from_last_write = 600, time_to_check= 1500, subm
         os.chdir( top_dir )
     while nfinished < ntotal:
         print time.ctime( )
-        jobs_in_queue = get_jobs_in_queue( )
-        jobs = resubmit( jobs, jobs_in_queue, time_from_last_write, submit_cmd, send_email, email_setting )
+        jobs_in_queue             = get_jobs_in_queue( )
+        jobs                      = resubmit( jobs, jobs_in_queue, time_from_last_write, submit_cmd, send_email, email_setting )
         sys.stdout.flush()
         nfinished, ntotal, nerror = count_jobs( jobs )
         print " "
