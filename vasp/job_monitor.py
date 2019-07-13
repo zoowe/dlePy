@@ -74,7 +74,9 @@ def resubmit( jobs, jobs_in_queue, time_from_last_write, submit_cmd, send_email 
     for ID, name in enumerate( sorted( jobs.keys( ) ) ):
         print "----------------------------------"
         print "### %s: " %( name )
-        if jobs[ name ][ 'status' ] != "FINISHED":
+        if jobs[ name ][ 'status' ] == "FINISHED":
+            print 'FINISHED'
+        else:
             os.chdir( jobs[ name ][ 'dir' ] )
             job_done, niter, nmaxiters, mtime = if_vasp_done( 'OUTCAR' )
             if not job_done:
@@ -128,11 +130,14 @@ def resubmit( jobs, jobs_in_queue, time_from_last_write, submit_cmd, send_email 
 def count_jobs( jobs ):
     nfinished = 0
     ntotal    = 0
+    nerror    = 0
     for name in sorted( jobs.keys( ) ):
         ntotal += 1
         if jobs[ name ][ 'status' ] == "FINISHED":
             nfinished += 1
-    return nfinished, ntotal
+        if jobs[ name ][ 'status' ] == "ERROR":
+            nerror    += 1
+    return nfinished, ntotal, nerror
 
 def check_jobs( jobs, top_dir ):
     for ID, name in enumerate( sorted( jobs.keys( ) ) ):
@@ -162,21 +167,24 @@ def check_jobs( jobs, top_dir ):
             sys.exit( )
 
 def print_info( jobs, top_dir, jobs_in_queue ):
-    print "========================================="
-    print "Automatic monitoring and resubmitting job"
-    print "========================================="
+    print "=========================================="
+    print "Automatic monitoring and resubmitting jobs"
+    print "=========================================="
     print " "
     print "List of jobs"
     print "%-10s %-20s %-15s %-s" %( 'ID', 'JOB_NAME', 'STATUS', 'DIRECTORY' )
-    print "---------------------------------------------------------"
+    print "---------------------------------------------------------------"
+    n_jobs_in_queue = 0
     for ID, name in enumerate( sorted( jobs.keys( ) ) ):
         print "%-10s %-20s %-15s %-s" %( ID, name,
                                              jobs[ name ][ 'status' ],
                                              jobs[ name ][ 'dir' ]      )
+        if name in jobs_in_queue.keys( ):
+             n_jobs_in_queue += 1 
     print " "
     print "Top dir: %s" %( top_dir )
     print " "
-    print "Number of jobs currently in queue/running: %s" %( len( jobs_in_queue.keys() ) )
+    print "Number of jobs currently in queue/running: %s" %( n_jobs_in_queue )
     print " "
 
 def send_error_email( top_dir, name, email_setting ):
@@ -185,9 +193,28 @@ def send_error_email( top_dir, name, email_setting ):
     message += '\nThis job has an error. No iteration'
     message += '\nJob location: %s' %( top_dir )
     send_email ( email_setting[ 'from'], email_setting[ 'to'], message, email_setting[ 'SMTP' ])
+
+def send_finish_email( top_dir, monitorID, jobs, email_setting ):
+    message = 'Subject: FINSIHED: ' + monitorID 
+    message += '\n'
+    message +="\n=========================================="
+    message +="\nAutomatic monitoring and resubmitting jobs"
+    message +="\n==========================================\n\n"
+    message +="\nList of jobs"
+    message +="\n%-10s %-20s %-15s %-s" %( 'ID', 'JOB_NAME', 'STATUS', 'DIRECTORY' )
+    message +="\n---------------------------------------------------------------"
+    for ID, name in enumerate( sorted( jobs.keys( ) ) ):
+        message +="\n%-10s %-20s %-15s %-s" %( ID, name,
+                                             jobs[ name ][ 'status' ],
+                                             jobs[ name ][ 'dir' ]      )
+    message +="\n\nTop dir: %s" %( top_dir )
+    nfinished, ntotal, nerror = count_jobs( jobs )
+
+    message += '\nThis job is finished. %i/%i are succesfully done.' % ( nfinished, ntotal )
+    send_email ( email_setting[ 'from'], email_setting[ 'to'], message, email_setting[ 'SMTP' ])
     
-def run_job_monitor( jobs, time_from_last_write = 600, time_to_check= 1500, submit_cmd = "sbatch job", send_email = False, email_setting = { } ):
-    nfinished, ntotal = count_jobs( jobs )
+def run_job_monitor( jobs, time_from_last_write = 600, time_to_check= 1500, submit_cmd = "sbatch job", send_email = False, email_setting = { }, monitorID = 'Automatic Monitoring' ):
+    nfinished, ntotal, nerror = count_jobs( jobs )
     jobs_in_queue = get_jobs_in_queue( )
     top_dir = os.getcwd( )
     print_info( jobs, top_dir, jobs_in_queue )
@@ -195,7 +222,7 @@ def run_job_monitor( jobs, time_from_last_write = 600, time_to_check= 1500, subm
 
     for ID, name in enumerate( sorted( jobs.keys( ) ) ):
         os.chdir( jobs[ name ][ 'dir' ] )
-        if not os.path.isfile( 'OUTCAR' ) and name not in jobs_in_queue.keys( ):
+        if not os.path.isfile( 'OUTCAR' ) and name not in jobs_in_queue.keys( ) and jobs[ name ][ 'status' ] != 'FINISHED':
             print "%s was not submitted, Submitting..." %( name )
             sys.stdout.flush( )
             submitjob( submit_cmd )
@@ -205,9 +232,12 @@ def run_job_monitor( jobs, time_from_last_write = 600, time_to_check= 1500, subm
         jobs_in_queue = get_jobs_in_queue( )
         jobs = resubmit( jobs, jobs_in_queue, time_from_last_write, submit_cmd, send_email, email_setting )
         sys.stdout.flush()
-        nfinished, ntotal = count_jobs( jobs )
+        nfinished, ntotal, nerror = count_jobs( jobs )
         print " "
-        print "Number of finished jobs %s out of %s" %( nfinished, ntotal) 
+        print "Number of finished jobs: %s out of %s" %( nfinished, ntotal) 
+        if nfinished + nerror == ntotal:
+            print "Please check the jobs with errors, resubmit it and rerun this monitoring program"
+            break 
         if nfinished < ntotal:
             jobs_in_queue = get_jobs_in_queue( )
             print_info( jobs, top_dir, jobs_in_queue )
@@ -216,3 +246,8 @@ def run_job_monitor( jobs, time_from_last_write = 600, time_to_check= 1500, subm
             sys.stdout.flush( )
             os.system( 'sleep ' + str( time_to_check ))
 
+    # FINISHING MONITORING
+    if send_email:
+        send_finish_email( top_dir, monitorID, jobs, email_setting )
+    print_info( jobs, top_dir, jobs_in_queue )
+    print "AUTOMATIC MONITORING FINISHED!!!"
