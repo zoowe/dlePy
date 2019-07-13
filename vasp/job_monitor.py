@@ -40,6 +40,7 @@ def if_vasp_done( outcar ):
     return job_done, niter, NWS, mtime
 
 def get_jobs_in_queue( ):
+    os.environ["SQUEUE_FORMAT"]="%.18i %.9P %.20j %.8u %.2t %.10M %.6D %.20R %q"
     username = getpass.getuser()
     proc = subprocess.Popen(['squeue', '-u', username ],stdout=subprocess.PIPE)
     lines = proc.stdout.readlines()
@@ -135,6 +136,10 @@ def count_jobs( jobs ):
 
 def check_jobs( jobs, top_dir ):
     for ID, name in enumerate( sorted( jobs.keys( ) ) ):
+        if len( name ) > 20:
+            print "%s: ERROR!!! Job name must have no more than 20 characters"  %( name )
+            sys.exit( )
+
         os.chdir( top_dir )
         if os.path.isdir( jobs[ name ][ 'dir' ] ):
             if os.path.isfile( jobs[ name ][ 'dir' ] + '/job' ):
@@ -193,7 +198,6 @@ def run_job_monitor( jobs, time_from_last_write = 600, time_to_check= 1500, subm
         if not os.path.isfile( 'OUTCAR' ) and name not in jobs_in_queue.keys( ):
             print "%s was not submitted, Submitting..." %( name )
             sys.stdout.flush( )
-            print submit_cmd
             submitjob( submit_cmd )
         os.chdir( top_dir )
     while nfinished < ntotal:
