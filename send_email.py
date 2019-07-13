@@ -1,19 +1,16 @@
 import os
-import time
-
-import sys
 import smtplib
 
 def get_SMTP( ):
     SMTP = { }
     try:
-        SMTP[ 'server' ] = os.environ[ "mail_server" ] 
+        SMTP[ 'server' ]   = os.environ[ "mail_server" ] 
     except:
-        SMTP[ 'server' ] = "in-v3.mailjet.com"
+        SMTP[ 'server' ]   = "in-v3.mailjet.com"
     try: 
-        SMTP[ 'port' ]   = int( os.environ[ "mail_port" ] )
+        SMTP[ 'port' ]     = int( os.environ[ "mail_port" ] )
     except:
-        SMTP[ 'port' ]   = 587
+        SMTP[ 'port' ]     = 587
     try:
         SMTP[ 'username' ] = os.environ[ "mail_login" ] 
     except:
