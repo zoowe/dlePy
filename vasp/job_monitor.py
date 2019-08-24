@@ -31,7 +31,7 @@ def if_vasp_done( outcar ):
                 i = 0
         while i < len( lines ):
             if "number of steps for IOM" in lines[ i ]:
-                NWS = lines[ i ].replace( '-','' ).replace( '(',' ' ).replace( ')','' ).split()[ 2 ]
+                NWS = int( lines[ i ].replace( '-','' ).replace( '(',' ' ).replace( ')','' ).split()[ 2 ] )
                 i = len( lines )
                 break
             i += 1
@@ -55,7 +55,7 @@ def get_run_num( ):
     runs = [ int( x.replace( 'RUN', '' ) ) for x in os.listdir( '.' ) if 'RUN' in x and os.path.isdir( x ) ]
     return len( runs )
 
-def backup( run, backup_files = [ 'OUTCAR', 'INCAR', 'KPOINTS', 'vasprun.xml', 'CONTCAR' ]  ):
+def backup( run, backup_files = [ 'POSCAR', 'OUTCAR', 'INCAR', 'KPOINTS', 'vasprun.xml', 'CONTCAR' ]  ):
     folder = 'RUN' + run
     print "%s" %( 'BACKUP TO FOLDER: ' + folder )
     os.system( 'mkdir -p ' + folder )
@@ -69,7 +69,7 @@ def create_new_run( run ):
 def submitjob( cmd = 'sbatch -q scavenger --time-min=4:0:00 job' ):
     os.system( cmd )
 
-def resubmit( jobs, jobs_in_queue, time_from_last_write, submit_cmd, send_email = False, email_setting = {} ):
+def resubmit( jobs, jobs_in_queue, time_from_last_write, submit_cmd, send_email = False, email_setting = {}, backup_files = [ 'POSCAR', 'OUTCAR', 'INCAR', 'KPOINTS', 'vasprun.xml', 'CONTCAR' ] ):
     top_dir = os.getcwd( )
     for ID, name in enumerate( sorted( jobs.keys( ) ) ):
         print "----------------------------------"
@@ -92,7 +92,7 @@ def resubmit( jobs, jobs_in_queue, time_from_last_write, submit_cmd, send_email 
             if ( not job_done or niter == nmaxiters ) and ( mtime < -time_from_last_write ) and ( name not in jobs_in_queue.keys( ) ) and niter > 0:
                 run =  get_run_num( ) + 1
                 run = str( run )
-                backup( run )
+                backup( run, backup_files )
                 create_new_run( run )
                 print "%s" %( 'RESUBMITING... ')
                 sys.stdout.flush( )
