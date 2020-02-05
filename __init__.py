@@ -1,6 +1,8 @@
+import sys
+
 str='''
-dlePy V 0.1         
-Updated: 06/06/2018 
+dlePy V 0.2         
+Updated: 08/23/2018 
 
 Author: Duy Le
 Department of Physics
@@ -11,7 +13,11 @@ Website: http://www.physics.ufc.edu/~dle
 ----------------------------------------
 '''
 
-print str
+print ( str )
+
+
+if sys.version_info[ 0 ] == 2:
+    raise ImportError( 'dlePy requires Python3. This is Python2.' )
 
 """
 Cleaning log:

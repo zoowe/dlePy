@@ -4,7 +4,7 @@ import os
 
 def read_file( filename ):
     if not os.path.isfile( filename ):   
-        print "%s is not found" %( filename )
+        print ( "%s is not found" %( filename ) )
         exit
 
     if '.gz' in filename:
@@ -20,13 +20,16 @@ def add_key( data, name, line ):
     data[ name ] = int( line.split( )[ -1 ] )
     return data
 
-def read_keys( data, lines ):
+def read_keys( data, lines, args ):
+    for key in args.keys():
+        print ( "Supplied {}:{}".format( key, args[ key ] ) )
+        data = add_key( data, key, str( args[ key ] ) )
     list_key = [ 'natomwfc', 'nbnd', 'nkstot',  'npwx', 'nkb' ]
-
     for i in range( len( lines ) ):
        count_key = 0
        for name in list_key:
            if name in lines[ i ]:
+               print ( "Add or update from output {}".format( name ) )
                data = add_key( data, name, lines[ i ] )
                count_key += 1
                if count_key == len( list_key ):
@@ -39,7 +42,6 @@ def read_keys( data, lines ):
             break
     data[ 'nspin' ] = nspin
     
-
     return data
 
 def read_atomic_states( data, lines ):
@@ -67,9 +69,9 @@ def read_projection( data, lines ):
             ie = 0
             kdata[ ik ][ 'eigen' ]  = {}
             for j in range( i + 1, i + 1000 * data[ 'nbnd' ] ):
-                if 'e =' in lines[ j ]:
+                if 'e' in lines[ j ]:
                     band = {}
-                    e = float( lines[ j ].split()[ -2 ] )
+                    e = float( lines[ j ].replace( '=','').split()[ -2 ] )
                     band[ 'e' ] = e
                     eline = lines[ j + 1 ] 
                     for k in range( j + 2, j + 20 ):
@@ -97,9 +99,9 @@ def read_projection( data, lines ):
     return data    
 
 def list_projections( data ):
-    print "%-12s %-s" %( 'State Index', 'Projection' )
+    print ( "%-12s %-s" %( 'State Index', 'Projection' ) )
     for key in sorted( data[ "Atomic states" ].keys() ):
-        print "State %4s: %-s" %( key, data[ "Atomic states" ][ key ])
+        print ( "State %4s: %-s" %( key, data[ "Atomic states" ][ key ]) )
 
 def get_number_of_kpoinst( data ):
     return data[ 'nkstot' ]
@@ -111,10 +113,10 @@ def get_nspin( data ):
     return data[ 'nspin' ]
 
 def sum_states( data, spin = 'up', state_index = [ 0 ] ):
-    print "Suming the following projections:"
-    print "%-8s %-s" %( 'Index', 'Projection' )
+    print ( "Suming the following projections:" )
+    print ( "%-8s %-s" %( 'Index', 'Projection' ) )
     for key in state_index:
-        print "%-8s %-s" %( key, data[ "Atomic states" ][ key ])
+        print ( "%-8s %-s" %( key, data[ "Atomic states" ][ key ]) )
 
     nkstotal = get_number_of_kpoinst( data )
     nbnd     = get_number_of_bands( data )
@@ -127,12 +129,12 @@ def sum_states( data, spin = 'up', state_index = [ 0 ] ):
        ik_start = nkstotal
        ik_end   = 2 * nkstotal
     elif nspin == 1 and spin == 'down':
-       print "Output file indicates non-spin-polarized calculation"
-       print "spin = \"down\" is ignored"
+       print ( "Output file indicates non-spin-polarized calculation" )
+       print ( "spin = \"down\" is ignored" )
 
     if spin == "up" and nspin == 2:
-       print "Output file indicates spin-polarized calculation"
-       print "Use spin = \"down\" for spin-down data"
+       print ( "Output file indicates spin-polarized calculation" )
+       print ( "Use spin = \"down\" for spin-down data" )
        
     #for ik in sorted( data[ 'atomic projection' ].keys():
     for ik in range( ik_start, ik_end ):
@@ -145,10 +147,10 @@ def sum_states( data, spin = 'up', state_index = [ 0 ] ):
              sum_data[ ik * nbnd + ie, : ] =  np.array( [ ik, e, pdos ] )
     return sum_data
 
-def parse( output ):
+def parse( output, args = {} ):
     lines = read_file( output )
     data = {}
-    data = read_keys( data, lines )
+    data = read_keys( data, lines, args )
     data = read_atomic_states( data, lines ) 
     data = read_projection( data, lines )
   

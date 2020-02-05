@@ -97,7 +97,7 @@ def create_matrix_surface( atoms, matrix = ( 1, 0, 0, 1 ), pad=1, shift = 0.01, 
 
     # Test A1 A2 angle
     if np.cross( A1_surf, A2_surf )[ 2 ] < 0.:
-        print '''WARNING: Cell vector is left-handed. Some program won't work, use matrix = ( %3i, %3i, %3i, %3i ) instead''' %( m2, n2, m1, n1 )
+        print ( "WARNING: Cell vector is left-handed. Some program will not work, use matrix = ( %3i, %3i, %3i, %3i ) instead" %( m2, n2, m1, n1 ) )
 
     # Calculate max length of A1, A2 or the diagonal
     max_length = np.max( ( length( A1_surf ), length( A2_surf ), length( A1_surf + A2_surf ) ) )
@@ -156,7 +156,7 @@ def create_matrix_surface( atoms, matrix = ( 1, 0, 0, 1 ), pad=1, shift = 0.01, 
     nat_expected = S_surface / S_primitive * len( sys0 )
     nat          = len( surface )
     if np.abs( nat_expected - nat ) > 0.1:
-        print "WARNING: Expected number of atoms is %10i but real number of atoms is %10i" %(nat_expected, nat)
+        print ( "WARNING: Expected number of atoms is %10i but real number of atoms is %10i" %(nat_expected, nat) )
     
     return surface
 
@@ -167,8 +167,7 @@ def align_with_x_axis( surface, vector_num = 0 ):
     elif vector_num == 1:
         vector = surface.cell[ 1 ]
     else:
-        print 'ERROR: vector_num = 0 or 1'
-        exit( 'EXITTING' )
+        raise RuntimeError( 'ERROR: vector_num = 0 or 1' )
 
     A1angle = np.arcsin( vector[ 1 ] / length( vector ) )
     if vector[ 0 ] / length( vector ) < 0:

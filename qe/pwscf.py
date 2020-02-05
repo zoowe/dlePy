@@ -161,7 +161,7 @@ class AtomicSpecies:
         self.symbol         = mol
         mass                = np.zeros ( [ ntyp ] , dtype = np.float )
         self.mass           = mass
-        pseudo_potential    = np.zeros ( [ ntyp ] , dtype='S30')
+        pseudo_potential    = np.zeros ( [ ntyp ] , dtype='S50')
         pseudo_potential [ : ] = 'Please_set_pseudo_file'
         self.pseudo_potential = pseudo_potential 
 
@@ -194,12 +194,12 @@ def write_k_points ( kpoints , f ):
         kpoints.mesh  = [ 1, 1, 1 ]
         kpoints.smesh = [ 0, 0, 0 ]
         
-    print >>f, '! .kpoints' 
-    print >>f, 'K_POINTS '+ kpoints.type  + '   ! .kpoints.type '
-    print >>f, "%4i %4i %4i %3i %3i %3i %s" % ( 
+    f.write( '! .kpoints\n' ) 
+    f.write( 'K_POINTS '+ kpoints.type  + '   ! .kpoints.type \n' )
+    f.write( "%4i %4i %4i %3i %3i %3i %s\n" % ( 
                kpoints.mesh[0] ,  kpoints.mesh[1] ,  kpoints.mesh[2], 
                kpoints.smesh[0] ,  kpoints.smesh[1] ,  kpoints.smesh[2], '! .kpoints.mesh and .kpoints.smesh' 
-               )
+               ) )
 
 def write_key ( item , dict ):
     value =   vars( dict )[item]
@@ -233,26 +233,24 @@ def write_array_key ( item , dict , f ):
             add_str +=' '
  
         string  = item + '('+str(i+1)+')'+add_str + ' = ' 
-        print >> f, string, value, ','
+        f.write( "{} {},\n".format( string, value) )
 
 def write_atomic_species ( atomic_species , f ):
     if len( atomic_species.mass ) != atomic_species.ntyp:
-        print 'ERROR: len( mass ) != ntyp'
-        exit( 'EXITTING' )
+        raise RuntimeError( 'ERROR: len( mass ) != ntyp' )
     if len( atomic_species.pseudo_potential ) != atomic_species.ntyp:
-        print 'ERROR: len( pseudo_potential ) != ntyp'
-        exit( 'EXITTING' )
+        raise RuntimeError( 'ERROR: len( pseudo_potential ) != ntyp' )
 
     for i in range ( atomic_species.ntyp ):
-        print >> f, "%5s %8.4f %s" % ( \
+        f.write(  "%5s %8.4f %s\n" % ( \
                     atomic_species.symbol [ i ] , \
                     atomic_species.mass [ i ] , \
-                    atomic_species.pseudo_potential [ i ]
-                    )
+                    atomic_species.pseudo_potential [ i ].decode( 'utf-8' )
+                    ) )
 
 def write_structure ( atoms, f, ibrav, a, recenter = True):
 
-    print >>f,'ATOMIC_POSITIONS  crystal '
+    f.write( 'ATOMIC_POSITIONS  crystal \n' )
     sflags = np.zeros((len(atoms), 3), dtype=bool)
     newsflags = np.ones((len(atoms), 3), dtype=np.int)
     if atoms.constraints:
@@ -272,27 +270,26 @@ def write_structure ( atoms, f, ibrav, a, recenter = True):
             for j in range(3):
                 if x[j] > 0.5:
                    x[j]-=1.
-        print >>f, '%3s %20.14f %20.14f %20.14f %3i %3i %3i' %( \
+        f.write( '%3s %20.14f %20.14f %20.14f %3i %3i %3i\n' %( \
                     atoms.get_chemical_symbols()[i], \
                     x[0] , x[1] , x[2],  \
-                    newsflags[i,0] , newsflags[i,1], newsflags[i,2] )
+                    newsflags[i,0] , newsflags[i,1], newsflags[i,2] ) )
 #                    atoms.get_scaled_positions()[i,0], \
 #                    atoms.get_scaled_positions()[i,1], \
 #                    atoms.get_scaled_positions()[i,2], \
 #                    newsflags[i,0] , newsflags[i,1], newsflags[i,2] )
 
     if ibrav == 0: 
-        print >>f,'CELL_PARAMETERS alat'
+        f.write('CELL_PARAMETERS alat\n' )
         for i in range (3):
-            print >>f,'%20.14f %20.14f %20.14f' %( \
+            f.write('%20.14f %20.14f %20.14f\n' %( \
                  atoms.cell[i,0] / a, \
                  atoms.cell[i,1] / a, \
-                 atoms.cell[i,2] / a )
+                 atoms.cell[i,2] / a ) )
     else:
-        print "PLEASE SET ibrav to 0, or REMOVE THE LINE THAT SETS VALUE FOR ibrav"
-        exit( )
+        raise RuntimeError( "PLEASE SET ibrav to 0, or REMOVE THE LINE THAT SETS VALUE FOR ibrav" )
     if np.abs( a - 1 ) > 1.0e-10:
-        print "PLEASE SET LATTICE CONSTANT a TO 1, OR REMOVE THE LINE THAT SETS VALUE FOR a. IT IS HARMLESS but BEST NOT TO SET IT"
+        raise RuntimeError( "PLEASE SET LATTICE CONSTANT a TO 1, OR REMOVE THE LINE THAT SETS VALUE FOR a. IT IS HARMLESS but BEST NOT TO SET IT" )
         
 def verify_potential( object ):
     pseudo_dir = object.control.settings.pseudo_dir
@@ -302,7 +299,7 @@ def verify_potential( object ):
         pot = object.atomic_species.pseudo_potential [ i ]
         exist, txt = file_exist( pseudo_dir + '/' + pot )
         if not exist:
-            print 'WARNING :' + txt
+            print ( 'WARNING :' + txt )
         else:
             with open( pseudo_dir + '/' + pot, 'r' ) as fpot:
                 lines = fpot.readlines( )
@@ -317,128 +314,128 @@ def verify_potential( object ):
                     ecutrho.append( ecutc )
                     break
     if len( ecutwfc ) * len( ecutrho ) > 0:
-        print "*************************"
-        print "Suggested minimum cutoff for wavefunctions: ecutwfc = %4.1f Ry" %( np.max( np.array( ecutwfc ) ) )
-        print "Suggested minimum cutoff for charge density: ecutrho = %4.1f Ry" %( np.max( np.array( ecutrho ) ) )
-        print "You are using ecutwfc = %4.1f Ry and ecutrho = %4.1f Ry" % ( object.system.ecut.ecutwfc, object.system.ecut.ecutrho )
+        print ( "*************************" )
+        print ( "Suggested minimum cutoff for wavefunctions: ecutwfc = %4.1f Ry" %( np.max( np.array( ecutwfc ) ) ) )
+        print ( "Suggested minimum cutoff for charge density: ecutrho = %4.1f Ry" %( np.max( np.array( ecutrho ) ) ) )
+        print ( "You are using ecutwfc = %4.1f Ry and ecutrho = %4.1f Ry" % ( object.system.ecut.ecutwfc, object.system.ecut.ecutrho ) )
     else:
-        print "*************************"
-        print "No suggestion for cutoff values as potential files cannot be read"
+        print ( "*************************" )
+        print ( "No suggestion for cutoff values as potential files cannot be read" )
 
 def write_pwscf_input ( object , filename, verify_pot = False, recenter = False):
     f = open ( filename, 'w' )
     """ Write CONTROL section """
-    print >>f, '&CONTROL'
-    print >>f, '! .control.settings'
+    f.write( '&CONTROL\n' )
+    f.write( '! .control.settings\n' )
     dict = object.control.settings
     for item in vars( dict ):
-        print >>f, write_key ( item , dict )
+        f.write( write_key ( item , dict ) + '\n' )
 
-    print >>f, ''
-    print >>f, '! .control.io'
+    f.write( '\n' )
+    f.write( '! .control.io\n' )
     dict = object.control.io 
     for item in vars( dict ):
-        print >>f, write_key ( item , dict )
+        f.write( write_key ( item , dict ) + '\n' )
  
     #if vars( object.control.settings )[ "calculation" ] in [ "relax", "vc-relax" ]:
-    print >>f, ''
-    print >>f, '! .control.ion_relax'
+    f.write( '\n' )
+    f.write( '! .control.ion_relax\n' )
     dict = object.control.ion_relax
     for item in vars( dict ):
-        print >>f, write_key ( item , dict )
+        f.write( write_key ( item , dict ) + '\n' )
 
-    print >>f, '/'
+    f.write( '/\n' )
 
-    print >>f, ''
+    f.write( '\n' )
 
     """ &SYSTEM section """
-    print >>f, '&SYSTEM'
-    print >>f, '! .system.structure'
+    f.write( '&SYSTEM\n' )
+    f.write( '! .system.structure\n' )
     if np.abs( object.system.structure.a - 1.0e-10 ) > 0:
-        print "Lattice constant a is set to 1"
+        print ( "Lattice constant a is set to 1" )
         object.system.structure.a = 1.
     if object.system.structure.ibrav != 0:
-        print "ibrav is set to 0"
+        print ( "ibrav is set to 0" )
         object.system.structure.ibrav = 0
 
     dict = object.system.structure 
     for item in vars( dict ):
-        print >>f, write_key ( item , dict )
+        f.write( write_key ( item , dict ) + '\n' )
 
-    print >>f, ''
-    print >>f, '! .system.ecut'
+    f.write( '\n' )
+    f.write( '! .system.ecut\n' )
     dict = object.system.ecut
     for item in vars( dict ):
-        print >>f, write_key ( item , dict )
+        f.write( write_key ( item , dict ) + '\n' )
 
-    print >>f, ''
-    print >>f, '! .system.occupations'
+    f.write( '\n' )
+    f.write( '! .system.occupations \n' )
     dict = object.system.occupations
     for item in vars( dict ):
-        print >>f, write_key ( item , dict )
+        f.write( write_key ( item , dict ) + '\n' )
 
     if object.system.spin_pol.nspin is 2:
-        print >>f, ''
-        print >>f, '! .system.spin_pol'
+        f.write( '\n' )
+        f.write( '! .system.spin_pol\n' )
         dict = object.system.spin_pol
         for item in vars( dict ):
-            print >>f, write_key ( item , dict )
+            f.write( write_key ( item , dict ) + '\n' )
 
-        print >>f, '! .system.starting_magnetization'
+        f.write( '! .system.starting_magnetization\n' )
         dict = object.system.starting_magnetization
-        item = 'starting_magnetization'
+        item = 'starting_magnetization' 
         write_array_key ( item ,  dict , f)
 
-    print >>f, ''
-    print >>f, '! .system.additional_keywords'
+    f.write( '\n' )
+    f.write( '! .system.additional_keywords\n' )
     dict = object.system.additional_keywords
     for item in vars( dict ):
-        print >>f, write_key ( item , dict )
+        f.write( write_key ( item , dict ) + '\n' )
 
 
-    print >>f, '/'
-    print >>f, ''
+    f.write( '/\n' )
+    f.write( '\n' )
 
     """ &ELECTRONS section """
-    print >>f, '&ELECTRONS' 
-    print >>f, '! .electrons'
+    f.write( '&ELECTRONS\n' )
+    f.write( '! .electrons\n' )
     dict = object.electrons
     for item in vars( dict ): 
-        print >>f, write_key ( item , dict )
+        f.write( write_key ( item , dict ) + '\n' )
 
-    print >>f, '/'
-    print >>f, ''
+    f.write( '/\n' )
+    f.write( '\n' )
 
     """ &IONS section """
     if vars( object.control.settings )[ "calculation" ] in [ "relax", "vc-relax", "md", "vc-md" ]:
-        print >>f, '&IONS'
-        print >>f, '! .ions'
+        f.write( '&IONS\n' )
+        f.write( '! .ions\n' )
         dict = object.ions
         for item in vars( dict ):
-            print >>f, write_key ( item , dict )
+            f.write( write_key ( item , dict ) + '\n' )
 
-        print >>f, '/'
-        print >>f, ''
+        f.write( '/\n' )
+        f.write( '' )
 
     """ &CELL section """
     if vars( object.control.settings )[ "calculation" ] in [ "vc-relax", "vc-md" ]:
-        print >>f, '&CELL'
-        print >>f, '! .cell'
+        f.write( '&CELL\n' )
+        f.write( '! .cell\n' )
         dict = object.cell
         for item in vars( dict ):
-            print >>f, write_key ( item , dict )
+            f.write( write_key ( item , dict ) + '\n' )
 
-        print >>f, '/'
-        print >>f, ''
+        f.write( '/\n' )
+        f.write( '\n' )
 
     """ ATOMIC_SPECIES section """
-    print >>f, '! .atomic_species'
-    print >>f, 'ATOMIC_SPECIES'
+    f.write( '! .atomic_species\n' )
+    f.write( 'ATOMIC_SPECIES\n' )
     write_atomic_species ( object.atomic_species , f )
-    print >>f, ''
+    f.write( '\n' )
     write_structure      ( object.atoms, f, object.system.structure.ibrav, object.system.structure.a, recenter )
 
-    print >>f, ''
+    f.write( '\n' )
     write_k_points       ( object.kpoints, f)
     
     if verify_pot:

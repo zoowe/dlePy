@@ -16,7 +16,7 @@ def gen_POTCAR( system, potcar_loc, map = {}  ):
         map[ at ] = at
     for at in map_in.keys():
         map[ at ] = map_in[ at ]
-    print map 
+    print ( map )
     for at in range( len( atom_list ) ):
         if at == 0:
             os.system( 'cat ' + potcar_loc + 'POTCAR.' +  map[ atom_list[ at ] ] + ' > POTCAR' )

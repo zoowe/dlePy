@@ -17,11 +17,10 @@ from ase.io import read, write
 
 def read_chgcar(INDATA, CONTCAR='CONTCAR'):
 
-    print 'Input data: ',INDATA
+    print ( 'Input data: ',INDATA )
 
     #Read CONTCAR to define the system.
     system=read(CONTCAR)
-
 
     #We don't need this, thus we need to count how many lines
     #we need to ignore
@@ -41,14 +40,14 @@ def read_chgcar(INDATA, CONTCAR='CONTCAR'):
     #Make it becomes integers 
     ng  = ( int( ngr[ 0 ] ), int( ngr[ 1 ] ), int( ngr[ 2 ] ) )
 
-    print 'Read ',INDATA
-    print datetime.datetime.now( )
+    print ( 'Read ',INDATA )
+    print ( datetime.datetime.now( ) )
 
     total = np.empty( ng[ 0 ] * ng[ 1 ] * ng[ 2 ] )
     total = np.fromfile( file, count = ng[ 0 ] * ng[ 1 ] * ng[ 2 ], sep=' ')
     total = total.reshape( ng[ 2 ], ng[ 1 ], ng[ 0 ] ).T
 
-    print datetime.datetime.now( )
+    print ( datetime.datetime.now( ) )
 
     return total / system.get_volume( )
 
@@ -75,21 +74,21 @@ def write_chgcar( fobj, atoms, data = None):
 
     shape = np.array( data.shape )
     
-    fobj.write(' %5i %5i %5i \n' % ( shape[0], shape[1], shape[2]))
+    fobj.write(' %5i %5i %5i \n' % ( shape[ 0 ], shape[ 1 ], shape[ 2 ] ) )
 
 
     # Make a 1D copy of chg, must take transpose to get ordering right
-    chgtmp = data.T.ravel()
+    chgtmp = data.T.ravel( )
 
     # Must be a tuple to pass to string conversion
-    chgtmp = tuple(chgtmp)
+    chgtmp = tuple( chgtmp )
 
     # Other formats - 5 columns
     # Write all but the last row
-    print datetime.datetime.now()
+    print ( datetime.datetime.now( ) )
 
     for ii in range( ( len( chgtmp ) - 1 ) / 5 ):
-         fobj.write(' %17.10E %17.10E %17.10E %17.10E %17.10E\n' % chgtmp[ ii*5: (ii+1) * 5])
+         fobj.write(' %17.10E %17.10E %17.10E %17.10E %17.10E\n' % chgtmp[ ii * 5 : ( ii + 1 ) * 5])
 
     # If the last row contains 5 values then write them without a newline
     if len( chgtmp ) % 5 == 0:
@@ -98,12 +97,12 @@ def write_chgcar( fobj, atoms, data = None):
     # Otherwise write fewer columns without a newline
     else:
          for ii in range( len( chgtmp ) % 5 ):
-              fobj.write((' %17.10E') % chgtmp[ len( chgtmp ) - len( chgtmp ) % 5 + ii ] )
+              fobj.write( (' %17.10E') % chgtmp[ len( chgtmp ) - len( chgtmp ) % 5 + ii ] )
 
     # Write a newline whatever format it is
-    fobj.write('\n')
+    fobj.write( '\n' )
 
-    print datetime.datetime.now()
+    print ( datetime.datetime.now() )
     # Clean up
     del chgtmp
 
@@ -111,10 +110,7 @@ def write_chgcar( fobj, atoms, data = None):
 def reduce_array( data, factor ):
     ng = data.shape
     if np.sum ( np.array( ng ) % factor ) != 0:
-        print 'ERROR: Remainder of ng / factor must be zero'
-        print 'ERROR: ng = ', ng
-        print 'ERROR: EXIT'
-        exit()
+        raise RuntimeError ( """ERROR: Remainder of ng / factor must be zero. ng = { }""".format( ng ) )
 
     ng_    = np.array( ng ) / factor
     data_  = np.empty( ng_ )
@@ -124,7 +120,7 @@ def reduce_array( data, factor ):
 
 def reduce_chgcar( INDATA, factor, CONTCAR = 'CONTCAR' ):
     OUTPRE = 'Reduced.' + INDATA + '.vasp'
-    print 'Input data: ', INDATA
+    print ( 'Input data: ', INDATA )
 
     #Read CONTCAR to define the system.
     system = read( CONTCAR )
@@ -132,7 +128,7 @@ def reduce_chgcar( INDATA, factor, CONTCAR = 'CONTCAR' ):
     total  = read_chgcar( INDATA, CONTCAR = CONTCAR )
     total_ = reduce_array( total, factor ) 
 
-    print 'Write Charge'
+    print ( 'Write Charge' )
     write_chgcar( OUTPRE, system, data = total_ )
 
 def reduce_spin_chgcar(INDATA, factor,CONTCAR='CONTCAR'):
@@ -141,7 +137,7 @@ def reduce_spin_chgcar(INDATA, factor,CONTCAR='CONTCAR'):
     if factor > 1:
         OUTPRE='Reduced.'+INDATA+'.vasp'
 
-    print 'Input data: ',INDATA
+    print ( 'Input data: ',INDATA )
     
     #Read CONTCAR to define the system.
     system = read( CONTCAR )
@@ -164,7 +160,7 @@ def reduce_spin_chgcar(INDATA, factor,CONTCAR='CONTCAR'):
     #Make it becomes integers 
     ng = ( int( ngr[ 0 ] ), int( ngr[ 1 ] ), int( ngr[ 2 ] ) )
 
-    print 'Read total charge'
+    print ( 'Read total charge' )
 
     total = np.empty( ng[ 0 ] * ng[ 1 ] * ng[ 2 ] )
     total = np.fromfile( file, count = ng[ 0 ] * ng[ 1 ] * ng[ 2 ], sep=' ')
@@ -173,7 +169,7 @@ def reduce_spin_chgcar(INDATA, factor,CONTCAR='CONTCAR'):
     total_ = reduce_array( total, factor ) 
     del (total)
 
-    print 'Write Charge'
+    print ( 'Write Charge' )
     write_chgcar( OUTPRE, system, data = total_ )
     
     for i in range(10000):
@@ -181,7 +177,7 @@ def reduce_spin_chgcar(INDATA, factor,CONTCAR='CONTCAR'):
         ngr_ = dump.split( )  
         if ngr[ 0 ] == ngr_[ 0 ]:
            break
-    print 'Read SPIN'
+    print ( 'Read SPIN' )
 
     spin = np.empty(ng[0]*ng[1]*ng[2])
     spin = np.fromfile(file, count = ng[0]*ng[1]*ng[2], sep=' ')
@@ -192,25 +188,25 @@ def reduce_spin_chgcar(INDATA, factor,CONTCAR='CONTCAR'):
     
     file.close()
 
-    print 'Write Spin'
+    print ( 'Write Spin' )
     write_chgcar('SPIN' + OUTPRE, system, data = spin_ )
 
-    print 'Now, working on SPIN_UP'
+    print ( 'Now, working on SPIN_UP' )
     spin_up = np.empty( spin_.shape )
 
-    print 'Now, calculating  SPIN_UP'
+    print ( 'Now, calculating  SPIN_UP' )
     spin_up = ( total_ + spin_ ) / 2.
 
-    print 'Now, write  SPIN_UP'
+    print ( 'Now, write  SPIN_UP' )
     write_chgcar('SPIN_UP.' + OUTPRE, system, data = spin_up )
     del ( spin_up )
 
-    print 'Now, working on SPIN_DN'
+    print ( 'Now, working on SPIN_DN' )
     spin_dn=np.empty( spin_.shape )
-    print 'Now, calculating  SPIN_DN'
+    print ( 'Now, calculating  SPIN_DN' )
     spin_dn = ( total_ - spin_ ) / 2.
 
-    print 'Now, writing  SPIN_DN'
+    print ( 'Now, writing  SPIN_DN' )
     write_chgcar('SPIN_DN.' + OUTPRE, system, data = spin_dn )
     del ( spin_dn )
     del ( total_ )
@@ -248,9 +244,9 @@ def write_vtk( fobj, atoms, data = None):
     x = x.ravel()    
     y = y.ravel()    
     z = z.ravel()    
-    print len (x), len(y), len(z), shape[0]*shape[1]*shape[2]
+    #print  len (x), len(y), len(z), shape[0]*shape[1]*shape[2]
     for i in range ( len ( x ) ):
-         print >>fobj, x[i],y[i],z[i]
+         fobji.write( "{} {} {}\n".fotmat( x[i],y[i],z[i] ) )
     fobj.write('POINT_DATA %10i \n' %( shape[0]*shape[1]*shape[2]))     
     fobj.write('SCALARS Density double \n')
     fobj.write('LOOKUP_TABLE default \n')
@@ -293,5 +289,5 @@ def average(data):
     f=open('AVELCPOT','w')
     for k in range(data.shape[2]):
         LCPOT[k]=np.sum(data[:,:,k])/float(data.shape[0]*data.shape[1])
-        print >>f, k,LCPOT[k]
+        f.write( "{} {}\n".format( k,LCPOT[k] ) )
  
