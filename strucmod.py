@@ -137,7 +137,6 @@ def sort_group( atoms, indices = [], symbols = [] ):
 
 
     sortatoms = atoms[ atomsortlist ]
-    fixatoms  = atoms[ atomfixlist  ]
 
     # Use sort=True to write it for now
     write('sort.POSCAR', sortatoms, format = 'vasp', direct = True, sort = True )
@@ -146,7 +145,11 @@ def sort_group( atoms, indices = [], symbols = [] ):
     sortatoms = read ( 'sort.POSCAR', format = 'vasp' )
     os.system( 'rm -f sort.POSCAR' )
 
-    atoms_ = fixatoms + sortatoms
+    if len( atomfixlist ) > 0:
+        fixatoms  = atoms[ atomfixlist  ]
+        atoms_ = fixatoms + sortatoms
+    else:
+        atoms_ = sortatoms
 
     return atoms_ 
 
