@@ -87,7 +87,7 @@ def write_chgcar( fobj, atoms, data = None):
     # Write all but the last row
     print ( datetime.datetime.now( ) )
 
-    for ii in range( ( len( chgtmp ) - 1 ) / 5 ):
+    for ii in range( int( ( len( chgtmp ) - 1 ) / 5 ) ):
          fobj.write(' %17.10E %17.10E %17.10E %17.10E %17.10E\n' % chgtmp[ ii * 5 : ( ii + 1 ) * 5])
 
     # If the last row contains 5 values then write them without a newline

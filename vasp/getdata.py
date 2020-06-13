@@ -3,7 +3,7 @@ import gzip as gz
 from ..math import str2bool
 from ..small_tools import str_decode
 
-def get_lines_outcar( outcar ):
+def read_outcar( outcar ):
     if '.gz' in outcar:
         with gz.open( outcar, 'rb' ) as f:
             lines = f.readlines( )
@@ -11,7 +11,28 @@ def get_lines_outcar( outcar ):
     else:
         with open( outcar, 'r' ) as f:
             lines = f.readlines( )
-        decode = False  
+        decode = False
+
+    return lines, decode
+
+def if_vasp_done( outcar ):
+    job_done = False
+    lines, decode = read_outcar( outcar )
+    if 'Voluntary context switches' in str_decode( lines[ -1 ], decode) :
+        job_done = True
+    return job_done
+
+
+def get_lines_outcar( outcar ):
+    #if '.gz' in outcar:
+    #    with gz.open( outcar, 'rb' ) as f:
+    #        lines = f.readlines( )
+    #    decode = True
+    #else:
+    #    with open( outcar, 'r' ) as f:
+    #        lines = f.readlines( )
+    #    decode = False  
+    lines, decode = read_outcar( outcar )
     #Check if calculation is done
 
     job_done = False
