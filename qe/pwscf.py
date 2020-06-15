@@ -36,6 +36,7 @@ Website: http://www.physics.ufc.edu/~dle
 import numpy as np
 from ase.constraints import FixAtoms, FixScaled
 from ..small_tools import file_exist
+import os
 
 class PWscfInput:
     def __init__(self, atoms):
@@ -245,7 +246,7 @@ def write_atomic_species ( atomic_species , f ):
         f.write(  "%5s %8.4f %s\n" % ( \
                     atomic_species.symbol [ i ] , \
                     atomic_species.mass [ i ] , \
-                    atomic_species.pseudo_potential [ i ].decode( 'utf-8' )
+                    atomic_species.pseudo_potential [ i ] #.decode( 'utf-8' )
                     ) )
 
 def write_structure ( atoms, f, ibrav, a, recenter = True):
@@ -322,7 +323,19 @@ def verify_potential( object ):
         print ( "*************************" )
         print ( "No suggestion for cutoff values as potential files cannot be read" )
 
-def write_pwscf_input ( object , filename, verify_pot = False, recenter = False):
+def cp_potential( object ):
+    pseudo_dir = object.control.settings.pseudo_dir
+    for i in range ( object.atomic_species.ntyp ):
+        pot = object.atomic_species.pseudo_potential [ i ]
+        exist, txt = file_exist( pseudo_dir + '/' + pot )
+        if exist:
+            os.system( 'cp -v ' + pseudo_dir + '/' + pot + ' .' )
+
+def write_pwscf_input ( object , filename, verify_pot = False, recenter = False, cp_pot = False ):
+    if cp_pot:
+        cp_potential( object )
+        object.control.settings.pseudo_dir = './'
+
     f = open ( filename, 'w' )
     """ Write CONTROL section """
     f.write( '&CONTROL\n' )
