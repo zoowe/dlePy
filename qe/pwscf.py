@@ -101,7 +101,7 @@ class System:
 class SystemStructure:
     def __init__(self , atoms ):
         self.ibrav          = 0
-        self.a              = 1.0 
+        #!self.a              = 1.0 
         self.nat            = len(atoms)
         mol                 = get_reduce_atom_list ( atoms )
         self.ntyp           = len ( mol )
@@ -281,7 +281,7 @@ def write_structure ( atoms, f, ibrav, a, recenter = True):
 #                    newsflags[i,0] , newsflags[i,1], newsflags[i,2] )
 
     if ibrav == 0: 
-        f.write('CELL_PARAMETERS alat\n' )
+        f.write('CELL_PARAMETERS angstrom\n' )
         for i in range (3):
             f.write('%20.14f %20.14f %20.14f\n' %( \
                  atoms.cell[i,0] / a, \
@@ -289,8 +289,8 @@ def write_structure ( atoms, f, ibrav, a, recenter = True):
                  atoms.cell[i,2] / a ) )
     else:
         raise RuntimeError( "PLEASE SET ibrav to 0, or REMOVE THE LINE THAT SETS VALUE FOR ibrav" )
-    if np.abs( a - 1 ) > 1.0e-10:
-        raise RuntimeError( "PLEASE SET LATTICE CONSTANT a TO 1, OR REMOVE THE LINE THAT SETS VALUE FOR a. IT IS HARMLESS but BEST NOT TO SET IT" )
+    #if np.abs( a - 1 ) > 1.0e-10:
+    #    raise RuntimeError( "PLEASE SET LATTICE CONSTANT a TO 1, OR REMOVE THE LINE THAT SETS VALUE FOR a. IT IS HARMLESS but BEST NOT TO SET IT" )
         
 def verify_potential( object ):
     pseudo_dir = object.control.settings.pseudo_dir
