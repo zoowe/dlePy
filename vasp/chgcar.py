@@ -14,42 +14,21 @@ import datetime
 from ase.atoms import Atoms
 from ase.units import Bohr
 from ase.io import read, write
+from ase.calculators.vasp import VaspChargeDensity
+
 
 def read_chgcar(INDATA, CONTCAR='CONTCAR'):
 
     print ( 'Input data: ',INDATA )
 
-    #Read CONTCAR to define the system.
-    system=read(CONTCAR)
-
-    #We don't need this, thus we need to count how many lines
-    #we need to ignore
-    nline     = 9
-    startline = nline + system.get_number_of_atoms()
-
-    #Open file 
-    file=open( INDATA,'r')
-
-    #Read all ignored lines
-    for i in range( startline ):
-        dump = file.readline( )
-
-    #Read the dimensions of the array
-    ngr = file.readline( ).split( )
-
-    #Make it becomes integers 
-    ng  = ( int( ngr[ 0 ] ), int( ngr[ 1 ] ), int( ngr[ 2 ] ) )
-
     print ( 'Read ',INDATA )
     print ( datetime.datetime.now( ) )
 
-    total = np.empty( ng[ 0 ] * ng[ 1 ] * ng[ 2 ] )
-    total = np.fromfile( file, count = ng[ 0 ] * ng[ 1 ] * ng[ 2 ], sep=' ')
-    total = total.reshape( ng[ 2 ], ng[ 1 ], ng[ 0 ] ).T
+    rho = VaspChargeDensity( INDATA )
 
     print ( datetime.datetime.now( ) )
 
-    return total / system.get_volume( )
+    return rho
 
 def write_chgcar( fobj, atoms, data = None):
 
@@ -113,7 +92,7 @@ def reduce_array( data, factor ):
         raise RuntimeError ( """ERROR: Remainder of ng / factor must be zero. ng = { }""".format( ng ) )
 
     ng_    = np.array( ng ) / factor
-    data_  = np.empty( ng_ )
+    data_  = np.empty( ng_.astype(int) )
     data_  = data[ ::factor, ::factor, ::factor ]
    
     return data_
@@ -125,7 +104,8 @@ def reduce_chgcar( INDATA, factor, CONTCAR = 'CONTCAR' ):
     #Read CONTCAR to define the system.
     system = read( CONTCAR )
 
-    total  = read_chgcar( INDATA, CONTCAR = CONTCAR )
+    rho    = read_chgcar( INDATA, CONTCAR = CONTCAR )
+    total  = rho.chg[ 0 ]
     total_ = reduce_array( total, factor ) 
 
     print ( 'Write Charge' )
@@ -143,28 +123,9 @@ def reduce_spin_chgcar(INDATA, factor,CONTCAR='CONTCAR'):
     system = read( CONTCAR )
     
     
-    #We don't need this, thus we need to count how many lines
-    #we need to ignore
-    nline = 9
-    startline = nline + system.get_number_of_atoms( )
+    rho    = read_chgcar( INDATA, CONTCAR = CONTCAR )
     
-    #Open file 
-    file=open( INDATA, 'r' )
-    
-    #Read all ignored lines
-    for i in range( startline ):
-        dump = file.readline( )
-    
-    #Read the dimensions of the array
-    ngr = file.readline( ).split( )
-    #Make it becomes integers 
-    ng = ( int( ngr[ 0 ] ), int( ngr[ 1 ] ), int( ngr[ 2 ] ) )
-
-    print ( 'Read total charge' )
-
-    total = np.empty( ng[ 0 ] * ng[ 1 ] * ng[ 2 ] )
-    total = np.fromfile( file, count = ng[ 0 ] * ng[ 1 ] * ng[ 2 ], sep=' ')
-    total = total.reshape( ng[ 2 ], ng[ 1 ], ng[ 0 ] ).T
+    total  = rho.chg[ 0 ]
 
     total_ = reduce_array( total, factor ) 
     del (total)
@@ -172,22 +133,11 @@ def reduce_spin_chgcar(INDATA, factor,CONTCAR='CONTCAR'):
     print ( 'Write Charge' )
     write_chgcar( OUTPRE, system, data = total_ )
     
-    for i in range(10000):
-        dump = file.readline( )
-        ngr_ = dump.split( )  
-        if ngr[ 0 ] == ngr_[ 0 ]:
-           break
-    print ( 'Read SPIN' )
-
-    spin = np.empty(ng[0]*ng[1]*ng[2])
-    spin = np.fromfile(file, count = ng[0]*ng[1]*ng[2], sep=' ')
-    spin = spin.reshape (ng[2], ng[1],ng[0]).T
+    spin = rho.chgdiff[ 0 ]
 
     spin_ = reduce_array( spin, factor ) 
     del (spin)
     
-    file.close()
-
     print ( 'Write Spin' )
     write_chgcar('SPIN' + OUTPRE, system, data = spin_ )
 

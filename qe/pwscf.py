@@ -249,7 +249,7 @@ def write_atomic_species ( atomic_species , f ):
                     atomic_species.pseudo_potential [ i ] #.decode( 'utf-8' )
                     ) )
 
-def write_structure ( atoms, f, ibrav, a, recenter = True):
+def write_structure ( atoms, f, ibrav, recenter = True):
 
     f.write( 'ATOMIC_POSITIONS  crystal \n' )
     sflags = np.zeros((len(atoms), 3), dtype=bool)
@@ -284,9 +284,9 @@ def write_structure ( atoms, f, ibrav, a, recenter = True):
         f.write('CELL_PARAMETERS angstrom\n' )
         for i in range (3):
             f.write('%20.14f %20.14f %20.14f\n' %( \
-                 atoms.cell[i,0] / a, \
-                 atoms.cell[i,1] / a, \
-                 atoms.cell[i,2] / a ) )
+                 atoms.cell[i,0], \
+                 atoms.cell[i,1], \
+                 atoms.cell[i,2] ) )
     else:
         raise RuntimeError( "PLEASE SET ibrav to 0, or REMOVE THE LINE THAT SETS VALUE FOR ibrav" )
     #if np.abs( a - 1 ) > 1.0e-10:
@@ -364,9 +364,9 @@ def write_pwscf_input ( object , filename, verify_pot = False, recenter = False,
     """ &SYSTEM section """
     f.write( '&SYSTEM\n' )
     f.write( '! .system.structure\n' )
-    if np.abs( object.system.structure.a - 1.0e-10 ) > 0:
-        print ( "Lattice constant a is set to 1" )
-        object.system.structure.a = 1.
+    #if np.abs( object.system.structure.a - 1.0e-10 ) > 0:
+    #    print ( "Lattice constant a is set to 1" )
+    #    object.system.structure.a = 1.
     if object.system.structure.ibrav != 0:
         print ( "ibrav is set to 0" )
         object.system.structure.ibrav = 0
@@ -446,7 +446,8 @@ def write_pwscf_input ( object , filename, verify_pot = False, recenter = False,
     f.write( 'ATOMIC_SPECIES\n' )
     write_atomic_species ( object.atomic_species , f )
     f.write( '\n' )
-    write_structure      ( object.atoms, f, object.system.structure.ibrav, object.system.structure.a, recenter )
+    #write_structure      ( object.atoms, f, object.system.structure.ibrav, object.system.structure.a, recenter )
+    write_structure      ( object.atoms, f, object.system.structure.ibrav, recenter )
 
     f.write( '\n' )
     write_k_points       ( object.kpoints, f)
