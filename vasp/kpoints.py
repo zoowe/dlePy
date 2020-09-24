@@ -3,7 +3,30 @@ from ase.io import *
 import numpy as np
 from ..math import length
 
-def vasp_band_gen_k(klist, npts0, ppf,hse=False):    
+def rec2cart( recs, b ):
+    '''
+    recs: 3-elements array like. Reciprocal coordinate
+    b: reciprocal vectors ( atoms.get_reciprocal_cell())
+    output: carts in 2 pi / a
+    '''
+
+    carts = np.zeros( [ 3 ] )
+    for i in range( 3 ):
+        carts = recs[ 0 ] * b[ :, 0 ] + recs[ 1 ] * b[ :, 1 ] + recs[ 2 ] * b[ :, 2 ]
+
+    return carts 
+    
+def vasp_band_gen_k(klist, npts0, ppf,b = None, hse=False):    
+
+    klist_ = klist
+    if b is None:
+        coor_type = 'Reciprocal lattice'
+    else:
+        coor_type = 'Cartesian'
+        klist = []
+        for k in klist_:
+            k_ = rec2cart( k, b )
+            klist.append( k_ )
     
     d   = np.zeros( [ len( klist ) - 1    ] ) 
     x   = np.zeros( [ len( klist ) - 1, 3 ] )
@@ -50,7 +73,7 @@ def vasp_band_gen_k(klist, npts0, ppf,hse=False):
         if not hse:
             f.write( 'Automatically generated mesh\n' )
             f.write( str( ppf ) + '\n' )
-            f.write( 'Reciprocal lattice\n' )
+            f.write( coor_type + '\n' )
         else:
             try:
                 IBZKPT = open( 'IBZKPT', 'r' )
