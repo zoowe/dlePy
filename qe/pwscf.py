@@ -246,7 +246,7 @@ def write_atomic_species ( atomic_species , f ):
         f.write(  "%5s %8.4f %s\n" % ( \
                     atomic_species.symbol [ i ] , \
                     atomic_species.mass [ i ] , \
-                    atomic_species.pseudo_potential [ i ] #.decode( 'utf-8' )
+                    atomic_species.pseudo_potential [ i ].decode( 'utf-8' )
                     ) )
 
 def write_structure ( atoms, f, ibrav, recenter = True):
