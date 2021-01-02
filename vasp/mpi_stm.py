@@ -31,9 +31,9 @@ name = MPI.Get_processor_name()
 def print_mpi(rank,txt,endline=True):
     if rank == 0:
         if endline==True:
-            print txt
+            print ( txt )
         else:
-            print txt,
+            print ( txt ),
 
 def print_time(rank, time):
     print_mpi (rank,'Total time: '+str(time))
