@@ -22,42 +22,43 @@ from scipy.interpolate import interp1d
 #from datetime import datetime
 
 def tersoff_hamann(CONTCAR,INDATA,OUTPRE,TOP,LDOS_IN,ref):    
-    print '***********************************'
-    print 'Tersoff-Hamann approximation of STM'
-    print ''
-    print 'The constant current STM image is  '
-    print 'simulated for the following:'
-    print ''    
-    print 'Input data: ',INDATA
-    print 'Value of LDOS: ',LDOS_IN,' e/A^3'
-    print 'The program will add ',TOP,' point'
-    print 'in z directions'
-    print 'STM image in CHGCAR format is written'
-    print 'in ',OUTPRE+'.STM.vasp'
-    print 'and in 2D crystal coordinates in: ',OUTPRE+'.STM.vasp'
-    print ''
-    print '************************************'
-    print ''
-    print '' 
+    print ('***********************************' )
+    print ('Tersoff-Hamann approximation of STM' )
+    print ('' )
+    print ('The constant current STM image is  ' )
+    print ('simulated for the following:' )
+    print (''    )
+    print ('Input data: ',INDATA )
+    print ('Value of LDOS: ',LDOS_IN,' e/A^3' )
+    print ('The program will add ',TOP,' point' )
+    print ('in z directions' )
+    print ('STM image in CHGCAR format is written' )
+    print ('in ',OUTPRE+'.STM.vasp' )
+    print ('and in 2D crystal coordinates in: ',OUTPRE+'.STM.vasp' )
+    print ('' )
+    print ('************************************' )
+    print ('' )
+    print ('' )
 
     #Read CONTCAR to define the system.
-    print "checking file: "+CONTCAR
+    print ("checking file: "+CONTCAR )
     file_exists, txt=file_exist(CONTCAR)
     if not file_exists:
-        print txt
+        print ( txt )
     else:
-        print "checking file: "+INDATA
+        print ( "checking file: "+INDATA )
         file_exists, txt=file_exist(INDATA)
         if not file_exists:
-            print txt
+            print ( txt )
     if file_exists:
         system=read(CONTCAR)
         total0 = read_chgcar(INDATA,CONTCAR=CONTCAR)
+        total0 = total0.chg[ 0 ]
         ng = total0.shape
         min=np.min(total0)
         max=np.max(total0)
-        print 'Min ldos ',min,' e/A^3'
-        print 'Max ldos ',max,' e/A^3'
+        print ('Min ldos ',min,' e/A^3' )
+        print ('Max ldos ',max,' e/A^3' )
         total = np.zeros([ng[0],ng[1],ng[2] + TOP])
         total[:,:,0:ng[2]]=total0[:,:,0:ng[2]]
         total[:,:,ng[2]:ng[2]+TOP]=total0[:,:,0:TOP]
@@ -66,22 +67,22 @@ def tersoff_hamann(CONTCAR,INDATA,OUTPRE,TOP,LDOS_IN,ref):
         del total0   
  
         ldos = LDOS_IN  
-        print 'Searching for ISO ',LDOS_IN, ' e/A^3'
+        print ('Searching for ISO ',LDOS_IN, ' e/A^3' )
         if (ldos < min) or (ldos > max):
-            print 'Error: iso value must be in range [',\
+            print ('Error: iso value must be in range [',\
                    min,\
                    max,\
-                   ']'
+                   ']' )
         else:
             fileout=open(OUTPRE+'.STM','w')
             data=np.empty([total.shape[0],total.shape[1],1])
             for xx in range(total.shape[0]):
                 for yy in range(total.shape[1]):
-                    print 'Scanning :', xx, yy
+                    print ('Scanning :', xx, yy )
                     col_xy = total [xx,yy,:]
                     zz = col_xy.shape[0] -  np.argmax ( col_xy[::-1] >= ldos ) -1
                     if zz == 0:
-                        print >>fileout,xx,yy, '0.'
+                        fileout.write( str(xx) + ' ' + str( yy ) +  ' 0. \n' )
                         data[xx,yy,0]=0.
                     else:
                         zarray = [ zz-2, zz-1, zz, zz+1, zz+2, zz+3] 
@@ -92,9 +93,9 @@ def tersoff_hamann(CONTCAR,INDATA,OUTPRE,TOP,LDOS_IN,ref):
                         dist = ( dd1 - ldos ) ** 2 
                         min_indx = dist.argmin ()
                         z1 = zz1 [min_indx]
-                        print >>fileout,xx/float(ng[0]),\
-                                        yy/float(ng[1]),\
-                                        z1/float(ng[2])-ref
+                        fileout.write( str( xx/float(ng[0]) ) + ' ' + \
+                                       str( yy/float(ng[1]) ) + ' ' +\
+                                       str( z1/float(ng[2])-ref ) + '\n' )
                         data[xx,yy,0]=z1/float(ng[2]) - ref
  
             write_chgcar(OUTPRE+'.STM.vasp',system,data=data)
@@ -112,16 +113,16 @@ def convert_2D_to_3D(DATA2D,system,DATA3D):
     if file_exists:
         exit('File '+DATA3D+' exist. Use different filename or remove '+DATA3D+'.')
     #del system.constraints
-    print '***********************************'
-    print 'Converting 2D (three column data) STM to'
-    print '3D (in CHGCAR format) STM.'
-    print ''
-    print '2D Data: ',DATA2D
-    print '3D output: ',DATA3D
-    print '************************************'
-    print ''
-    print ''
-    
+    print ('***********************************' )
+    print ('Converting 2D (three column data) STM to' )
+    print ('3D (in CHGCAR format) STM.' )
+    print ('' )
+    print ('2D Data: ',DATA2D )
+    print ('3D output: ',DATA3D )
+    print ('************************************' )
+    print ('')
+    print ('')
+   
     f=np.loadtxt(DATA2D)
     x=f[:,0]
     y=f[:,1]
@@ -163,15 +164,15 @@ def expand_2D(DATA2D,system,OUT,n, m):
     if file_exists:
         exit('File '+OUT+' exist. Use different filename or remove '+OUT+'.')
     #del system.constraints
-    print '***********************************'
-    print 'Expand 2D (three column data) STM '
-    print ''
-    print '2D Data: ',DATA2D
-    print 'Output: ',OUT
-    print 'Expand: ', n, 'x ', m
-    print '************************************'
-    print ''
-    print ''
+    print ('***********************************')
+    print ('Expand 2D (three column data) STM ')
+    print ('')
+    print ('2D Data: ',DATA2D)
+    print ('Output: ',OUT)
+    print ('Expand: ', n, 'x ', m)
+    print ('************************************')
+    print ('')
+    print ('')
     
     f=np.loadtxt(DATA2D)
     ix=f[:,0]
@@ -186,6 +187,6 @@ def expand_2D(DATA2D,system,OUT,n, m):
         for j in range(-1,n):
             for k in range(-1, m):
                 x_out = x + j*system.cell[0,:] + k*system.cell[1,:]
-                print >>fout, "%15.10f %15.10f %15.10f" %(x_out[0], x_out[1], x_out[2])
+                fout.write( "%15.10f %15.10f %15.10f \n" %(x_out[0], x_out[1], x_out[2]) )
     fout.close()
         
