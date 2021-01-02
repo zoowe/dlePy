@@ -1,51 +1,75 @@
 import numpy as np
 import gzip as gz
 from ..math import str2bool
+from ..small_tools import str_decode
 
-def get_lines_outcar( outcar ):
+def read_outcar( outcar ):
     if '.gz' in outcar:
-        with gz.open( outcar, 'r' ) as f:
+        with gz.open( outcar, 'rb' ) as f:
             lines = f.readlines( )
+        decode = True
     else:
         with open( outcar, 'r' ) as f:
             lines = f.readlines( )
+        decode = False
+
+    return lines, decode
+
+def if_vasp_done( outcar ):
+    job_done = False
+    lines, decode = read_outcar( outcar )
+    if 'Voluntary context switches' in str_decode( lines[ -1 ], decode) :
+        job_done = True
+    return job_done
+
+
+def get_lines_outcar( outcar ):
+    #if '.gz' in outcar:
+    #    with gz.open( outcar, 'rb' ) as f:
+    #        lines = f.readlines( )
+    #    decode = True
+    #else:
+    #    with open( outcar, 'r' ) as f:
+    #        lines = f.readlines( )
+    #    decode = False  
+    lines, decode = read_outcar( outcar )
     #Check if calculation is done
 
     job_done = False
     for iline in range( len( lines ) - 1, -1, -1 ):
-        if 'General timing and accounting informations for this job' in lines[ iline ]:
+        if 'General timing and accounting informations for this job' in str_decode( lines[ iline ], decode ):
             job_done = True
             break
     if not job_done:
-        print "WARNING: perhaps OUTCAR is for an imcompleted calculation"
-        print "Please check: ", outcar
+        print ( "WARNING: perhaps OUTCAR is for an imcompleted calculation" )
+        print ( "Please check: ", outcar )
 
-    return lines
+    return lines, decode
 
 def get_calculation_details( outcar ):
     
-    lines = get_lines_outcar( outcar )
+    lines, decode = get_lines_outcar( outcar )
     
     NSW = 0
     EFIELD = 0
     for iline in range( len( lines ) - 1, -1, -1 ):
   
-        if "PREC " in lines[ iline ]:
+        if "PREC " in str_decode( lines[ iline ], decode ):
             PREC = lines[ iline ].split( )[ 2 ] 
 
-        if "ENCUT " in lines[ iline ]:
+        if "ENCUT " in str_decode( lines[ iline ], decode ):
             ENCUT = float( lines[ iline ].split( )[ 2 ] )
       
-        if "LREAL " in lines[ iline ]:
+        if "LREAL " in str_decode( lines[ iline ] ):
             LREAL = str2bool( lines[ iline ].split( )[ 2 ] )
 
-        if "EDIFF " in lines[ iline ] and '=' in lines[ iline ]:
+        if "EDIFF " in str_decode( lines[ iline ], decode ) and '=' in str_decode( lines[ iline ], decode ):
             EDIFF = float( lines[ iline ].split( )[ 2 ] )
 
-        if "EDIFFG" in lines[ iline ]:
+        if "EDIFFG" in str_decode( lines[ iline ], decode ):
             EDIFFG = float( lines[ iline ].split( )[ 2 ] )
 
-        if "ISMEAR" in lines[ iline ]:
+        if "ISMEAR" in str_decode( lines[ iline ], decode ):
             ISMEAR = int( lines[ iline ].split( )[ 2 ].replace( ';', '' ) ) 
             SIGMA  = float( lines[ iline ].split( )[ 5 ] )
 
@@ -92,10 +116,10 @@ def get_calculation_details( outcar ):
 def get_energy( outcar ):
 
     ener = 100000.
-    lines = get_lines_outcar( outcar )
+    lines, decode = get_lines_outcar( outcar )
 
     for iline in range( len( lines ) - 1, -1, -1 ):
-        if "energy  w" in lines[ iline ]:
+        if "energy  w" in str_decode( lines[ iline ], decode ):
             ener = float( lines[ iline ].split( )[ 6 ] )
             break
 
