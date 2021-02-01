@@ -16,6 +16,12 @@ from ase.units import Bohr
 from ase.io import read, write
 from ase.calculators.vasp import VaspChargeDensity
 
+class LocalVaspChargeDensity:
+    def __init__( self ):
+        self.atoms = []
+        self.chg = []
+        self.chgdiff = []
+
 
 def read_chgcar(INDATA, CONTCAR='CONTCAR'):
 
@@ -27,6 +33,64 @@ def read_chgcar(INDATA, CONTCAR='CONTCAR'):
     rho = VaspChargeDensity( INDATA )
 
     print ( datetime.datetime.now( ) )
+
+    return rho
+
+def read_chgcar2(INDATA, CONTCAR='CONTCAR'):
+
+    #Read CONTCAR to define the system.
+
+    rho = LocalVaspChargeDensity( )
+
+    system = read( CONTCAR )
+
+    rho.atoms.append( system ) 
+
+    #We don't need this, thus we need to count how many lines
+    #we need to ignore
+    nline = 9
+    startline = nline + system.get_number_of_atoms( )
+
+    #Open file 
+    file=open( INDATA, 'r' )
+
+    #Read all ignored lines
+    for i in range( startline ):
+        dump = file.readline( )
+
+    #Read the dimensions of the array
+    ngr = file.readline( ).split( )
+    #Make it becomes integers 
+    ng = ( int( ngr[ 0 ] ), int( ngr[ 1 ] ), int( ngr[ 2 ] ) )
+
+    print ( 'Read total charge' )
+
+    total = np.empty( ng[ 0 ] * ng[ 1 ] * ng[ 2 ] )
+    total = np.fromfile( file, count = ng[ 0 ] * ng[ 1 ] * ng[ 2 ], sep=' ')
+    total = total.reshape( ng[ 2 ], ng[ 1 ], ng[ 0 ] ).T
+    
+    rho.chg.append( total )
+    del ( total )
+
+    # Find out if there is second blog of data
+    chgdiff_block = False
+    for i in range(10000):
+        dump = file.readline( )
+        ngr_ = dump.split( )
+        if ngr[ 0 ] == ngr_[ 0 ]:
+           chgdiff_block = True
+           break
+
+    if chgdiff_block:
+        print ( 'Read CHGDIFF BLOCK' )
+
+        chgdiff = np.empty(ng[0]*ng[1]*ng[2])
+        chgdiff = np.fromfile(file, count = ng[0]*ng[1]*ng[2], sep=' ')
+        print ( chgdiff.shape )
+        print ( chgdiff[ -3:-1 ] )
+        chgdiff = chgdiff.reshape( ng[2], ng[1], ng[0]).T 
+        rho.chgdiff.append( chgdiff )
+        del ( chgdiff )
 
     return rho
 

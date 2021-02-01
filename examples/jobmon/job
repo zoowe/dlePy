@@ -1,0 +1,17 @@
+#!/bin/bash
+#SBATCH -J $name        # job name
+#SBATCH -N 4           # N : number of nodes
+#SBATCH --ntasks-per-node 64                       # (similar to number of cores)
+#SBATCH -p normal  
+#SBATCH -t 5:0:00      
+#SBATCH --mail-user=youremail
+#SBATCH --mail-type=begin 
+#SBATCH --mail-type=end   
+
+module unload vasp
+# Use pre-compiled version by Duy Le
+module load vasp/5.4.4_DLE
+# or the one from STAMPEDE
+#module load vasp/5.4.4
+
+ibrun  vasp_gam_stampede > out
