@@ -140,3 +140,32 @@ def get_efermi( outcar ):
 
     return efermi
 
+
+def get_corelevel( outcar ):
+    lines, decode  = get_lines_outcar( outcar )
+    data = {}
+    for i in range( len( lines ) ):
+        line = str_decode( lines[ i ], decode )
+        if "the core state eigenenergies are" in line:
+            startline = i + 1
+            break
+
+    for i in range( startline, len( lines ) ):
+        line = str_decode( lines[ i ], decode )
+        tmp = line.split()
+        if line.strip() == "":
+            break
+        if tmp[ 0 ][ -1 ] == "-":
+            at = int( tmp[ 0 ].replace( '-','') ) - 1 #To match index of ase
+            data[ at ] = {}
+            for j in range( len( tmp ) ):
+                if tmp[ j ][-1] in [ 's', 'p', 'd', 'f' ]:
+                    data[ at ][ tmp[ j ] ] = float( tmp[ j+1 ] )
+        else:
+            for j in range( len( tmp ) ):
+                if tmp[ j ][-1] in [ 's', 'p', 'd', 'f' ]:
+                    data[ at ][ tmp[ j ] ] = float( tmp[ j+1 ] )
+
+    return data
+
+
