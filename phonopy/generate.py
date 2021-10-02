@@ -325,6 +325,43 @@ def convert_vasprun( file, fileout, fixed_indices, disp_indices ):
         for i in range( 1000000 ):
             line = f_in.readline( )
             f_out.write( line.strip() + '\n' )
+            if line.strip() == '<varray name="positions" >':
+                for j in range( natoms ):
+                    line = f_in.readline( )
+                    if j in disp_indices:
+                        f_out.write( line.strip() + '\n' )
+
+            if line.strip() == '<varray name="forces" >':
+                for j in range( natoms ):
+                    line = f_in.readline( )
+                    if j in disp_indices:
+                        f_out.write( line.strip() + '\n' )
+
+            if line.strip() == "":
+                break
+
+        f_in.close()
+        f_out.close()
+    else:
+        print ( file, 'NOT FOUND' )
+
+    return
+
+'''
+def convert_vasprun( file, fileout, fixed_indices, disp_indices ):
+    natoms = len( fixed_indices ) + len( disp_indices )
+    outdir = 'data/'
+    os.system( 'mkdir -p ' + outdir )
+    if len( fixed_indices )  == 0:
+        os.system( 'cp -v ' + file + ' ' + outdir + fileout )
+        return
+    print ( 'Converting: ', file + ' -> ' + outdir + fileout )
+    if os.path.isfile( file ):
+        f_in = open( file, 'r' )
+        f_out = open( outdir + fileout, 'w' )
+        for i in range( 1000000 ):
+            line = f_in.readline( )
+            f_out.write( line.strip() + '\n' )
             if line.strip() == '<field type="int">atomtype</field>':
                 line = f_in.readline( )
                 f_out.write( line.strip() + '\n' )
@@ -354,7 +391,7 @@ def convert_vasprun( file, fileout, fixed_indices, disp_indices ):
                 print ( file, 'NOT FOUND' )
 
     return
-
+'''
 def gen_get_BORN_script( top_dir, fixed_indices, disp_indices ):
     s = '''
 from dlePy.phonopy.generate import get_BORN

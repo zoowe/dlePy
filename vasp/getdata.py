@@ -129,10 +129,10 @@ def get_energy( outcar ):
 
 def get_efermi( outcar ):
 
-    lines = get_lines_outcar( outcar )
+    lines, decode = get_lines_outcar( outcar )
 
     for iline in range( len( lines ) - 1, -1, -1 ):
-        if "E-fermi" in lines[ iline ]:
+        if "E-fermi" in str_decode( lines[ iline ], decode ):
             efermi = float( lines[ iline ].split( )[ 2 ] )
             break
 
