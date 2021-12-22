@@ -39,18 +39,19 @@ from ..small_tools import file_exist
 import os
 
 class PWscfInput:
-    def __init__(self, atoms):
+    def __init__(self, atoms, atomic = {} ):
         """
         Used multiple sub-classes
 
         """
         self.atoms          = atoms
+        self.atomic         = atomic
         self.control        = Control ()
-        self.system         = System ( atoms )
+        self.system         = System ( atoms, atomic )
         self.electrons      = Electrons ()
         self.ions           = Ions ()
         self.cell           = Cell ()
-        self.atomic_species = AtomicSpecies ( self.atoms )
+        self.atomic_species = AtomicSpecies ( self.atoms, self.atomic )
         self.kpoints        = Kpoints ( )
 
     def write_input ( self , filename):
@@ -88,14 +89,14 @@ class ControlIonRelax:
         self.nstep          = 100
 
 class System:
-    def __init__(self, atoms ): 
+    def __init__(self, atoms, atomic = {} ): 
         self.structure      = SystemStructure ( atoms )
         self.ecut           = SystemEcut ( )
         self.occupations    = SystemOccupations ( )
         self.spin_pol       = SystemSpinPol ( )
         self.starting_magnetization  \
                             = StartingMagnetization \
-                              (  self.structure.ntyp )
+                              (  atoms, atomic )
         self.additional_keywords = AdditionalKeywords( )
  
 class SystemStructure:
@@ -124,9 +125,13 @@ class SystemSpinPol:
         self.nspin          = 1
 
 class StartingMagnetization:
-    def __init__(self , ntyp ):
+    def __init__(self , atoms, atomic = {} ):
+        mol                 = get_reduce_atom_list ( atoms )
+        ntyp                = len( mol )
         self.starting_magnetization \
                             = [ 0. ] * ntyp
+        if len( atomic.keys() ) > 0:
+            self.starting_magnetization = [ atomic[ symbol ][ 'mag' ] for symbol in mol ]
 
 class AdditionalKeywords:
     def __init__(self ):
@@ -155,15 +160,19 @@ class Cell:
         self.press_conv_thr  = 0.5
 
 class AtomicSpecies:
-    def __init__(self , atoms ):
+    def __init__(self , atoms, atomic = {} ):
         mol                 =  get_reduce_atom_list ( atoms ) 
         ntyp                = len ( mol )
         self.ntyp           = ntyp
         self.symbol         = mol
         mass                = np.zeros ( [ ntyp ] , dtype = np.float )
+        if len( atomic.keys() ) > 0:
+            mass = [ atomic[ symbol ][ 'mass' ] for symbol in mol ]
         self.mass           = mass
         pseudo_potential    = np.zeros ( [ ntyp ] , dtype='S50')
         pseudo_potential [ : ] = 'Please_set_pseudo_file'
+        if len( atomic.keys() ) > 0:
+            pseudo_potential = [ atomic[ symbol ][ 'pot' ] for symbol in mol ]
         self.pseudo_potential = pseudo_potential 
 
 class Kpoints:

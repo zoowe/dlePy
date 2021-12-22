@@ -98,6 +98,43 @@ def read_projection( data, lines ):
 
     return data    
 
+def read_lowdin( data, lines ):
+    lowdin = { }
+    for i, line in enumerate( lines ):
+        if 'Lowdin Charges:' in line:
+            start_line = i
+            break
+    for i in range( start_line, len( lines ) ):
+        line = lines[ i ]
+        if 'Atom #' in line:
+            atom = {}
+            tmp = line.replace( "#", '=').replace( ':',' ').replace( 'total charge', 'total' ).replace( ',',' ').replace('=', ' ').split()
+            at  = int( tmp[ 1 ] ) - 1
+            atom[ 'charge' ] = { }
+            atom[ 'spin up' ] = { }
+            atom[ 'spin down' ] = { }
+            atom[ 'polarization' ] = { }
+            for k in range( 1, len( tmp ) // 2 ):
+                atom[ 'charge' ][ tmp[ 2*k ] ] =float ( tmp[ 2*k + 1 ] )
+            for j in range( 100 ):
+                line = lines[ i + j ]
+                if 'polarization' in line:
+                    tmp = line.replace( ',',' ').replace( '=',' ').replace( 'polarization', 'total' ).split()
+                    for k in range( len( tmp ) // 2 ):
+                        atom[ 'polarization' ][ tmp[ 2*k ] ] = float( tmp[ 2*k + 1 ] )
+                    break
+                if 'spin up' in line:
+                    tmp = line.replace( 'spin up', 'total' ).replace( ',',' ').replace('=', ' ').split()
+                    for k in range( len( tmp ) // 2 ):
+                        atom[ 'spin up' ][ tmp[ 2*k ] ] = float( tmp[ 2*k + 1 ] ) 
+                if 'spin down' in line:
+                    tmp = line.replace( 'spin down', 'total' ).replace( ',',' ').replace('=', ' ').split()
+                    for k in range( len( tmp ) // 2 ):
+                        atom[ 'spin down' ][ tmp[ 2*k ] ] = float( tmp[ 2*k + 1 ] )
+            lowdin[ at ] = atom
+    data[ 'lowdin' ] = lowdin
+    return data
+
 def list_projections( data ):
     print ( "%-12s %-s" %( 'State Index', 'Projection' ) )
     for key in sorted( data[ "Atomic states" ].keys() ):
@@ -153,6 +190,7 @@ def parse( output, args = {} ):
     data = read_keys( data, lines, args )
     data = read_atomic_states( data, lines ) 
     data = read_projection( data, lines )
+    data = read_lowdin( data, lines )
   
     return data
 
