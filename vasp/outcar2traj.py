@@ -56,7 +56,7 @@ def read_OUTCAR( outcar, data = {}, maxiter = 1000 ):
     E_fermi     = 0
  
     for n in tqdm( range( len( lines ) ) ):
-        line = str_decode( lines[ n ] ) #.decode( 'utf-8' )
+        line = str_decode( lines[ n ], decode ) #.decode( 'utf-8' )
         if 'TITEL  =' in line:
             temp = line.split()[3].split( '_' )[0]
             species += [temp]
@@ -192,7 +192,7 @@ def get_niter( lines, endline ):
     i = endline
     while not finish:
         i -= 1
-        line = str_decode( lines[ i ] ) #.decode( 'utf-8 ' )
+        line = str_decode( lines[ i ], decode ) #.decode( 'utf-8 ' )
         if 'Iteration' in line:
             finish = True
             niter = line.replace( '-', '' ).replace( '(', ' ' ).replace( ')', ' ' ).split()[ -1 ]
