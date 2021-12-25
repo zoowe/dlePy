@@ -126,7 +126,7 @@ def read_OUTCAR( outcar, data = {}, maxiter = 1000 ):
 
         if 'POSITION          ' in line:
             imagecount += 1
-            niter = get_niter( lines, n )
+            niter = get_niter( lines, n, decode )
             if niter < maxiter:
                 forces = []
                 positions = []
@@ -187,7 +187,7 @@ def add_to_traj( traj, images, first, last = 500):
     for i in range( first, last ):
         traj.write( images[ i ] )
 
-def get_niter( lines, endline ):
+def get_niter( lines, endline, decode ):
     finish = False
     i = endline
     while not finish:
