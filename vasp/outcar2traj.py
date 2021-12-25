@@ -153,7 +153,7 @@ def read_OUTCAR( outcar, data = {}, maxiter = 1000 ):
                 data_[ 'FERMI_SHIFT' ] = FERMI_SHIFT
                 data_[ 'VACPOT_PSP' ] = VACPOT_PSP
                 for x in range( n + 2 + natoms + 13, n + 2 + natoms + 12 + 50, 1 ):
-                    line = lines[ x ].decode( 'utf-8' )
+                    line = str_decode( lines[ x ], decode )
                     if 'ion-electron   TOTEN' in line:
                         data_ [ 'TOTEN' ] = float( line.split( "=")[-1].split()[0] )
                     if 'kinetic energy EKIN' in line:
